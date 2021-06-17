@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Detalle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class DetalleController extends Controller
 {
@@ -60,5 +61,13 @@ class DetalleController extends Controller
     public function destroy(Detalle $detalle)
     {
         //
+    }
+
+    public function item(){
+        return DB::connection('indcom')->table('items')->get();
+    }
+    
+    public function subitem($id){
+        return DB::connection('indcom')->table('subitems')->where('sub_item','like',$id.'%')->get();
     }
 }

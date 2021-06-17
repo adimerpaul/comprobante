@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Comprobante;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ComprobanteController extends Controller
 {
@@ -60,5 +61,9 @@ class ComprobanteController extends Controller
     public function destroy(Comprobante $comprobante)
     {
         //
+    }
+
+    public function contribuyente($comun){
+        return DB::connection('simat')->table('pm01cont')->select('comun','expedido','paterno','materno','nombre','descrip','numcasa','telefono')->where('comun','like','%'.$comun.'%')->limit(10)->get();
     }
 }
