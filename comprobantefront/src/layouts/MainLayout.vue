@@ -60,13 +60,31 @@
           <q-item-section
             avatar
           >
-            <q-icon name="send" />
+            <q-icon name="article" />
           </q-item-section>
 
           <q-item-section>
             <q-item-label>Comprobantes</q-item-label>
             <q-item-label caption>
-              Registro de comprobantes
+              Actividades economicas
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          to="/empresa"
+          exact
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="settings_overscan" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Empresa</q-item-label>
+            <q-item-label caption>
+              Registro de empresas
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -79,7 +97,7 @@
           <q-item-section
             avatar
           >
-            <q-icon name="close" />
+            <q-icon name="logout" />
           </q-item-section>
 
           <q-item-section>
