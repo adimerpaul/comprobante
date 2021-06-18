@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class UnidSeeder extends Seeder
 {
@@ -13,7 +14,7 @@ class UnidSeeder extends Seeder
      */
     public function run()
     {
-        DB::table('detalles')->insert([
+        DB::table('unids')->insert([
             ['nombre'=>'Sistemas'],
             ['nombre'=>'Espectaculos Publicos'],
             ]);

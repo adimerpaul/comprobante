@@ -39,7 +39,11 @@ export default {
       options: stringOptions
     }
   },
-
+  created() {
+    this.$axios.get(process.env.URL+'/cliente').then(res=>{
+      console.log(res.data)
+    });
+  },
   methods: {
     filterFn (val, update) {
       if (val === '') {

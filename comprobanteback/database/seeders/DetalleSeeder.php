@@ -31,6 +31,7 @@ class DetalleSeeder extends Seeder
                 'subtotal'=>'2',
                 'comprobante_id'=>'1',
             ],
+
         ]);
     }
 }
