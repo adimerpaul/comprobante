@@ -21,7 +21,8 @@ class UserSeeder extends Seeder
                'email'=>'admin@test.com',
                'name'=>'admin',
                'codigo'=>'ADM',
-               'password'=>Hash::make('admin')
+               'password'=>Hash::make('admin'),
+               'unid_id'=>1
            ]
         ]);
     }

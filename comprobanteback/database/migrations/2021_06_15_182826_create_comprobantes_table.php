@@ -18,14 +18,6 @@ class CreateComprobantesTable extends Migration
             $table->string('nrotramite')->default('');
             $table->string('nrocomrobante')->default('');
             $table->date('fecha');
-            $table->string('paterno')->default('');
-            $table->string('materno')->default('');
-            $table->string('nombres')->default('');
-            $table->string('direccion')->default('');
-            $table->string('numero')->default('');
-            $table->string('ci')->default('');
-            $table->string('expedido')->default('');
-            $table->string('telefono')->default('');
             $table->string('tipo')->default('');
             $table->string('codigo')->default('');
             $table->string('valorcatastral')->default('');
@@ -50,6 +42,9 @@ class CreateComprobantesTable extends Migration
             $table->string('cajero')->default('');
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
+            $table->unsignedBigInteger('cliente_id');
+            $table->foreign('cliente_id')->references('id')->on('clientes');
+            
             $table->timestamps();
         });
     }
