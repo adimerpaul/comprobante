@@ -27,4 +27,5 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::apiResource('/comprobante',\App\Http\Controllers\ComprobanteController::class);
     Route::apiResource('/cliente',\App\Http\Controllers\ClienteController::class);
+    Route::get('/lista/{ci}',[\App\Http\Controllers\ClienteController::class,'listacliente']);
 });

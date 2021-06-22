@@ -40,16 +40,17 @@ export default {
     }
   },
   created() {
-    this.$axios.get(process.env.URL+'/cliente').then(res=>{
-      console.log(res.data)
-    });
+    
   },
   methods: {
     filterFn (val, update) {
       if (val === '') {
         update(() => {
-          this.options = stringOptions
-
+          //this.options = stringOptions
+          this.$axios.get(process.env.URL+'/lista/1').then(res=>{
+                //console.log(res.data)
+                console
+          });
           // with Quasar v1.7.4+
           // here you have access to "ref" which
           // is the Vue reference of the QSelect

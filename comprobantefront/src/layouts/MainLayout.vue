@@ -52,6 +52,26 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
+        <q-item
+          clickable
+          to="/cliente"
+          exact
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="person" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Contribuyente</q-item-label>
+            <q-item-label caption>
+              Datos Contribuyente
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item
           clickable
           to="/secure"
@@ -70,6 +90,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
         <q-item
           clickable
           to="/empresa"

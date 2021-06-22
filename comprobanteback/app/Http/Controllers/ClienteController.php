@@ -82,4 +82,8 @@ class ClienteController extends Controller
     {
         //
     }
+
+    public function listacliente($ci){
+        return Cliente::where('ci','like',$ci.'%')->limit(10)->get();
+    }
 }

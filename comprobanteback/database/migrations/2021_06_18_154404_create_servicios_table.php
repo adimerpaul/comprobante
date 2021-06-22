@@ -18,6 +18,7 @@ class CreateServiciosTable extends Migration
             $table->string('nombre');
             $table->string('descripcion');
             $table->string('tiempo');
+            $table->decimal('monto',10,2);
             $table->unsignedBigInteger('empresa_id');
             $table->foreign('empresa_id')->references('id')->on('empresas');
             $table->timestamps();
