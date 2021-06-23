@@ -36,6 +36,10 @@ class ClienteController extends Controller
     public function store(Request $request)
     {
         //
+        $input=$request->all();
+        //        $input['imagen']=$ruta;
+        $cliente=Cliente::create($input);
+        return $cliente;
     }
 
     /**
@@ -58,6 +62,7 @@ class ClienteController extends Controller
     public function edit(Cliente $cliente)
     {
         //
+
     }
 
     /**
@@ -70,6 +75,8 @@ class ClienteController extends Controller
     public function update(Request $request, Cliente $cliente)
     {
         //
+        $cliente->update($request->all());
+        return $cliente;
     }
 
     /**

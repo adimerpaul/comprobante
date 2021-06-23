@@ -19,4 +19,8 @@ class Cliente extends Model
         'numcasa',
         'telefono',
     ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }

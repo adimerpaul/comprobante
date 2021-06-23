@@ -17,10 +17,10 @@ class CreateClientesTable extends Migration
             $table->id();
             $table->string('ci')->default('');
             $table->string('expedido')->default('');
-            $table->string('paterno')->default('');
-            $table->string('materno')->default('');
-            $table->string('nombre')->default('');
-            $table->string('casada')->default('');
+            $table->string('paterno')->nullable();
+            $table->string('materno')->nullable();
+            $table->string('nombre');
+            $table->string('casada')->nullable();
             $table->string('direccion')->default('');
             $table->string('numcasa')->nullable();
             $table->string('telefono')->nullable();
