@@ -24,6 +24,6 @@ class UserController extends Controller
         return response()->json(['res'=>'salido exitosamente'],200);
     }
     public function me(Request $request){
-
+        return $request->user();
     }
 }

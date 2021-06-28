@@ -35,9 +35,9 @@ class ComprobanteController extends Controller
      * @param  \App\Models\Comprobante  $comprobante
      * @return \Illuminate\Http\Response
      */
-    public function show(Comprobante $comprobante)
+    public function show(Request $request,$id)
     {
-        //
+        return Comprobante::where('user_id',$request->user()->id)->get()->count();
     }
 
     /**

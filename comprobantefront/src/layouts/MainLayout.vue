@@ -12,7 +12,7 @@
         />
 
         <q-toolbar-title>
-          Quasar App
+          {{$store.state.user.name}}
         </q-toolbar-title>
 
         <div>Quasar v{{ $q.version }}</div>

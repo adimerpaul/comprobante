@@ -1,68 +1,73 @@
 <template>
-  <q-page class="q-pt-md q-pl-lg">
+  <q-page class="q-px-md q-pt-lg">
     <div class="row">
-      <div class="col-12 col-sm-6">
-        <q-select
-          filled
-          v-model="model"
-          use-input
-          input-debounce="0"
-          label="Simple filter"
-          :options="options"
-          @filter="filterFn"
-          style="width: 250px"
+      <div class="col-6">
+        <q-form
         >
-          <template v-slot:no-option>
-            <q-item>
-              <q-item-section class="text-grey">
-                No results
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
+          <q-input label="No Tramite:"
+                   filled
+                   v-model="nrotramite"
+                   lazy-rules
+                   :rules="[ val => val && val.length > 0 || 'Please type something']"
+          />
+          <q-input label="No Comprobante:"
+                   filled
+                   v-model="nrocomprobante"
+                   lazy-rules
+                   :rules="[ val => val && val.length > 0 || 'Please type something']"
+          />
+          <q-input label="CI NIT RUC:"
+                   filled
+                   v-model="ci"
+                   lazy-rules
+                   :rules="[ val => val && val.length > 0 || 'Please type something']"
+          />
+        </q-form>
       </div>
-      <div class="col-12 col-sm-6"></div>
     </div>
-
   </q-page>
 </template>
 
 <script>
-const stringOptions = [
-  'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-]
 
 export default {
   data () {
     return {
-      model: null,
-      options: stringOptions
+      nrotramite: '',
+      nrocomprobante:'',
+      ci:''
     }
   },
   created() {
-    
+    this.$axios.get(process.env.URL+'/comprobante/1').then(res=>{
+      // console.log(res.data);
+      this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
+    })
   },
   methods: {
-    filterFn (val, update) {
-      if (val === '') {
-        update(() => {
-          //this.options = stringOptions
-          this.$axios.get(process.env.URL+'/lista/1').then(res=>{
-                //console.log(res.data)
-                console
-          });
-          // with Quasar v1.7.4+
-          // here you have access to "ref" which
-          // is the Vue reference of the QSelect
-        })
-        return
-      }
+    zfill(number, width){
+      // return 'a';
+      var numberOutput = Math.abs(number); /* Valor absoluto del número */
+      var length = number.toString().length; /* Largo del número */
+      var zero = "0"; /* String de cero */
 
-      update(() => {
-        const needle = val.toLowerCase()
-        this.options = stringOptions.filter(v => v.toLowerCase().indexOf(needle) > -1)
-      })
+      if (width <= length) {
+        if (number < 0) {
+          return ("-" + numberOutput.toString());
+        } else {
+          return numberOutput.toString();
+        }
+      } else {
+        if (number < 0) {
+          return ("-" + (zero.repeat(width - length)) + numberOutput.toString());
+        } else {
+          return ((zero.repeat(width - length)) + numberOutput.toString());
+        }
+      }
     }
+  },
+  computed:{
+
   }
 }
 </script>
