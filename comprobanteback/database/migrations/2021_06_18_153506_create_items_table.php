@@ -15,10 +15,12 @@ class CreateItemsTable extends Migration
     {
         Schema::create('items', function (Blueprint $table) {
             $table->id();
-            $table->string('codigo');
-            $table->string('nombre');
-            $table->string('detalle');
-            $table->string('monto');
+            $table->string('codigo')->nullable();
+            $table->string('nombre')->nullable();
+            $table->string('detalle')->nullable();
+            $table->string('monto')->nullable();
+            $table->unsignedBigInteger('unid_id');
+            $table->foreign('unid_id')->references('id')->on('unids');
             $table->timestamps();
         });
     }

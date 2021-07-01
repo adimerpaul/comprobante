@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class EmpresaSeeder extends Seeder
 {
@@ -13,6 +14,28 @@ class EmpresaSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('empresas')->insert([
+           [
+               'razonsocial'=>'COCA COLA',
+                'direccion'=>'XALLE X',
+                'telefono'=>'101010',
+                'nit'=>'101010',
+                'padron'=>'10-10-101010',
+           ],
+            [
+                'razonsocial'=>'PEPSIO',
+                'direccion'=>'XALLE X',
+                'telefono'=>'101010',
+                'nit'=>'101010',
+                'padron'=>'10-10-101010',
+            ],
+            [
+                'razonsocial'=>'COCA QUINA',
+                'direccion'=>'XALLE X',
+                'telefono'=>'101010',
+                'nit'=>'101010',
+                'padron'=>'10-10-101010',
+            ],
+        ]);
     }
 }

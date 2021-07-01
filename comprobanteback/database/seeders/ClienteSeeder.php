@@ -25,7 +25,20 @@ class ClienteSeeder extends Seeder
                 'direccion'=>'CALLE X',
                 'numcasa'=>'12',
                 'telefono'=>'5261245',
-            ]
+                'padron'=>'1-11-1111'
+            ],
+            [
+                'ci'=>'2020',
+                'expedido'=>'OR',
+                'paterno'=>'LOPEZ',
+                'materno'=>'GUTIERREZ',
+                'nombre'=>'ALEJANDRO',
+                'casada'=>'',
+                'direccion'=>'CALLE Y',
+                'numcasa'=>'12',
+                'telefono'=>'5261245',
+                'padron'=>'1-11-1111'
+            ],
         ]);
     }
 }

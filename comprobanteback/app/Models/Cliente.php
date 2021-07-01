@@ -23,4 +23,7 @@ class Cliente extends Model
         'created_at',
         'updated_at',
     ];
+    public function empresas(){
+        return $this->belongsToMany(Cliente::class);
+    }
 }

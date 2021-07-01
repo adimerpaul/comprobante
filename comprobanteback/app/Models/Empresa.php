@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Empresa extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'razonsocial',
+        'direccion',
+        'telefono',
+        'nit',
+        'padron',
+        'estado',
+    ];
+    public function clientes(){
+        return $this->belongsToMany(Cliente::class);
+    }
 }

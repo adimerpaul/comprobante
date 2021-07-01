@@ -48,9 +48,9 @@ class ClienteController extends Controller
      * @param  \App\Models\Cliente  $cliente
      * @return \Illuminate\Http\Response
      */
-    public function show(Cliente $cliente)
+    public function show($ci)
     {
-        //
+        return Cliente::where('ci',$ci)->get();
     }
 
     /**

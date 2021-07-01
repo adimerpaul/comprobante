@@ -74,6 +74,25 @@
 
         <q-item
           clickable
+          to="/item"
+          exact
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="category" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Item</q-item-label>
+            <q-item-label caption>
+              Configuracion de items
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
           to="/secure"
           exact
         >

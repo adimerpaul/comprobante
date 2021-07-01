@@ -19,11 +19,13 @@ class CreateClientesTable extends Migration
             $table->string('expedido')->default('');
             $table->string('paterno')->nullable();
             $table->string('materno')->nullable();
+            $table->string('padron')->nullable();
             $table->string('nombre');
             $table->string('casada')->nullable();
             $table->string('direccion')->default('');
             $table->string('numcasa')->nullable();
             $table->string('telefono')->nullable();
+            $table->boolean('estado')->default(true);
             $table->timestamps();
         });
     }

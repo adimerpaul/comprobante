@@ -12,9 +12,10 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+//        return ;
+        return Item::where('unid_id',$request->user()->unid_id)->orderBy('nombre')->get();
     }
 
     /**

@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class SubitemSeeder extends Seeder
 {
@@ -13,6 +14,15 @@ class SubitemSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('subitem')->insert([
+           [
+               'codigo'=>"",
+                'nombre'=>"",
+                'detalle'=>"",
+                'monto'=>"",
+                'item_id'=>"",
+                'unid_id'=>"",
+           ]
+        ]);
     }
 }

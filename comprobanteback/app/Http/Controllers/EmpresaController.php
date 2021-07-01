@@ -14,7 +14,7 @@ class EmpresaController extends Controller
      */
     public function index()
     {
-        //
+        return Empresa::with('clientes')->get();
     }
 
     /**

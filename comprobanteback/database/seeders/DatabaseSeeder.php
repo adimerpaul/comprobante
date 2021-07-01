@@ -20,6 +20,9 @@ class DatabaseSeeder extends Seeder
             ClienteSeeder::class,
             ComprobanteSeeder::class,
             DetalleSeeder::class,
+            ItemSeeder::class,
+            EmpresaSeeder::class,
+            Cliente_empresa::class
         ]);
     }
 }
