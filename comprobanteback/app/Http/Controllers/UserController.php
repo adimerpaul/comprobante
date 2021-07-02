@@ -12,7 +12,7 @@ class UserController extends Controller
         if (!Auth::attempt($request->all())){
             return response()->json(['res'=>'No existe el usuario'],400);
         }
-        $user=User::where('email',$request->email)->firstOrFail();
+        $user=User::where('email',$request->email)->with('unid')->firstOrFail();
         $token=$user->createToken('auth_token')->plainTextToken;
         return response()->json(['token'=>$token,'user'=>$user],200);;
     }
@@ -24,6 +24,9 @@ class UserController extends Controller
         return response()->json(['res'=>'salido exitosamente'],200);
     }
     public function me(Request $request){
-        return $request->user();
+        $user=$request->user()->with('unid')->firstOrFail();
+        return $user;
+
+//        return User::where('id',1)->with('unid')->get();
     }
 }

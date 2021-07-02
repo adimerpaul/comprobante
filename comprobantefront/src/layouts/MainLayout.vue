@@ -15,7 +15,7 @@
           {{$store.state.user.name}}
         </q-toolbar-title>
 
-        <div>Quasar v{{ $q.version }}</div>
+        <div v-if="Object.keys($store.state.user).length>0">Unidad: {{$store.state.user.unid.nombre}}</div>
       </q-toolbar>
     </q-header>
 

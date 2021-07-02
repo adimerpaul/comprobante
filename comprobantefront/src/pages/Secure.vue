@@ -10,15 +10,22 @@
                        outlined
                        v-model="nrotramite"
                        lazy-rules
-                       :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
+                       :rules="[
+                         val => val && val.length > 0 || 'Porfavor llenar este campo',
+                         ]"
               />
             </div>
             <div class="col-6">
               <q-input label="No Comprobante:"
                        outlined
+                       type="number"
                        v-model="nrocomprobante"
                        lazy-rules
-                       :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
+                       :rules="[
+                         val => val && val.length > 0 || 'Porfavor llenar este campo',
+                         val => val >= $store.state.user.unid.inicio && val <= $store.state.user.unid.fin || 'Tiene que estar en el rango de formularios '
+
+                         ]"
               />
             </div>
             <div class="col-6">
@@ -136,19 +143,19 @@ export default {
   data () {
     return {
       columns:[
-        {name:'codigo',label:'Codigo', align:'left',field:'codigo',sortable:true},
-        {name:'nombre',label:'Referencia', align:'left',field:'nombre',sortable:true},
+        {name:'codsubitem',label:'Codigo', align:'left',field:'codsubitem',sortable:true},
+        {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
         {name:'precio',label:'Precio', align:'left',field:'precio',    format: val => `${val} Bs`,sortable:true},
         {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad',sortable:true},
         {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
       ],
       data:[
         {
-          coditem:1,
+          coditem:'1210000',
           nombreitem:'VENTA Y REPOSICIÓN                              ',
-          codsubitem:1,
-          nombresubitem:'VENTA Y REPOSICIÓN                              ',
-          nombre:'VENTA Y REPOSICIÓN                              ',
+          codsubitem:'122000001',
+          nombresubitem:'Venta y reposicion de formulario                              ',
+          detalle:'Venta y reposicion de formulario',
           precio:2,
           cantidad:1,
           subtotal:2
@@ -180,7 +187,7 @@ export default {
       // console.log(res.data);
       this.items=[];
       res.data.forEach(r=>{
-        this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo})
+        this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
       });
       // this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
     })
@@ -189,9 +196,11 @@ export default {
     reset(){
       this.data=[
         {
-          id:1,
-          codigo:'122000001',
-          nombre:'VENTA Y REPOSICION DE FORMULARIO                                                                      ',
+          coditem:'1210000',
+          nombreitem:'VENTA Y REPOSICIÓN                              ',
+          codsubitem:'122000001',
+          nombresubitem:'Venta y reposicion de formulario                              ',
+          detalle:'Venta y reposicion de formulario',
           precio:2,
           cantidad:1,
           subtotal:2
@@ -214,13 +223,15 @@ export default {
         })
         return false;
       }
-      this.data.push( {
-        id:this.subitem.submit.id,
-        codigo:'122000001',
-        nombre:'VENTA Y REPOSICION DE FORMULARIO                                                                      ',
-        precio:2,
-        cantidad:1,
-        subtotal:2
+      this.data.push({
+        coditem:this.item.codigo,
+        nombreitem:this.item.nombre2,
+        codsubitem:this.subitem.codigo,
+        nombresubitem:this.subitem.nombre2,
+        detalle:this.detalle,
+        precio:this.precio,
+        cantidad:this.cantidad,
+        subtotal:this.subtotal
       })
     },
     colocarprecio(val){
@@ -235,7 +246,7 @@ export default {
       this.$axios.get(process.env.URL+'/subitem/'+this.item.id).then(res=>{
         // console.log(res.data);
         res.data.forEach(r=>{
-          this.subitems.push({id:r.id,nombre:r.nombre+' '+r.monto+'Bs',monto:r.monto,codigo:r.codigo})
+          this.subitems.push({id:r.id,nombre:r.nombre+' '+r.monto+'Bs',monto:r.monto,codigo:r.codigo,nombre2:r.nombre})
         });
       })
     },

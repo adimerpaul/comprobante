@@ -23,7 +23,7 @@ class SubitemSeeder extends Seeder
 //                'item_id'=>"",
 //                'unid_id'=>"",
 //           ]
-['item_id'=>'1','codigo'=>'122000001','nombre'=>'VENTA Y REPOSICION DE FORMULARIO                                                                      ','monto'=>'2.00   '],
+['item_id'=>'1','codigo'=>'122000001','nombre'=>'Venta y reposicion de formulario                                             ','monto'=>'2.00   '],
 ['item_id'=>'5','codigo'=>'122000101','nombre'=>'Mayores                                                                      ','monto'=>'2.00   '],
 ['item_id'=>'5','codigo'=>'122000102','nombre'=>'Menores                                                                      ','monto'=>'1.00   '],
 ['item_id'=>'5','codigo'=>'122000103','nombre'=>'Extrangeros                                                                  ','monto'=>'5.00   '],
