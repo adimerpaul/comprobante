@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Item;
 use App\Models\Subitem;
 use Illuminate\Http\Request;
 
@@ -12,9 +13,9 @@ class SubitemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return $request;
     }
 
     /**
@@ -25,7 +26,7 @@ class SubitemController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        return "aa";
     }
 
     /**
@@ -34,9 +35,10 @@ class SubitemController extends Controller
      * @param  \App\Models\Subitem  $subitem
      * @return \Illuminate\Http\Response
      */
-    public function show(Subitem $subitem)
+    public function show(Request $request,$item_id)
     {
-        //
+        return Subitem::where('item_id',$item_id)->where('unid_id',$request->user()->unid_id)->orderBy('monto')->get();
+//        return
     }
 
     /**

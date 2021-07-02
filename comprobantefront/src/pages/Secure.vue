@@ -4,72 +4,126 @@
       <div class="col-12 col-md-6 q-pa-xs ">
         <q-form
         >
-          <q-input label="No Tramite:"
-                   outlined
-                   v-model="nrotramite"
-                   lazy-rules
-                   :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
-          />
-          <q-input label="No Comprobante:"
-                   outlined
-                   v-model="nrocomprobante"
-                   lazy-rules
-                   :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
-          />
-          <q-input label="CI NIT RUC:"
-                   outlined
-                   v-model="ci"
-                   @keyup.prevent="buscarcliente"
-                   lazy-rules
-                   :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
-          />
-          <i v-if="spinner" class="fa fa-spinner"></i>
-          <q-input
-            outlined
-            label="Paterno o razon"
-            v-model="paterno"
-            lazy-rules
-            :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
-          />
-          <q-input
-            outlined
-            label="Materno"
-            v-model="materno"
-            lazy-rules
-            :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
-          />
-          <q-input
-            outlined
-            label="Nombres"
-            v-model="nombre"
-            lazy-rules
-            :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
-          />
-          <q-input
-            outlined
-            label="Padron"
-            v-model="padron"
-            lazy-rules
-            :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
-          />
+          <div class="row">
+            <div class="col-6">
+              <q-input label="No Tramite:"
+                       outlined
+                       v-model="nrotramite"
+                       lazy-rules
+                       :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
+              />
+            </div>
+            <div class="col-6">
+              <q-input label="No Comprobante:"
+                       outlined
+                       v-model="nrocomprobante"
+                       lazy-rules
+                       :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
+              />
+            </div>
+            <div class="col-6">
+              <q-input label="CI NIT RUC:"
+                       outlined
+                       v-model="ci"
+                       @keyup.prevent="buscarcliente"
+                       lazy-rules
+                       :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
+              />
+              <i v-if="spinner" class="fa fa-spinner"></i>
+            </div>
+            <div class="col-6">
+              <q-input
+                outlined
+                label="Paterno o razon"
+                v-model="paterno"
+                lazy-rules
+                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+              />
+            </div>
+            <div class="col-6">
+              <q-input
+                outlined
+                label="Materno"
+                v-model="materno"
+                lazy-rules
+                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+              />
+            </div>
+            <div class="col-6">
+              <q-input
+                outlined
+                label="Nombres"
+                v-model="nombre"
+                lazy-rules
+                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+              />
+            </div>
+            <div class="col-6">
+              <q-input
+                outlined
+                label="Padron"
+                v-model="padron"
+                lazy-rules
+                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+              />
+            </div>
+          </div>
         </q-form>
       </div>
       <div class="col-12 col-md-6 q-pa-xs">
         <q-select
+          @input="buscarsubitems()"
           outlined
           v-model="item"
           lazy-rules
-          :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
           :options="items" label="Selecionar item"
           option-value="id"
           option-label="nombre"
         />
-        <q-input
-        outlined
-        v-model="subitem"
-        label="Subitem"
-        :rules="[val=>val&& val.length>0||'Porfavor llenar este campo']"
+        <q-select
+          @input="val=>colocarprecio(val)"
+          outlined
+          v-model="subitem"
+          lazy-rules
+          :options="subitems" label="Selecionar Subitem"
+          option-value="id"
+          option-label="nombre"
         />
+        <q-input
+          outlined
+          label="Detalle"
+          v-model="detalle"
+          lazy-rules
+          :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+        />
+        <div class="row">
+          <div class="col-1">
+            <q-btn color="positive" @click="cantidad++" icon="add_circle" class="full-width full-height" text-color="white" />
+          </div>
+          <div class="col-2">
+            <q-input outlined label="Precio" v-model="precio"/>
+          </div>
+          <div class="col-2">
+            <q-input outlined label="Cantidad" v-model="cantidad"/>
+          </div>
+          <div class="col-1">
+            <q-btn color="negative" @click="cantidad--" icon="remove_circle" class="full-width full-height" text-color="white" />
+          </div>
+          <div class="col-2">
+            <q-input outlined label="Subtotal" v-model="subtotal"/>
+          </div>
+          <div class="col-4">
+            <q-btn color="positive" @click="cantidad++" label="Agregar"  class="full-width full-height" text-color="white" />
+          </div>
+        </div>
+      </div>
+      <div class="col-12">
+        <q-table
+          title="Pagos"
+          dense
+
+        >
+        </q-table>
       </div>
     </div>
   </q-page>
@@ -80,16 +134,23 @@
 export default {
   data () {
     return {
+      columns:[
+        
+      ],
       nrotramite: '',
       nrocomprobante:'',
       ci:'',
+      detalle:'',
       paterno:'',
       materno:'',
       nombre:'',
       padron:'',
       item:'',
       subitem:'',
+      subitems:[],
       items: [],
+      precio:0,
+      cantidad:1,
       spinner:false,
     }
   },
@@ -102,12 +163,27 @@ export default {
       console.log(res.data);
       this.items=[];
       res.data.forEach(r=>{
-        this.items.push({id:r.id,nombre:r.nombre+' '+r.monto+'Bs'})
+        this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo})
       });
       // this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
     })
   },
   methods: {
+    colocarprecio(val){
+      // console.log(this.subitem)
+      this.precio=this.subitem.monto;
+    },
+    buscarsubitems(){
+      // console.log('a');
+      // console.log(this.item);
+      this.subitems=[];
+      this.$axios.get(process.env.URL+'/subitem/'+this.item.id).then(res=>{
+        // console.log(res.data);
+        res.data.forEach(r=>{
+          this.subitems.push({id:r.id,nombre:r.nombre+' '+r.monto+'Bs',monto:r.monto})
+        });
+      })
+    },
     buscarcliente(){
       // console.log(this.ci)
       this.paterno=''
@@ -150,7 +226,9 @@ export default {
     }
   },
   computed:{
-
+    subtotal(){
+      return this.precio*this.cantidad
+    }
   }
 }
 </script>

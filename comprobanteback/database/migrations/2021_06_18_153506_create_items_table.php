@@ -19,7 +19,7 @@ class CreateItemsTable extends Migration
             $table->string('nombre')->nullable();
             $table->string('detalle')->nullable();
             $table->string('monto')->nullable();
-            $table->unsignedBigInteger('unid_id');
+            $table->unsignedBigInteger('unid_id')->nullable()->default(1);
             $table->foreign('unid_id')->references('id')->on('unids');
             $table->timestamps();
         });

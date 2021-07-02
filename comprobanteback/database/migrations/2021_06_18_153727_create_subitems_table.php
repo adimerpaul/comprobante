@@ -18,10 +18,10 @@ class CreateSubitemsTable extends Migration
             $table->string('codigo')->nullable();
             $table->string('nombre')->nullable();
             $table->string('detalle')->nullable();
-            $table->string('monto')->nullable();
+            $table->double('monto',11,2)->nullable();
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('items');
-            $table->unsignedBigInteger('unid_id');
+            $table->unsignedBigInteger('unid_id')->nullable()->default(1);
             $table->foreign('unid_id')->references('id')->on('unids');
             $table->timestamps();
         });

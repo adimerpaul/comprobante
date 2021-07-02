@@ -18,16 +18,15 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
-Route::apiResource('/empresa',\App\Http\Controllers\EmpresaController::class);
 
 Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::get('/contrib/{comun}',[\App\Http\Controllers\ComprobanteController::class,'contribuyente']);
-    Route::get('/item',[\App\Http\Controllers\detalleController::class,'item']);
-    Route::get('/subitem/{id}',[\App\Http\Controllers\detalleController::class,'subitem']);
+//    Route::get('/item',[\App\Http\Controllers\detalleController::class,'item']);
+//    Route::get('/subitem/{id}',[\App\Http\Controllers\detalleController::class,'subitem']);
     Route::post('/logout',[\App\Http\Controllers\UserController::class,'logout']);
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::apiResource('/item',\App\Http\Controllers\ItemController::class);
-
+    Route::apiResource('/empresa',\App\Http\Controllers\EmpresaController::class);
     Route::apiResource('/comprobante',\App\Http\Controllers\ComprobanteController::class);
     Route::apiResource('/cliente',\App\Http\Controllers\ClienteController::class);
     Route::apiResource('/subitem',\App\Http\Controllers\SubitemController::class);

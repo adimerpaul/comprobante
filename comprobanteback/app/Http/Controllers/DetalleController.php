@@ -64,10 +64,10 @@ class DetalleController extends Controller
     }
 
     public function item(){
-        return DB::connection('indcom')->table('items')->get();
+//        return DB::connection('indcom')->table('items')->get();
     }
-    
+
     public function subitem($id){
-        return DB::connection('indcom')->table('subitems')->where('sub_item','like',$id.'%')->get();
+//        return DB::connection('indcom')->table('subitems')->where('sub_item','like',$id.'%')->get();
     }
 }

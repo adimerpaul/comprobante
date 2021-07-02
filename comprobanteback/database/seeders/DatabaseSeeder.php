@@ -22,7 +22,8 @@ class DatabaseSeeder extends Seeder
             DetalleSeeder::class,
             ItemSeeder::class,
             EmpresaSeeder::class,
-            Cliente_empresa::class
+            Cliente_empresa::class,
+            SubitemSeeder::class
         ]);
     }
 }
