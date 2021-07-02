@@ -10,6 +10,8 @@ class Unid extends Model
     use HasFactory;
     protected $fillable=[
         'nombre',
+        'inicio',
+        'fin',
     ];
     protected $hidden = [
         'created_at',

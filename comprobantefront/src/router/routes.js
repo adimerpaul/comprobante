@@ -4,6 +4,7 @@ import Secure  from "../pages/Secure";
 import Login  from "../pages/Login";
 import Cliente  from "../pages/Cliente";
 import Item  from "../pages/Item";
+import Unid  from "../pages/Unid";
 const routes = [
   {
     path: '/',
@@ -14,6 +15,7 @@ const routes = [
       { path: '/Secure', component: Secure,meta: {requiresAuth: true} },
       { path: '/Cliente', component: Cliente,meta: {requiresAuth: true} },
       { path: '/Item', component: Item,meta: {requiresAuth: true} },
+      { path: '/Unid', component: Unid,meta: {requiresAuth: true} },
     ]
   },
 

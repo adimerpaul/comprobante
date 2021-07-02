@@ -64,8 +64,12 @@ class ItemController extends Controller
      * @param  \App\Models\Item  $item
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Item $item)
+    public function destroy($id)
     {
         //
+        $item=Item::find($id);
+        $item->delete();
+        return response()->json(['res'=>'Borrado exitoso'],200);
+
     }
 }

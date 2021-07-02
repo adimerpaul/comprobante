@@ -37,6 +37,10 @@ class UnidController extends Controller
     public function store(Request $request)
     {
         //
+        $input=$request->all();
+        //        $input['imagen']=$ruta;
+        $unid=Unid::create($input);
+        return $unid;
     }
 
     /**
@@ -71,6 +75,8 @@ class UnidController extends Controller
     public function update(Request $request, Unid $unid)
     {
         //
+        $unid->update($request->all());
+        return $unid;
     }
 
     /**
@@ -79,8 +85,10 @@ class UnidController extends Controller
      * @param  \App\Models\Unid  $unid
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Unid $unid)
+    public function destroy($id)
     {
-        //
+        $unid=Unid::find($id);
+        $unid->delete();
+        return response()->json(['res'=>'Borrado exitoso'],200);
     }
 }

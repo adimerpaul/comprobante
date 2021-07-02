@@ -93,6 +93,25 @@
 
         <q-item
           clickable
+          to="/unid"
+          exact
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="meeting_room" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Unidades</q-item-label>
+            <q-item-label caption>
+              Lista de Unidades
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
           to="/secure"
           exact
         >

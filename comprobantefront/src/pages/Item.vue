@@ -51,7 +51,11 @@
       </q-card>
     </q-dialog>
 
-    <q-table title="ITEMS" :data="data" :columns="columns" row-key="name">
+    <q-table title="ITEMS" :data="data" :columns="columns" 
+    hide-header
+    :filter="filter"
+    :grid="$q.screen.xs"
+    row-key="name">
       <template v-slot:body-cell-opcion="props">
         <q-td :props="props">
           <q-btn
@@ -87,6 +91,13 @@
             icon="delete"
           ></q-btn>
         </q-td>
+      </template>
+      <template v-slot:top-right>
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
       </template>
     </q-table>
 
@@ -207,12 +218,14 @@ export default {
       dialog_add: false,
       dialog_del: false,
       dialog_list: false,
+      filter:'',
       dato: {},
       dato2: {},
       options: [],
       props: [],
       unidades:[],
       uni:{},
+      
       columns: [
         {
           name: "codigo",
@@ -374,6 +387,8 @@ export default {
       this.dato.nombre = null;
       this.dato.codigo = null;
     },
-  },
-};
-</script>
+    
+  }
+}
+
+  </script>
