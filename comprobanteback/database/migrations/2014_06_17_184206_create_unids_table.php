@@ -16,6 +16,8 @@ class CreateUnidsTable extends Migration
         Schema::create('unids', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
+            $table->integer('inicio');
+            $table->integer('fin');
             $table->timestamps();
         });
     }

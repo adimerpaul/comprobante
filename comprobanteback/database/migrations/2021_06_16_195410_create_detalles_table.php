@@ -19,7 +19,10 @@ class CreateDetallesTable extends Migration
             $table->string('nombreitem')->default('');
             $table->string('codsubitem')->default('');
             $table->string('nombresubitem')->default('');
-            $table->string('subtotal')->default('');
+            $table->string('detalle')->default('');
+            $table->double('precio',11,2)->default(0);
+            $table->integer('cantidad')->default(0);
+            $table->double('subtotal',11,2)->default(0);
             $table->unsignedBigInteger('comprobante_id');
             $table->foreign('comprobante_id')->references('id')->on('comprobantes');
             $table->timestamps();

@@ -21,7 +21,10 @@ class DetalleSeeder extends Seeder
                 'codsubitem'=>'1220007',
                 'nombresubitem'=>'VENTA Y REPOSICION DE FORMULARIOS',
                 'subtotal'=>'2',
+                'detalle'=>'Por la compra de 6 carroseles color blando con azul',
                 'comprobante_id'=>'1',
+                'precio'=>1,
+                'cantidad'=>1,
             ],
             [
                 'coditem'=>'1510015',
@@ -29,7 +32,10 @@ class DetalleSeeder extends Seeder
                 'codsubitem'=>'1510015',
                 'nombresubitem'=>'VENTA Y REPOSICION DE FORMULARIOS',
                 'subtotal'=>'2',
+                'detalle'=>'Por la compra de 6 carroseles color blando con azul',
                 'comprobante_id'=>'1',
+                'precio'=>1,
+                'cantidad'=>1,
             ],
 
         ]);

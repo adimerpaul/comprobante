@@ -113,29 +113,46 @@
             <q-input outlined label="Subtotal" v-model="subtotal"/>
           </div>
           <div class="col-4">
-            <q-btn color="positive" @click="cantidad++" label="Agregar"  class="full-width full-height" text-color="white" />
+            <q-btn color="positive" @click="agregar" label="Agregar"  class="full-width full-height" text-color="white" />
           </div>
         </div>
       </div>
       <div class="col-12">
+        <q-btn label="Reset" icon="delete" color="negative" @click="reset" class="q-mb-xs"></q-btn>
         <q-table
-          title="Pagos"
           dense
-
+          :columns="columns"
+          :data="data"
+          row-key="nombre"
         >
         </q-table>
       </div>
     </div>
   </q-page>
 </template>
-
 <script>
 
 export default {
   data () {
     return {
       columns:[
-        
+        {name:'codigo',label:'Codigo', align:'left',field:'codigo',sortable:true},
+        {name:'nombre',label:'Referencia', align:'left',field:'nombre',sortable:true},
+        {name:'precio',label:'Precio', align:'left',field:'precio',    format: val => `${val} Bs`,sortable:true},
+        {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad',sortable:true},
+        {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
+      ],
+      data:[
+        {
+          coditem:1,
+          nombreitem:'VENTA Y REPOSICIÓN                              ',
+          codsubitem:1,
+          nombresubitem:'VENTA Y REPOSICIÓN                              ',
+          nombre:'VENTA Y REPOSICIÓN                              ',
+          precio:2,
+          cantidad:1,
+          subtotal:2
+        }
       ],
       nrotramite: '',
       nrocomprobante:'',
@@ -160,7 +177,7 @@ export default {
       this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
     })
     this.$axios.get(process.env.URL+'/item').then(res=>{
-      console.log(res.data);
+      // console.log(res.data);
       this.items=[];
       res.data.forEach(r=>{
         this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo})
@@ -169,6 +186,43 @@ export default {
     })
   },
   methods: {
+    reset(){
+      this.data=[
+        {
+          id:1,
+          codigo:'122000001',
+          nombre:'VENTA Y REPOSICION DE FORMULARIO                                                                      ',
+          precio:2,
+          cantidad:1,
+          subtotal:2
+        }
+      ]
+    },
+    agregar(){
+      if (this.subitem==''){
+        this.$q.dialog({
+          dark: true,
+          title: 'Error',
+          message: 'Debes selecionar subitem',
+          icon:'error'
+        }).onOk(() => {
+          // console.log('OK')
+        }).onCancel(() => {
+          // console.log('Cancel')
+        }).onDismiss(() => {
+          // console.log('I am triggered on both OK and Cancel')
+        })
+        return false;
+      }
+      this.data.push( {
+        id:this.subitem.submit.id,
+        codigo:'122000001',
+        nombre:'VENTA Y REPOSICION DE FORMULARIO                                                                      ',
+        precio:2,
+        cantidad:1,
+        subtotal:2
+      })
+    },
     colocarprecio(val){
       // console.log(this.subitem)
       this.precio=this.subitem.monto;
@@ -177,10 +231,11 @@ export default {
       // console.log('a');
       // console.log(this.item);
       this.subitems=[];
+      this.subitem='';
       this.$axios.get(process.env.URL+'/subitem/'+this.item.id).then(res=>{
         // console.log(res.data);
         res.data.forEach(r=>{
-          this.subitems.push({id:r.id,nombre:r.nombre+' '+r.monto+'Bs',monto:r.monto})
+          this.subitems.push({id:r.id,nombre:r.nombre+' '+r.monto+'Bs',monto:r.monto,codigo:r.codigo})
         });
       })
     },

@@ -29,6 +29,7 @@ class ItemSeeder extends Seeder
 //                'monto'=>"25",
 //                'unid_id'=>"2",
 //            ],
+['codigo'=>'1210000','nombre'=>'VENTA Y REPOSICIÓN                              '],
 ['codigo'=>'1210001','nombre'=>'VENTA DE TERRENOS BALDIOS                              '],
 ['codigo'=>'1210002','nombre'=>'VENTA DE TERRENOS CEMENTERIO                           '],
 ['codigo'=>'1210003','nombre'=>'VENTA DE OTROS BIENES                                  '],
