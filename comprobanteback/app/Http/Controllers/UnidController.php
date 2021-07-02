@@ -15,6 +15,7 @@ class UnidController extends Controller
     public function index()
     {
         //
+        return Unid::all();
     }
 
     /**

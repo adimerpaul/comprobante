@@ -11,6 +11,7 @@ class Item extends Model
     protected $fillable=[
         'codigo',
         'nombre',
+        'unid_id'
     ];
     protected $hidden = [
         'created_at',

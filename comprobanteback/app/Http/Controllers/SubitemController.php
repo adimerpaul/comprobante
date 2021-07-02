@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Item;
 use App\Models\Subitem;
 use Illuminate\Http\Request;
+use Illuminate\Http\DB;
+
 
 class SubitemController extends Controller
 {
@@ -85,5 +87,9 @@ class SubitemController extends Controller
     public function destroy(Subitem $subitem)
     {
         //
+    }
+
+    public function listasubitem($id){
+        return Subitem::where('item_id',$id)->get();
     }
 }

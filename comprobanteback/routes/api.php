@@ -30,5 +30,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::apiResource('/comprobante',\App\Http\Controllers\ComprobanteController::class);
     Route::apiResource('/cliente',\App\Http\Controllers\ClienteController::class);
     Route::apiResource('/subitem',\App\Http\Controllers\SubitemController::class);
+    Route::apiResource('/unid',\App\Http\Controllers\UnidController::class);
     Route::get('/lista/{ci}',[\App\Http\Controllers\ClienteController::class,'listacliente']);
+    Route::get('/subitemlist/{id}',[\App\Http\Controllers\SubitemController::class,'listasubitem']);
 });

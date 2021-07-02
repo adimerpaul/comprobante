@@ -17,7 +17,7 @@
             <q-input
               filled
               v-model="dato.codigo"
-              type="text"
+              type="number"
               label="Numero codigo"
               hint="Ingresar codigo"
               lazy-rules
@@ -32,6 +32,14 @@
               hint="Ingresar Nombre item"
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
+            />
+            <q-select
+            v-model="uni"
+            :options="unidades"
+            label="unidad"
+            hint="Seleccionar"
+            lazy-rules
+              :rules="[(val) => val!='' && val!=null || 'Por favor ingresa datos']"
             />
 
             <div>
@@ -52,7 +60,15 @@
             flat
             color="green"
             @click="addRow(props)"
-            icon="segment"
+            icon="playlist_add"
+          ></q-btn>
+            <q-btn
+            dense
+            round
+            flat
+            color="green"
+            @click="verRow(props)"
+            icon="list"
           ></q-btn>
         <q-btn
             dense
@@ -146,6 +162,25 @@
       </q-card>
     </q-dialog>
 
+    <q-dialog v-model="dialog_list">
+      <q-card style="max-width: 80%; width: 50%">
+        <q-card-section class="bg-green-14 text-white">
+          <div class="text-h6">Lista de Subitem</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+                <q-table
+                    title="Subitems"
+                    :data="subitem"
+                    :columns="subcol"
+                    row-key="codigo"
+                    />
+            <div>
+              <q-btn label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
 
     <q-dialog v-model="dialog_del">
       <q-card>
@@ -171,10 +206,13 @@ export default {
       dialog_mod: false,
       dialog_add: false,
       dialog_del: false,
+      dialog_list: false,
       dato: {},
       dato2: {},
       options: [],
       props: [],
+      unidades:[],
+      uni:{},
       columns: [
         {
           name: "codigo",
@@ -187,7 +225,7 @@ export default {
         },
         {
           name: "nombre",
-          align: "center",
+          align: "left",
           label: "nombre",
           field: "nombre",
           sortable: true,
@@ -195,10 +233,37 @@ export default {
 
         { name: "opcion", label: "Opcion", field: "action", sortable: false },
       ],
+     subcol: [
+        {
+          name: "codigo",
+          required: true,
+          label: "codigo",
+          align: "left",
+          field: (row) => row.codigo,
+          // format: val => `${val}`,
+          sortable: true,
+        },
+        {
+          name: "nombre",
+          align: "left",
+          label: "nombre",
+          field: "nombre",
+          sortable: true,
+        },
+        {
+          name: "monto",
+          align: "left",
+          label: "monto",
+          field: "monto",
+          sortable: true,
+        },
+      ],
       data: [],
+      subitem: [],
     };
   },
   created() {
+    this.unid();
     this.misdatos();
   },
   methods: {
@@ -210,10 +275,32 @@ export default {
         this.$q.loading.hide();
       });
     },
+    unid(){
+        this.unidades=[];
+        this.$axios.get(process.env.URL + "/unid").then((res) => {
+        console.log(res.data)
+        res.data.forEach(und => {
+            this.unidades.push({label:und.nombre,value:und.id});
+        });
+
+      });
+      this.uni=this.unidades[0];
+    },
 
     addRow(item) {
       this.dato2 = item.row;
       this.dialog_add = true;
+    },
+
+    verRow(item) {
+      this.dato2 = item.row;
+      this.$axios
+        .get(process.env.URL + "/subitemlist/"+this.dato2.id)
+        .then((res) => {
+            this.subitem=res.data;
+          });
+      this.dialog_list = true;
+
     },
     editRow(item) {
       this.dato2 = item.row;
@@ -226,6 +313,7 @@ export default {
 
     onSubmit() {
       this.$q.loading.show();
+      this.dato.unid_id=this.uni.value;
       this.$axios.post(process.env.URL + "/item", this.dato).then((res) => {
         this.$q.notify({
           color: "green-4",
@@ -263,10 +351,11 @@ export default {
             icon: "cloud_done",
             message: "Agregado subitem correctamente",
           });
-          this.dialog_mod = false;
+          this.dialog_add = false;
           this.misdatos();
         });
     },
+
     onDel() {
       this.$q.loading.show();
       this.$axios.delete(process.env.URL + "/item/" + this.dato2.id).then((res) => {

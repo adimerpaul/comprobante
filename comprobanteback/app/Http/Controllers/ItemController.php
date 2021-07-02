@@ -15,7 +15,7 @@ class ItemController extends Controller
     public function index(Request $request)
     {
 //        return ;
-        return Item::where('unid_id',$request->user()->unid_id)->orderBy('nombre')->get();
+        return Item::all();
     }
 
     /**
