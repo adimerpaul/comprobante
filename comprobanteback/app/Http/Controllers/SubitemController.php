@@ -26,7 +26,30 @@ class SubitemController extends Controller
      */
     public function store(Request $request)
     {
-        return "aa";
+        $item=Item::find($request->id);
+        if(($item->count())>0)
+        {
+            $num=trim(Subitem::where('item_id',$item->id)->max('codigo'));
+        
+            $num1=strlen(trim($item->codigo));
+            $num2=intval(substr($num,$num1) + 1);
+            //$num2= intval(substr($num,strlen($num)-2) + 1) ;
+            //echo $num2; 
+            //exit;
+        }
+        else $num2=1;
+        if($num2<10)
+            $subcodigo=strtoupper($request->codigo.'0'.$num2);
+        else
+            $subcodigo=strtoupper($request->codigo.$num2);
+
+        $subitem=new Subitem();
+        $subitem->codigo=$subcodigo;
+        $subitem->nombre=$request->subnombre;
+        $subitem->monto=$request->submonto;
+        $subitem->unid_id=$request->unid_id;
+        $subitem->item_id=$request->id;
+        $subitem->save();
     }
 
     /**

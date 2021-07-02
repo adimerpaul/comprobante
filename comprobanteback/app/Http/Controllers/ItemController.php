@@ -27,6 +27,10 @@ class ItemController extends Controller
     public function store(Request $request)
     {
         //
+        $input=$request->all();
+        //        $input['imagen']=$ruta;
+        $item=Item::create($input);
+        return $item;
     }
 
     /**
@@ -50,6 +54,8 @@ class ItemController extends Controller
     public function update(Request $request, Item $item)
     {
         //
+        $item->update($request->all());
+        return $item;
     }
 
     /**

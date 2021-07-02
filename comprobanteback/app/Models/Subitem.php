@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Subitem extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'codigo',
+        'nombre',
+        'monto',
+        'item_id',
+        'unid_id',
+    ];
+    protected $hidden = [
+        'created_at',
+        'updated_at',
+    ];
 }
