@@ -2,9 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Comprobante;
+use App\Models\Detalle;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use Luecano\NumeroALetras\NumeroALetras;
 
 class ComprobanteController extends Controller
 {
@@ -13,9 +16,9 @@ class ComprobanteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index()
+    public function index(Request $request)
     {
-        //
+        return Comprobante::with('cliente')->where('unid_id',$request->user()->unid_id)->get();
     }
 
     /**
@@ -26,7 +29,78 @@ class ComprobanteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//        return $request;
+        if (Cliente::where('ci',$request->ci)->get()->count()==0 && $request->ci!=''){
+            $cliente=Cliente::create([
+                'paterno'=>$request->paterno,
+                'ci'=>$request->ci,
+                'materno'=>$request->materno,
+                'nombre'=>$request->nombre,
+                'padron'=>$request->padron,
+                'expedido'=>$request->expedido,
+                'direccion'=>$request->direccion,
+                'numcasa'=>$request->numcasa,
+            ]);
+//            return $cliente;
+        }else{
+            $cliente=Cliente::where('ci',$request->ci)->firstOrFail();
+            $cliente->nombre=$request->nombre;
+            $cliente->paterno=$request->paterno;
+            $cliente->materno=$request->materno;
+            $cliente->padron=$request->padron;
+            $cliente->expedido=$request->expedido;
+            $cliente->direccion=$request->direccion;
+            $cliente->numcasa=$request->numcasa;
+            $cliente->save();
+        }
+//        return $cliente;
+        $formatter = new NumeroALetras();
+        $literal= $formatter->toWords($request->total);
+        $comprobante=Comprobante::create([
+            'nrotramite'=>$request->nrotramite,
+//            'nrocomprobante'=>'139044',
+            'fecha'=>date('Y-m-d'),
+            'tipo'=>'VARIOS',
+            'codigo'=>'',
+            'valorcatastral'=>'',
+            'mtsfrte'=>'',
+            'placa'=>'',
+            'marca'=>'',
+            'modelo'=>'',
+            'padron'=>'',
+            'capital'=>'',
+            'varios'=>'PMC '.$cliente->padron,
+            'tipopago'=>'FECTIVO',
+            'banco'=>'',
+            'banconro'=>'',
+            'intere'=>'',
+            'multa'=>'',
+            'otros'=>'',
+            'formulario'=>'',
+            'total'=>$request->total,
+            'literal'=>$literal,
+            'controlinterno'=>'',
+            'estado'=>'CREADO',
+            'cajero'=>$request->user()->name,
+            'user_id'=>$request->user()->id,
+            'cliente_id'=>$cliente->id,
+            'unid_id'=>$request->user()->unid_id,
+        ]);
+//        return $comprobante;
+        foreach ($request->data as $row){
+//            echo $row['subtotal'].' -';
+            Detalle::create([
+                'coditem'=>$row['coditem'],
+                'nombreitem'=>$row['nombreitem'],
+                'codsubitem'=>$row['codsubitem'],
+                'nombresubitem'=>$row['nombresubitem'],
+                'detalle'=>$row['detalle'],
+                'precio'=>$row['precio'],
+                'cantidad'=>$row['cantidad'],
+                'subtotal'=>$row['subtotal'],
+                'comprobante_id'=>$comprobante->id,
+            ]);
+        }
     }
 
     /**

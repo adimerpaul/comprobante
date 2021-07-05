@@ -124,7 +124,25 @@
           <q-item-section>
             <q-item-label>Comprobantes</q-item-label>
             <q-item-label caption>
-              Actividades economicas
+              Crear comprobante
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          to="/pago"
+          exact
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="article" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Pagos Comprobantes</q-item-label>
+            <q-item-label caption>
+              Pagos de comprobante
             </q-item-label>
           </q-item-section>
         </q-item>

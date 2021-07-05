@@ -18,7 +18,7 @@ class ComprobanteSeeder extends Seeder
         DB::table('comprobantes')->insert([
             [
                 'nrotramite'=>'ADM00001',
-                'nrocomrobante'=>'139044',
+                'nrocomprobante'=>'139044',
                 'fecha'=>'2021-05-26',
 //                'paterno'=>'TERRAZAS',
 //                'materno'=>'IRIARTE',

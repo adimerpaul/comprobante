@@ -8,4 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Detalle extends Model
 {
     use HasFactory;
+    protected $fillable=[
+        'coditem',
+        'nombreitem',
+        'codsubitem',
+        'nombresubitem',
+        'detalle',
+        'precio',
+        'cantidad',
+        'subtotal',
+        'comprobante_id',
+    ];
 }

@@ -5,7 +5,7 @@
         <q-form
         >
           <div class="row">
-            <div class="col-6">
+            <div class="col-12">
               <q-input label="No Tramite:"
                        outlined
                        v-model="nrotramite"
@@ -15,20 +15,20 @@
                          ]"
               />
             </div>
-            <div class="col-6">
-              <q-input label="No Comprobante:"
-                       outlined
-                       type="number"
-                       v-model="nrocomprobante"
-                       lazy-rules
-                       :rules="[
-                         val => val && val.length > 0 || 'Porfavor llenar este campo',
-                         val => val >= $store.state.user.unid.inicio && val <= $store.state.user.unid.fin || 'Tiene que estar en el rango de formularios '
+<!--            <div class="col-6">-->
+<!--              <q-input label="No Comprobante:"-->
+<!--                       outlined-->
+<!--                       type="number"-->
+<!--                       v-model="nrocomprobante"-->
+<!--                       lazy-rules-->
+<!--                       :rules="[-->
+<!--                         val => val && val.length > 0 || 'Porfavor llenar este campo',-->
+<!--                         val => val >= $store.state.user.unid.inicio && val <= $store.state.user.unid.fin || 'Tiene que estar en el rango de formularios '-->
 
-                         ]"
-              />
-            </div>
-            <div class="col-6">
+<!--                         ]"-->
+<!--              />-->
+<!--            </div>-->
+            <div class="col-4">
               <q-input label="CI NIT RUC:"
                        outlined
                        v-model="ci"
@@ -38,7 +38,7 @@
               />
               <i v-if="spinner" class="fa fa-spinner"></i>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <q-input
                 outlined
                 label="Paterno o razon"
@@ -47,7 +47,7 @@
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <q-input
                 outlined
                 label="Materno"
@@ -56,7 +56,7 @@
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <q-input
                 outlined
                 label="Nombres"
@@ -65,11 +65,39 @@
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <q-input
                 outlined
                 label="Padron"
                 v-model="padron"
+                lazy-rules
+                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+              />
+            </div>
+            <div class="col-4">
+              <q-input
+                outlined
+                label="Expedido"
+                v-model="expedido"
+                lazy-rules
+                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+              />
+            </div>
+            <div class="col-4">
+              <q-input
+                outlined
+                label="Direccion"
+                v-model="direccion"
+                lazy-rules
+                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+              />
+            </div>
+
+            <div class="col-4">
+              <q-input
+                outlined
+                label="Numero casa"
+                v-model="numcasa"
                 lazy-rules
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
@@ -133,6 +161,8 @@
           row-key="nombre"
         >
         </q-table>
+        <div class="bg-info q-ma-xs text-center text-red-7 text-h5 text-weight-bold">Total: {{total}} Bs </div>
+        <q-btn @click="crear" icon="add_circle" label="Crear comprobante" color="primary" class="full-width"></q-btn>
       </div>
     </div>
   </q-page>
@@ -169,6 +199,9 @@ export default {
       materno:'',
       nombre:'',
       padron:'',
+      expedido:'',
+      direccion:'',
+      numcasa:'',
       item:'',
       subitem:'',
       subitems:[],
@@ -179,10 +212,7 @@ export default {
     }
   },
   created() {
-    this.$axios.get(process.env.URL+'/comprobante/1').then(res=>{
-      // console.log(res.data);
-      this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
-    })
+    this.numcomprobante()
     this.$axios.get(process.env.URL+'/item').then(res=>{
       // console.log(res.data);
       this.items=[];
@@ -193,7 +223,63 @@ export default {
     })
   },
   methods: {
+    numcomprobante(){
+      this.$axios.get(process.env.URL+'/comprobante/1').then(res=>{
+        // console.log(res.data);
+        this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
+      })
+    },
+    crear(){
+      this.$q.dialog({
+        message:'Seguro de crear?',
+        title:'Confirmar?',
+        cancel:true,
+      }).onOk(()=>{
+        // console.log('ok')
+        this.$q.loading.show()
+        this.$axios.post(process.env.URL+'/comprobante',{
+          nrotramite:this.nrotramite,
+          padron:this.padron,
+          total:this.total,
+          ci:this.ci,
+          paterno:this.paterno,
+          materno:this.materno,
+          nombre:this.nombre,
+          expedido:this.expedido,
+          direccion:this.direccion,
+          numcasa:this.numcasa,
+          data:this.data,
+        }).then(()=>{
+          // console.log(res.data)
+          this.numcomprobante();
+          this.$q.loading.hide();
+          this.mireset();
+          this.ci='';
+          this.paterno='';
+          this.materno='';
+          this.nombre='';
+          this.padron='';
+          this.expedido='';
+          this.direccion='';
+          this.numcasa='';
+          this.$q.dialog({
+            title:'Correctamente ',
+            message:'Creado!!!'
+          });
+        }).catch(err=>{
+          console.log(err.toString());
+          this.$q.dialog({
+            title:'Error ',
+            message:err.toString()
+          });
+        })
+      })
+
+    },
     reset(){
+      this.mireset();
+    },
+    mireset(){
       this.data=[
         {
           coditem:'1210000',
@@ -257,6 +343,9 @@ export default {
       this.nombre=''
       this.paterno=''
       this.padron=''
+      this.expedido=''
+      this.direccion=''
+      this.numcasa=''
       this.spinner=true
       this.$axios.get(process.env.URL+'/cliente/'+this.ci).then(res=>{
         // console.log(res.data);
@@ -266,6 +355,9 @@ export default {
           this.materno=res.data[0].materno
           this.nombre=res.data[0].nombre
           this.padron=res.data[0].padron
+          this.expedido=res.data[0].expedido
+          this.direccion=res.data[0].direccion
+          this.numcasa=res.data[0].numcasa
           this.spinner=false;
         }
       })
@@ -294,6 +386,13 @@ export default {
   computed:{
     subtotal(){
       return this.precio*this.cantidad
+    },
+    total(){
+      let total=0
+      this.data.forEach(r=>{
+        total+=r.subtotal;
+      })
+      return total
     }
   }
 }

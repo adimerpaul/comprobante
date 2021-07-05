@@ -14,6 +14,7 @@ class Cliente extends Model
         'paterno',
         'materno',
         'nombre',
+        'padron',
         'casada',
         'direccion',
         'numcasa',
