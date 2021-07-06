@@ -18,6 +18,8 @@ class CreateComprobantesTable extends Migration
             $table->string('nrotramite')->default('')->nullable();
             $table->string('nrocomprobante')->default('')->nullable();
             $table->date('fecha')->nullable();
+            $table->date('fechalimite')->nullable();
+            $table->date('fechapago')->nullable();
             $table->string('tipo')->default('')->nullable();
             $table->string('codigo')->default('')->nullable();
             $table->string('valorcatastral')->default('')->nullable();

@@ -18,7 +18,7 @@ class ComprobanteController extends Controller
      */
     public function index(Request $request)
     {
-        return Comprobante::with('cliente')->where('unid_id',$request->user()->unid_id)->get();
+        return Comprobante::with('cliente')->with('detalles')->where('unid_id',$request->user()->unid_id)->where('estado','CREADO')->get();
     }
 
     /**
@@ -60,6 +60,7 @@ class ComprobanteController extends Controller
             'nrotramite'=>$request->nrotramite,
 //            'nrocomprobante'=>'139044',
             'fecha'=>date('Y-m-d'),
+            'fechalimite'=>date("Y-m-d",strtotime(now()."+ 7 days")),
             'tipo'=>'VARIOS',
             'codigo'=>'',
             'valorcatastral'=>'',
@@ -67,10 +68,10 @@ class ComprobanteController extends Controller
             'placa'=>'',
             'marca'=>'',
             'modelo'=>'',
-            'padron'=>'',
+            'padron'=>$cliente->padron,
             'capital'=>'',
             'varios'=>'PMC '.$cliente->padron,
-            'tipopago'=>'FECTIVO',
+            'tipopago'=>'EFECTIVO',
             'banco'=>'',
             'banconro'=>'',
             'intere'=>'',
@@ -81,7 +82,7 @@ class ComprobanteController extends Controller
             'literal'=>$literal,
             'controlinterno'=>'',
             'estado'=>'CREADO',
-            'cajero'=>$request->user()->name,
+            'cajero'=>'',
             'user_id'=>$request->user()->id,
             'cliente_id'=>$cliente->id,
             'unid_id'=>$request->user()->unid_id,
@@ -123,7 +124,15 @@ class ComprobanteController extends Controller
      */
     public function update(Request $request, Comprobante $comprobante)
     {
-        //
+        $comprobante->update([
+            'fechapago'=>date('Y-m-d'),
+            'cajero'=>$request->user()->name,
+            'estado'=>'CANCELADO',
+            'nrocomprobante'=>$request->nrocomprobante,
+            'controlinterno'=>$request->nrocomprobante.date('d/m/Y'),
+        ]);
+//        echo $comprobante;
+        return Comprobante::with('cliente')->where('id',$comprobante->id)->with('detalles')->get();
     }
 
     /**

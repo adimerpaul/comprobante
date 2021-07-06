@@ -41,6 +41,15 @@
             <div class="col-4">
               <q-input
                 outlined
+                label="Expedido"
+                v-model="expedido"
+                lazy-rules
+                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
+              />
+            </div>
+            <div class="col-4">
+              <q-input
+                outlined
                 label="Paterno o razon"
                 v-model="paterno"
                 lazy-rules
@@ -74,16 +83,8 @@
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
-            <div class="col-4">
-              <q-input
-                outlined
-                label="Expedido"
-                v-model="expedido"
-                lazy-rules
-                :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
-              />
-            </div>
-            <div class="col-4">
+
+            <div class="col-8">
               <q-input
                 outlined
                 label="Direccion"
@@ -230,6 +231,12 @@ export default {
       })
     },
     crear(){
+      if (this.ci==''){
+        this.$q.dialog({
+          title:'Falta colocar carnet de identidad'
+        })
+        return false
+      }
       this.$q.dialog({
         message:'Seguro de crear?',
         title:'Confirmar?',
@@ -253,7 +260,7 @@ export default {
           // console.log(res.data)
           this.numcomprobante();
           this.$q.loading.hide();
-          this.mireset();
+          // this.mireset();
           this.ci='';
           this.paterno='';
           this.materno='';

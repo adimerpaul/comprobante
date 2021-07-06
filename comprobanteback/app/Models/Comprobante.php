@@ -12,6 +12,8 @@ class Comprobante extends Model
         'nrotramite',
         'nrocomprobante',
         'fecha',
+        'fechapago',
+        'fechalimite',
         'tipo',
         'codigo',
         'valorcatastral',
@@ -39,5 +41,8 @@ class Comprobante extends Model
     ];
     public function cliente(){
         return $this->belongsTo(Cliente::class);
+    }
+    public function detalles(){
+        return $this->hasMany(Detalle::class);
     }
 }

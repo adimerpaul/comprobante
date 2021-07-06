@@ -1,95 +1,75 @@
 <template>
-  <q-page class="q-pt-md q-pl-lg">
+  <q-page class="q-pa-md">
     <div class="row">
       <div class="col-12 col-sm-6">
-        <q-input
-          type="text"
-          v-model="dato.ci"
-          @keydown.enter.prevent="llenar"
-          :error="!valido"
-          label="Contribuyente"
-        />
-        <template v-if="valor">
-          <q-form @submit.prevent="onSubmit" class="q-gutter-md">
-            <q-select
-              v-model="dato.expedido"
-              :options="['LP', 'OR', 'CH', 'CB', 'PT', 'TJ', 'SC', 'BE', 'PD']"
-              label="Expedido"
-            />
-
-            <q-input
-              Filled
-              type="text"
-              v-model="dato.nombre"
-              label="Nombre"
-              hint="Ingresar Nombre"
-              lazy-rules
-              :rules="[(val) => val.length > 0 || 'Ingrese nombre']"
-            />
-
-            <q-input
-              Filled
-              type="text"
-              v-model="dato.paterno"
-              label="Paterno"
-              hint="Ingresar apellido"
-            />
-
-            <q-input
-              Filled
-              type="text"
-              v-model="dato.materno"
-              label="Materno"
-              hint="Ingresar materno"
-            />
-
-            <q-input
-              Filled
-              type="text"
-              v-model="dato.casada"
-              label="Ap Casada"
-              hint="Ingresar Ap Casada"
-            />
-
-            <q-input
-              Filled
-              type="text"
-              v-model="dato.direccion"
-              label="Direccion"
-              hint="ingresa la direccion"
-              lazy-rules
-              :rules="[(val) => val.length > 0 || 'Debe ingresar direccion']"
-            />
-
-            <q-input
-              Filled
-              type="text"
-              v-model="dato.numcasa"
-              label="Numero Casa"
-              hint="Numero del domicilio"
-              lazy-rules
-              :rules="[(val) => val.length > 0 || 'Debe ingresar numero']"
-            />
-
-            <q-input
-              Filled
-              type="text"
-              v-model="dato.telefono"
-              label="Telefono"
-              hint="Ingrese numero telefonico"
-            />
-            <div>
-              <q-btn
-                label="Crear Modificar"
-                type="submit"
-                color="positive"
-                icon="add_circle"
-              />
-            </div>
-          </q-form>
-        </template>
+        <q-select
+          outlined
+          filled
+          v-model="model"
+          use-input
+          input-debounce="0"
+          label="Selecionar comprobante"
+          :options="options"
+          @filter="filterFn"
+        >
+          <template v-slot:no-option>
+            <q-item>
+              <q-item-section class="text-grey">
+                No results
+              </q-item-section>
+            </q-item>
+          </template>
+        </q-select>
       </div>
-      <div class="col-12 col-sm-6"></div>
+      <div class="col-12 col-sm-6">
+        <q-input
+        outlined
+        label="Nro Comprobante"
+        v-model="nrocomprobante"
+        type="number"
+        />
+      </div>
+      <div class="col-12 col-sm-3">
+        <q-input
+          outlined
+          label="Nombre completo"
+          v-model="model.nombrecompleto"
+        />
+      </div>
+      <div class="col-12 col-sm-3">
+        <q-input
+          outlined
+          label="Padron"
+          v-model="model.padron"
+        />
+      </div>
+      <div class="col-12 col-sm-3">
+        <q-input
+          outlined
+          label="Carnet de identidad"
+          v-model="model.ci"
+        />
+      </div>
+      <div class="col-12 col-sm-3">
+        <q-input
+          label-color="white"
+          color="white"
+          bg-color="red-5"
+          outlined
+          label="TOTAL"
+          v-model="model.total"
+        />
+      </div>
+      <div class="col-12">
+        <q-table
+        title="Detalle"
+        dense
+        :columns="columns"
+        :data="model.detalles"
+        />
+        <q-btn @click="cancelar" icon="add_circle" label="Cancelar comprobante" color="positive" class="full-width"></q-btn>
+
+      </div>
     </div>
   </q-page>
 </template>
@@ -98,81 +78,122 @@
 //const stringOptions = [
 //'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
 //]
+import { jsPDF } from "jspdf";
 
 export default {
   data() {
     return {
-      model: null,
-      options: [],
-      cadena: [],
-      dato: [],
-      valido: false,
-      aux: "",
-      valor: false,
+      model:'',
+      options: [
+        // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
+      ],
+      nrocomprobante:'',
+      columns:[
+        {name:'codsubitem',label:'Codigo', align:'left',field:'codsubitem',sortable:true},
+        {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
+        {name:'precio',label:'Precio', align:'left',field:'precio',    format: val => `${val} Bs`,sortable:true},
+        {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad',sortable:true},
+        {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
+      ],
+      comprobantes:[]
     };
   },
   created() {
-    this.$axios.get(process.env.URL+'/comprobante').then(res=>{
-      console.log(res.data);
-    })
+    this.miscomprobante()
   },
   methods: {
-    onSubmit() {
-      console.log(this.dato);
-      this.$q.loading.show();
-      if (this.dato.paterno == null) this.dato.paterno = "";
-      if (this.dato.materno == null) this.dato.materno = "";
-      if (this.dato.casada == null) this.dato.casada = "";
-      if (this.dato.id == "" || this.dato.id == null) {
-        this.$axios.post(process.env.URL + "/cliente", this.dato).then((res) => {
-          console.log(res.data);
-          this.$q.notify({
-            color: "green-4",
-            textColor: "white",
-            icon: "cloud_done",
-            message: "Creado correctamente",
-          });
-        });
-      } else {
-        this.$axios
-          .put(process.env.URL + "/cliente/" + this.dato.id, this.dato)
-          .then((res) => {
-            console.log(res.data);
-            this.$q.notify({
-              color: "green-4",
-              textColor: "white",
-              icon: "cloud_done",
-              message: "Modificado correctamente",
-            });
-          });
+    miscomprobante(){
+      this.$axios.get(process.env.URL+'/comprobante').then(res=>{
+        this.comprobantes=[]
+        res.data.forEach(r=>{
+          this.comprobantes.push({
+            label:r.padron+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            id:r.id,
+            detalles:r.detalles,
+            nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            padron:r.padron,
+            ci:r.cliente.ci,
+            total:r.total,
+          })
+        })
+      })
+    },
+    cancelar(){
+      if (this.nrocomprobante==''){
+        this.$q.dialog({
+          title:'Falta numero comprobante'
+        })
+        return false;
       }
+      if (this.model==''){
+        this.$q.dialog({
+          title:'Seleccione comprobante'
+        })
+        return false;
+      }
+      this.$q.loading.show()
+      this.$axios.put(process.env.URL+'/comprobante/'+this.model.id,{nrocomprobante:this.nrocomprobante}).then(res=>{
+        // console.log(res.data)
+        this.$q.loading.hide()
+        this.model=''
+        this.$q.dialog({
+          title:'Cobro exitoso'
+        })
+        this.miscomprobante()
+        let dat=res.data[0];
+        var doc = new jsPDF('p','cm','letter')
+        console.log(dat);
+        doc.setFont("courier");
+        doc.setFontSize(11);
+        var x=0,y=0;
+        doc.text(x+9.5, y+6, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
+        doc.text(x+9.5, y+7.5, dat.cliente.direccion.toString());
+        doc.text(x+14, y+7.5, dat.cliente.numcasa.toString());
+        doc.text(x+15.6, y+7.5, dat.cliente.ci.toString()+' '+dat.cliente.expedido.toString());
+        doc.text(x+18, y+7.5, dat.cliente.telefono.toString());
+        doc.text(x+3, y+9, dat.varios.toString());
+        doc.text(x+9.5, y+9, 'OR '+ dat.fechapago.toString());
+        let xx=x+1.2
+        let yy=x+9.7
+        dat.detalles.forEach(r=>{
+          doc.text(xx, yy, r.codsubitem.toString());
+          doc.text(xx+2.5, yy, r.nombreitem.toString());
+          // doc.text(xx, yy, r.codsubitem.toString());
+          doc.text(xx+14.5, yy, r.subtotal.toString());
+          doc.text(xx+2.5, yy+0.5, r.nombresubitem.toString());
+          yy++
+          // console.log(r)
+        })
 
-      this.$q.loading.hide();
+        doc.text(x+15.5, y+18, dat.total.toString()+' Bs');
+        doc.text(x+2, y+16, dat.literal.toString()+' 00/100Bs');
+        doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
+        doc.save("Comprobante.pdf");
+      }).catch(err=>{
+        this.$q.dialog({
+          title:'Error',
+          message:err.toString()
+        })
+        this.$q.loading.hide()
+      })
     },
-    llenar() {
-      this.datoscliente(this.cl);
-      this.valor = true;
-    },
-    datoscliente() {
-      this.cadena = [];
+      filterFn (val, update) {
+        if (val === '') {
+          update(() => {
+            this.options = this.comprobantes
 
-      this.$axios.get(process.env.URL + "/lista/" + this.dato.ci).then((res) => {
-        console.log(res.data);
-        if (res.data.length == 1) {
-          this.valido = true;
-          this.dato = res.data[0];
-        } else {
-          this.valido = false;
-          this.aux = this.dato.ci;
-          this.dato = {};
-          this.dato.ci = this.aux;
+            // with Quasar v1.7.4+
+            // here you have access to "ref" which
+            // is the Vue reference of the QSelect
+          })
+          return
         }
-        res.data.forEach((row) => {
-          this.cadena.push(row.ci);
-        });
-        this.options = this.cadena;
-      });
-    },
+
+        update(() => {
+          const needle = val.toLowerCase()
+          this.options = this.comprobantes.filter(v => v.label.toLowerCase().indexOf(needle) > -1)
+        })
+      }
   },
 };
 </script>
