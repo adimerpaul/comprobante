@@ -11,10 +11,17 @@ class Item extends Model
     protected $fillable=[
         'codigo',
         'nombre',
-        'unid_id'
+        'unid_id',
+        'estado'
     ];
     protected $hidden = [
         'created_at',
         'updated_at',
     ];
+    public function Unid(){
+        return $this->belongsTo(Unid::class);
+    }
+    public function subitems(){
+        return $this->hasMany(Subitem::class);
+    }
 }

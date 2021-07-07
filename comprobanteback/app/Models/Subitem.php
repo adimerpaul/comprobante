@@ -12,6 +12,7 @@ class Subitem extends Model
         'codigo',
         'nombre',
         'monto',
+        'estado',
         'item_id',
         'unid_id',
     ];

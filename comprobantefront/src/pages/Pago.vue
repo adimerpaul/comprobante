@@ -27,6 +27,11 @@
         label="Nro Comprobante"
         v-model="nrocomprobante"
         type="number"
+        lazy-rules
+        :rules="[
+          val=>val && val.length>0||'Porfavor llenar este campo',
+          val => val >= $store.state.user.unid.inicio && val <= $store.state.user.unid.fin || 'Tiene que estar en el rango de '+$store.state.user.unid.inicio+'-'+$store.state.user.unid.fin
+          ]"
         />
       </div>
       <div class="col-12 col-sm-3">
@@ -131,6 +136,14 @@ export default {
         })
         return false;
       }
+      // console.log(      parseInt(this.nrocomprobante)+'---'+this.$store.state.user.unid.fin)
+      if ( parseInt(this.nrocomprobante)< parseInt(this.$store.state.user.unid.inicio) || parseInt(this.nrocomprobante)> parseInt(this.$store.state.user.unid.fin)){
+        this.$q.dialog({
+          title:'Rango de comprobantes no permitidos'
+        })
+        return false;
+      }
+      // return  false;
       this.$q.loading.show()
       this.$axios.put(process.env.URL+'/comprobante/'+this.model.id,{nrocomprobante:this.nrocomprobante}).then(res=>{
         // console.log(res.data)
@@ -144,8 +157,9 @@ export default {
         var doc = new jsPDF('p','cm','letter')
         console.log(dat);
         doc.setFont("courier");
-        doc.setFontSize(11);
+        doc.setFontSize(9);
         var x=0,y=0;
+        doc.text(x+14.5, y+3.7, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+9.5, y+6, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
         doc.text(x+9.5, y+7.5, dat.cliente.direccion.toString());
         doc.text(x+14, y+7.5, dat.cliente.numcasa.toString());
@@ -160,7 +174,7 @@ export default {
           doc.text(xx+2.5, yy, r.nombreitem.toString());
           // doc.text(xx, yy, r.codsubitem.toString());
           doc.text(xx+14.5, yy, r.subtotal.toString());
-          doc.text(xx+2.5, yy+0.5, r.nombresubitem.toString());
+          doc.text(xx+2.5, yy+0.5, r.detalle.toString());
           yy++
           // console.log(r)
         })

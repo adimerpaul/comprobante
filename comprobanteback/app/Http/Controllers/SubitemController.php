@@ -29,14 +29,23 @@ class SubitemController extends Controller
     public function store(Request $request)
     {
         $item=Item::find($request->id);
+//        return $item;
         if(($item->count())>0)
         {
             $num=trim(Subitem::where('item_id',$item->id)->max('codigo'));
-        
-            $num1=strlen(trim($item->codigo));
-            $num2=intval(substr($num,$num1) + 1);
+//            return $num;
+            if ($num==''){
+//                $num1=strlen(trim($item->codigo));
+                $num2=intval(1);
+            }else{
+                $num1=strlen(trim($item->codigo));
+                $num2=intval(substr($num,$num1) + 1);
+            }
+//            return $num;
+
+
             //$num2= intval(substr($num,strlen($num)-2) + 1) ;
-            //echo $num2; 
+            //echo $num2;
             //exit;
         }
         else $num2=1;
@@ -91,5 +100,15 @@ class SubitemController extends Controller
 
     public function listasubitem($id){
         return Subitem::where('item_id',$id)->get();
+    }
+    public function cambiosubitem(Subitem $subitem){
+//        return  $subitem;
+        if ($subitem->estado=='ACTIVO'){
+            $subitem->estado='INCATIVO';
+        }else{
+            $subitem->estado='ACTIVO';
+        }
+        $subitem->save();
+        return 1;
     }
 }

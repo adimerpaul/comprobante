@@ -51,47 +51,123 @@
       </q-card>
     </q-dialog>
 
-    <q-table title="ITEMS" :data="data" :columns="columns" 
-    hide-header
+    <q-table
+      title="Items "
+      :data="data"
+      :columns="columns"
+      :rows-per-page-options="[50,30,50,0 ]"
     :filter="filter"
     :grid="$q.screen.xs"
     row-key="name">
-      <template v-slot:body-cell-opcion="props">
-        <q-td :props="props">
-          <q-btn
-            dense
-            round
-            flat
-            color="green"
-            @click="addRow(props)"
-            icon="playlist_add"
-          ></q-btn>
-            <q-btn
-            dense
-            round
-            flat
-            color="green"
-            @click="verRow(props)"
-            icon="list"
-          ></q-btn>
-        <q-btn
-            dense
-            round
-            flat
-            color="yellow"
-            @click="editRow(props)"
-            icon="edit"
-          ></q-btn>
-          <q-btn
-            dense
-            round
-            flat
-            color="red"
-            @click="deleteRow(props)"
-            icon="delete"
-          ></q-btn>
-        </q-td>
+      <template v-slot:body="props">
+        <q-tr :props="props">
+          <q-td key="codigo" :props="props">
+            {{ props.row.codigo }}
+          </q-td>
+          <q-td key="nombre" :props="props">
+            {{ props.row.nombre }}
+          </q-td>
+          <q-td key="unid" :props="props">
+            {{ props.row.unid.nombre }}
+          </q-td>
+          <q-td key="estado" :props="props">
+            <q-badge @click="cambio(props.row)" v-if="props.row.estado=='ACTIVO'" color="positive">
+              {{ props.row.estado }}
+            </q-badge>
+            <q-badge @click="cambio(props.row)" v-else color="negative">
+              {{ props.row.estado }}
+            </q-badge>
+          </q-td>
+          <q-td key="subitems" :props="props">
+<!--            {{ props.row.subitems}}-->
+            <ul>
+              <span v-for="(subitem,index) in props.row.subitems" :key="index">
+                  <li v-if="index<10">
+                    {{subitem.codigo}} {{subitem.nombre}}
+                    <q-badge @click="cambiosubitem(subitem)"  v-if="subitem.estado=='ACTIVO'" color="positive">
+                      {{ subitem.estado }}
+                    </q-badge>
+                    <q-badge @click="cambiosubitem(subitem)"  v-else color="negative">
+                      {{ subitem.estado }}
+                    </q-badge>
+                  </li>
+              </span>
+
+            </ul>
+
+          </q-td>
+          <q-td key="opcion" :props="props">
+                      <q-btn
+                        dense
+                        round
+                        flat
+                        color="green"
+                        @click="addRow(props)"
+                        icon="playlist_add"
+                      ></q-btn>
+                        <q-btn
+                        dense
+                        round
+                        flat
+                        color="green"
+                        @click="verRow(props)"
+                        icon="list"
+                      ></q-btn>
+                    <q-btn
+                        dense
+                        round
+                        flat
+                        color="yellow"
+                        @click="editRow(props)"
+                        icon="edit"
+                      ></q-btn>
+                      <q-btn
+                        dense
+                        round
+                        flat
+                        color="red"
+                        @click="deleteRow(props)"
+                        icon="delete"
+                      ></q-btn>
+          </q-td>
+        </q-tr>
       </template>
+<!--      <template v-slot:body-cell-opcion="props">-->
+<!--        <q-td :props="props">-->
+<!--          <q-btn-->
+<!--            dense-->
+<!--            round-->
+<!--            flat-->
+<!--            color="green"-->
+<!--            @click="addRow(props)"-->
+<!--            icon="playlist_add"-->
+<!--          ></q-btn>-->
+<!--            <q-btn-->
+<!--            dense-->
+<!--            round-->
+<!--            flat-->
+<!--            color="green"-->
+<!--            @click="verRow(props)"-->
+<!--            icon="list"-->
+<!--          ></q-btn>-->
+<!--        <q-btn-->
+<!--            dense-->
+<!--            round-->
+<!--            flat-->
+<!--            color="yellow"-->
+<!--            @click="editRow(props)"-->
+<!--            icon="edit"-->
+<!--          ></q-btn>-->
+<!--          <q-btn-->
+<!--            dense-->
+<!--            round-->
+<!--            flat-->
+<!--            color="red"-->
+<!--            @click="deleteRow(props)"-->
+<!--            icon="delete"-->
+<!--          ></q-btn>-->
+<!--        </q-td>-->
+<!--      </template>-->
       <template v-slot:top-right>
         <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
           <template v-slot:append>
@@ -225,7 +301,7 @@ export default {
       props: [],
       unidades:[],
       uni:{},
-      
+
       columns: [
         {
           name: "codigo",
@@ -237,14 +313,13 @@ export default {
           sortable: true,
         },
         {
-          name: "nombre",
-          align: "left",
-          label: "nombre",
-          field: "nombre",
-          sortable: true,
+          name: "nombre", align: "left", label: "nombre", field: "nombre", sortable: true,
         },
+        {name: "unid", align: "left", label: "Unidad", field: "unid", sortable: true,},
+        {name: "estado", align: "left", label: "Estado", field: "estado", sortable: true,},
+        {name: "subitems", align: "left", label: "Sub Items", field: "subitems", sortable: true,},
+        { name: 'opcion', label: 'Opcion', field:'action',  sortable: false },
 
-        { name: "opcion", label: "Opcion", field: "action", sortable: false },
       ],
      subcol: [
         {
@@ -280,9 +355,34 @@ export default {
     this.misdatos();
   },
   methods: {
+    cambiosubitem(i){
+      console.log(i);
+      this.$q.loading.show();
+      this.$axios.get(process.env.URL + "/cambiosubitem/"+i.id).then((res) => {
+        // console.log(res.data)
+        if (i.estado=='ACTIVO'){
+          i.estado='INACTIVO'
+        }else{
+          i.estado='ACTIVO'
+        }
+        this.$q.loading.hide();
+      });
+    },
+    cambio(i){
+      this.$q.loading.show();
+      this.$axios.get(process.env.URL + "/cambio/"+i.id).then((res) => {
+        // console.log(res.data)
+        if (i.estado=='ACTIVO'){
+          i.estado='INACTIVO'
+        }else{
+          i.estado='ACTIVO'
+        }
+        this.$q.loading.hide();
+      });
+    },
     misdatos() {
       this.$q.loading.show();
-      this.$axios.get(process.env.URL + "/item").then((res) => {
+      this.$axios.get(process.env.URL + "/item/1").then((res) => {
         // console.log(res.data)
         this.data = res.data;
         this.$q.loading.hide();
@@ -291,7 +391,7 @@ export default {
     unid(){
         this.unidades=[];
         this.$axios.get(process.env.URL + "/unid").then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         res.data.forEach(und => {
             this.unidades.push({label:und.nombre,value:und.id});
         });
@@ -358,6 +458,7 @@ export default {
       this.$axios
         .post(process.env.URL + "/subitem",this.dato2)
         .then((res) => {
+          console.log(res.data)
           this.$q.notify({
             color: "green-4",
             textColor: "white",
@@ -387,7 +488,7 @@ export default {
       this.dato.nombre = null;
       this.dato.codigo = null;
     },
-    
+
   }
 }
 

@@ -19,6 +19,7 @@ class CreateSubitemsTable extends Migration
             $table->string('nombre')->nullable();
             $table->string('detalle')->nullable();
             $table->double('monto',11,2)->nullable();
+            $table->string('estado')->nullable()->default('ACTIVO');
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('items');
             $table->unsignedBigInteger('unid_id')->nullable()->default(1);

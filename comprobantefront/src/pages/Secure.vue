@@ -237,6 +237,12 @@ export default {
         })
         return false
       }
+      if (this.detalle==''){
+        this.$q.dialog({
+          title:'Falta colocar detalle'
+        })
+        return false
+      }
       this.$q.dialog({
         message:'Seguro de crear?',
         title:'Confirmar?',

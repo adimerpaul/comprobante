@@ -15,7 +15,7 @@ class ItemController extends Controller
     public function index(Request $request)
     {
 //        return ;
-        return Item::where('unid_id',$request->user()->unid_id)->orderBy('nombre')->get();
+        return Item::with('unid_id',$request->user()->unid_id)->orderBy('nombre')->get();
     }
 
     /**
@@ -41,7 +41,18 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        //
+        return Item::with('unid')->with('subitems')->orderBy('nombre')->get();
+    }
+    public function cambio(Item $item)
+    {
+        if ($item->estado=='ACTIVO'){
+            $item->estado='INACTIVO';
+        }else{
+            $item->estado='ACTIVO';
+        }
+        $item->save();
+        echo 1;
+//        return Item::with('unid')->with('subitems')->orderBy('nombre')->get();
     }
 
     /**

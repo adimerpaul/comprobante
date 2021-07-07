@@ -18,7 +18,8 @@ class CreateItemsTable extends Migration
             $table->string('codigo')->nullable();
             $table->string('nombre')->nullable();
             $table->string('detalle')->nullable();
-            $table->string('monto')->nullable();
+            $table->double('monto',11,2)->nullable();
+            $table->string('estado')->nullable()->default('ACTIVO');
             $table->unsignedBigInteger('unid_id')->nullable()->default(1);
             $table->foreign('unid_id')->references('id')->on('unids');
             $table->timestamps();
