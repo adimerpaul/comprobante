@@ -85,6 +85,8 @@ class SubitemController extends Controller
     public function update(Request $request, Subitem $subitem)
     {
         //
+        $subitem->update($request->all());
+        return $subitem;
     }
 
     /**
@@ -93,9 +95,13 @@ class SubitemController extends Controller
      * @param  \App\Models\Subitem  $subitem
      * @return \Illuminate\Http\Response
      */
-    public function destroy(Subitem $subitem)
+    public function destroy($id)
     {
         //
+        
+        $subitem=Subitem::find($id);
+        $subitem->delete();
+        return response()->json(['res'=>'Borrado exitoso'],200);
     }
 
     public function listasubitem($id){

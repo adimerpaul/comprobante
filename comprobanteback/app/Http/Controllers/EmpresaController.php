@@ -26,6 +26,10 @@ class EmpresaController extends Controller
     public function store(Request $request)
     {
         //
+        $input=$request->all();
+        //        $input['imagen']=$ruta;
+        $empresa=Empresa::create($input);
+        return $empresa;
     }
 
     /**
@@ -34,9 +38,10 @@ class EmpresaController extends Controller
      * @param  \App\Models\Empresa  $empresa
      * @return \Illuminate\Http\Response
      */
-    public function show(Empresa $empresa)
+    public function show($id)
     {
         //
+        return Empresa::with('cliente')->where('id',$id)->get();
     }
 
     /**
@@ -49,6 +54,8 @@ class EmpresaController extends Controller
     public function update(Request $request, Empresa $empresa)
     {
         //
+        $empresa->update($request->all());
+        return $empresa;
     }
 
     /**

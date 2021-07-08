@@ -21,6 +21,8 @@ class CreateEmpresasTable extends Migration
             $table->string('nit')->nullable();
             $table->string('padron')->nullable();
             $table->boolean('estado')->default(true);
+            $table->unsignedBigInteger('cliente_id');
+            $table->foreign('cliente_id')->references('id')->on('clientes');
             $table->timestamps();
         });
     }

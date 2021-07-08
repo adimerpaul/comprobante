@@ -21,6 +21,7 @@ class EmpresaSeeder extends Seeder
                 'telefono'=>'101010',
                 'nit'=>'101010',
                 'padron'=>'10-10-101010',
+                'cliente_id'=>'2'
            ],
             [
                 'razonsocial'=>'PEPSIO',
@@ -28,6 +29,7 @@ class EmpresaSeeder extends Seeder
                 'telefono'=>'101010',
                 'nit'=>'101010',
                 'padron'=>'10-10-101010',
+                'cliente_id'=>'2'
             ],
             [
                 'razonsocial'=>'COCA QUINA',
@@ -35,6 +37,7 @@ class EmpresaSeeder extends Seeder
                 'telefono'=>'101010',
                 'nit'=>'101010',
                 'padron'=>'10-10-101010',
+                'cliente_id'=>'2'
             ],
         ]);
     }

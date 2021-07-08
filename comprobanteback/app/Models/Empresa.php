@@ -15,6 +15,7 @@ class Empresa extends Model
         'nit',
         'padron',
         'estado',
+        'cliente_id'
     ];
     public function clientes(){
         return $this->belongsToMany(Cliente::class);
