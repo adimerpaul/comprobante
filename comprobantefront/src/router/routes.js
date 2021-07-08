@@ -7,6 +7,7 @@ import Item  from "../pages/Item";
 import Empresa  from "../pages/Empresa";
 import Unid  from "../pages/Unid";
 import Pago from "pages/Pago";
+import User from "pages/User";
 const routes = [
   {
     path: '/',
@@ -20,6 +21,7 @@ const routes = [
       { path: '/Empresa', component: Empresa,meta: {requiresAuth: true} },
       { path: '/Unid', component: Unid,meta: {requiresAuth: true} },
       { path: '/pago', component: Pago,meta: {requiresAuth: true} },
+      { path: '/user', component: User,meta: {requiresAuth: true} },
     ]
   },
 

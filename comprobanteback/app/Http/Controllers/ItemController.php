@@ -14,8 +14,8 @@ class ItemController extends Controller
      */
     public function index(Request $request)
     {
-//        return ;
-        return Item::with('unid_id',$request->user()->unid_id)->orderBy('nombre')->get();
+//        return $request->user()->unid_id;
+        return Item::where('unid_id',$request->user()->unid_id)->where('estado','ACTIVO')->orderBy('nombre')->get();
     }
 
     /**

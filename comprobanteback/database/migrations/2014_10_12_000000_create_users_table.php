@@ -18,9 +18,10 @@ class CreateUsersTable extends Migration
             $table->string('name');
             $table->string('codigo');
             $table->string('email')->unique();
+            $table->date('fechalimite')->default('2021-12-31');
             $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
-            $table->rememberToken();            
+            $table->rememberToken();
             $table->unsignedBigInteger('unid_id');
             $table->foreign('unid_id')->references('id')->on('unids');
             $table->timestamps();

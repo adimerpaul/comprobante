@@ -24,7 +24,7 @@
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
-            
+
             <q-input
               filled
               v-model="dato.inicio"
@@ -55,7 +55,7 @@
       </q-card>
     </q-dialog>
 
-    <q-table title="Unidades" :data="data" :columns="columns" row-key="name">
+    <q-table title="Unidades" :data="data" :columns="columns" row-key="name" :rows-per-page-options="[50,100]">
       <template v-slot:body-cell-opcion="props">
         <q-td :props="props">
         <q-btn
@@ -121,7 +121,7 @@
       </q-card>
     </q-dialog>
 
- 
+
    <q-dialog v-model="dialog_del">
       <q-card>
         <q-card-section class="row items-center">
@@ -152,7 +152,7 @@ export default {
       unidades:[],
       uni:{},
       columns: [
- 
+
         {
           name: "nombre",
           align: "left",

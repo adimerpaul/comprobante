@@ -19,7 +19,14 @@ export default new Vuex.Store({
   state: {
     status: '',
     token: localStorage.getItem('token') || '',
-    user : {}
+    user : {},
+    boolcontribuyente:false,
+    boolusuario:false,
+    boolitem:false,
+    boolunidad:false,
+    boolcomprobante:false,
+    boolpagocomprobante:false,
+    boolempresa:false,
   },
   mutations: {
     auth_request(state){
@@ -29,6 +36,14 @@ export default new Vuex.Store({
       state.status = 'success'
       state.token = data.token
       state.user = data.user
+      // console.log(data.user)
+      state.boolcontribuyente=data.user.permisos.find( permiso => permiso.id === 1)!=undefined;
+      state.boolusuario=data.user.permisos.find( permiso => permiso.id === 2)!=undefined;
+      state.boolitem=data.user.permisos.find( permiso => permiso.id === 3)!=undefined;
+      state.boolunidad=data.user.permisos.find( permiso => permiso.id === 4)!=undefined;
+      state.boolcomprobante=data.user.permisos.find( permiso => permiso.id === 5)!=undefined;
+      state.boolpagocomprobante=data.user.permisos.find( permiso => permiso.id === 6)!=undefined;
+      state.boolempresa=data.user.permisos.find( permiso => permiso.id === 7)!=undefined;
     },
     auth_error(state){
       state.status = 'error'
@@ -37,6 +52,13 @@ export default new Vuex.Store({
       state.status = ''
       state.token = ''
       state.user = {}
+      state.boolcontribuyente=false
+      state.boolusuario=false
+      state.boolitem=false
+      state.boolunidad=false
+      state.boolcomprobante=false
+      state.boolpagocomprobante=false
+      state.boolempresa=false
     },
   },
   actions: {
@@ -47,6 +69,7 @@ export default new Vuex.Store({
           .then(resp => {
             const token = resp.data.token
             const user = resp.data.user
+            // console.log(user)
             localStorage.setItem('token', token)
             axios.defaults.headers.common['Authorization'] = 'Bearer '+token
             commit('auth_success', {token, user})

@@ -57,6 +57,7 @@
           clickable
           to="/cliente"
           exact
+          v-if="$store.state.boolcontribuyente"
         >
           <q-item-section
             avatar
@@ -71,11 +72,31 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item
+          clickable
+          to="/user"
+          exact
+          v-if="$store.state.boolusuario"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="person" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Usuarios</q-item-label>
+            <q-item-label caption>
+              Permisos de usuario
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 
         <q-item
           clickable
           to="/item"
           exact
+          v-if="$store.state.boolitem"
         >
           <q-item-section
             avatar
@@ -95,6 +116,7 @@
           clickable
           to="/unid"
           exact
+          v-if="$store.state.boolunidad"
         >
           <q-item-section
             avatar
@@ -114,6 +136,7 @@
           clickable
           to="/secure"
           exact
+          v-if="$store.state.boolcomprobante"
         >
           <q-item-section
             avatar
@@ -132,6 +155,7 @@
           clickable
           to="/pago"
           exact
+          v-if="$store.state.boolpagocomprobante"
         >
           <q-item-section
             avatar
@@ -151,6 +175,7 @@
           clickable
           to="/empresa"
           exact
+          v-if="$store.state.boolempresa"
         >
           <q-item-section
             avatar

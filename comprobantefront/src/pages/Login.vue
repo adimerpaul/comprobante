@@ -26,6 +26,7 @@
                 :rules="[ val => val && val.length > 0 || 'Please type something']"
               />
               <q-input
+                type="password"
                 filled
                 v-model="password"
                 label="Password *"
@@ -94,7 +95,15 @@ export default {
           this.$q.loading.hide()
           this.$router.push('/')
         })
-        .catch(err => console.log(err))
+        .catch(err => {
+          this.$q.loading.hide();
+          // console.log(err.response.data)
+          this.$q.notify({
+            message:err.response.data.res,
+            color:'red',
+            icon:'error'
+          })
+        })
     },
     onReset(){
       this.email=null;

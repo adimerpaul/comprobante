@@ -34,6 +34,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::get('/cambiosubitem/{subitem}',[\App\Http\Controllers\SubitemController::class,'cambiosubitem']);
 
     Route::apiResource('/unid',\App\Http\Controllers\UnidController::class);
+    Route::apiResource('/user',\App\Http\Controllers\UserController::class);
     Route::get('/lista/{ci}',[\App\Http\Controllers\ClienteController::class,'listacliente']);
     Route::get('/subitemlist/{id}',[\App\Http\Controllers\SubitemController::class,'listasubitem']);
 });

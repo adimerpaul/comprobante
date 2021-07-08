@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateUnidsTable extends Migration
+class CreatePermisoUserTable extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,12 @@ class CreateUnidsTable extends Migration
      */
     public function up()
     {
-        Schema::create('unids', function (Blueprint $table) {
+        Schema::create('permiso_user', function (Blueprint $table) {
             $table->id();
-            $table->string('nombre');
-            $table->string('codigo');
-            $table->integer('inicio');
-            $table->integer('fin');
+            $table->unsignedBigInteger('permiso_id');
+            $table->foreign('permiso_id')->references('id')->on('permisos');
+            $table->unsignedBigInteger('user_id');
+            $table->foreign('user_id')->references('id')->on('users');
             $table->timestamps();
         });
     }
@@ -30,6 +30,6 @@ class CreateUnidsTable extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('unids');
+        Schema::dropIfExists('permiso_user');
     }
 }

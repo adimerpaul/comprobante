@@ -23,7 +23,9 @@ class DatabaseSeeder extends Seeder
             ItemSeeder::class,
             EmpresaSeeder::class,
             Cliente_empresa::class,
-            SubitemSeeder::class
+            SubitemSeeder::class,
+            PermisoSeeder::class,
+            PermisoUser::class,
         ]);
     }
 }

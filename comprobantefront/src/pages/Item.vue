@@ -267,7 +267,7 @@
                     :data="subitem"
                     :columns="subcol"
                     >
-      <template v-slot:body="props">                   
+      <template v-slot:body="props">
           <q-tr :props="props">
           <q-td key="codigo" :props="props">
             {{ props.row.codigo }}

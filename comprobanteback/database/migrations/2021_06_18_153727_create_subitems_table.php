@@ -22,7 +22,7 @@ class CreateSubitemsTable extends Migration
             $table->string('estado')->nullable()->default('ACTIVO');
             $table->unsignedBigInteger('item_id');
             $table->foreign('item_id')->references('id')->on('items');
-            $table->unsignedBigInteger('unid_id')->nullable()->default(1);
+            $table->unsignedBigInteger('unid_id')->nullable()->default(16);
             $table->foreign('unid_id')->references('id')->on('unids');
             $table->timestamps();
         });

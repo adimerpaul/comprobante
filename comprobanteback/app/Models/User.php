@@ -21,6 +21,9 @@ class User extends Authenticatable
         'name',
         'email',
         'password',
+        'fechalimite',
+        'codigo',
+        'unid_id'
     ];
 
     /**
@@ -43,5 +46,8 @@ class User extends Authenticatable
     ];
     public function unid(){
         return $this->belongsTo(Unid::class);
+    }
+    public function permisos(){
+        return $this->belongsToMany(Permiso::class);
     }
 }

@@ -215,7 +215,7 @@ export default {
   created() {
     this.numcomprobante()
     this.$axios.get(process.env.URL+'/item').then(res=>{
-      // console.log(res.data);
+      console.log(res.data);
       this.items=[];
       res.data.forEach(r=>{
         this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
