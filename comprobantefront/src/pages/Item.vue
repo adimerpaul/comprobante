@@ -219,6 +219,45 @@
       </q-card>
     </q-dialog>
 
+<q-dialog v-model="dialog_modsub">
+      <q-card style="max-width: 80%; width: 50%">
+        <q-card-section class="bg-green-14 text-white">
+          <div class="text-h6">Modificar Subitem</div>
+        </q-card-section>
+        <q-card-section class="q-pt-xs">
+          <q-form @submit="onModsub" class="q-gutter-md">
+
+
+            <q-input
+              filled
+              v-model="dato3.nombre"
+              type="text"
+              label="Nombre del SubItem"
+              hint="Ingresar nombre"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
+            />
+            <q-input
+              filled
+              v-model="dato3.monto"
+              type="number"
+              label="Monto SubItem"
+              hint="Ingresar monto"
+              lazy-rules
+              :rules="[(val) => (val && val >= 0) || 'Por favor ingresa datos']"
+            />
+
+
+
+            <div>
+              <q-btn label="Modificar" type="submit" color="positive" icon="add_circle" />
+              <q-btn label="Cancelar" icon="delete" color="negative" v-close-popup />
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
+
     <q-dialog v-model="dialog_add">
       <q-card style="max-width: 80%; width: 50%">
         <q-card-section class="bg-green-14 text-white">
@@ -286,6 +325,24 @@
                     <q-td key="monto" :props="props">
             {{ props.row.monto }}
           </q-td>
+          <q-td>
+            <q-btn
+                        dense
+                        round
+                        flat
+                        color="yellow"
+                        @click="editsub(props)"
+                        icon="edit"
+                      ></q-btn>
+                      <q-btn
+                        dense
+                        round
+                        flat
+                        color="red"
+                        @click="deletesub(props)"
+                        icon="delete"
+                      ></q-btn>
+          </q-td>
           </q-tr>
           </template>
                 </q-table>
@@ -310,6 +367,21 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog v-model="dialog_delsub">
+      <q-card>
+        <q-card-section class="row items-center">
+          <q-avatar icon="clear" color="red" text-color="white" />
+          <span class="q-ml-sm">Seguro de eliminar Registro.</span>
+        </q-card-section>
+
+        <q-card-actions align="right">
+          <q-btn flat label="Eliminar" color="deep-orange" @click="onDelsub" />
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+
   </div>
 </template>
 
@@ -321,10 +393,12 @@ export default {
       dialog_mod: false,
       dialog_add: false,
       dialog_del: false,
+      dialog_delsub: false,
       dialog_list: false,
       filter:'',
       dato: {},
       dato2: {},
+      dato3: {},
       options: [],
       props: [],
       unidades:[],
@@ -455,9 +529,17 @@ export default {
       this.dato2 = item.row;
       this.dialog_mod = true;
     },
+    editsub(item) {
+      this.dato3 = item.row;
+      this.dialog_modsub = true;
+    },
     deleteRow(item) {
       this.dato2 = item.row;
       this.dialog_del = true;
+    },
+    deletesub(item) {
+      this.dato3 = item.row;
+      this.dialog_delsub = true;
     },
 
     onSubmit() {
@@ -489,6 +571,22 @@ export default {
           this.misdatos();
         });
     },
+
+      onModsub() {
+      this.$q.loading.show();
+      this.$axios
+        .put(process.env.URL + "/subitem/" + this.dato3.id, this.dato3)
+        .then((res) => {
+          this.$q.notify({
+            color: "green-4",
+            textColor: "white",
+            icon: "cloud_done",
+            message: "Modificado correctamente",
+          });
+          this.dialog_modsub = false;
+          this.misdatos();
+        });
+    },  
     onAdd() {
       this.$q.loading.show();
       this.$axios
@@ -516,6 +614,20 @@ export default {
           message: "Eliminado correctamente",
         });
         this.dialog_del = false;
+        this.misdatos();
+      });
+    },
+
+        onDelsub() {
+      this.$q.loading.show();
+      this.$axios.delete(process.env.URL + "/subitem/" + this.dato3.id).then((res) => {
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Eliminado correctamente",
+        });
+        this.dialog_delsub = false;
         this.misdatos();
       });
     },

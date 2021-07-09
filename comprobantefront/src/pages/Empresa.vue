@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-btn
-      label="Nuevo Item"
+      label="Nuevo Empresa"
       color="positive"
       @click="alert = true"
       icon="add_circle"
@@ -19,7 +19,7 @@
               v-model="dato.razonsocial"
               type="text"
               label="Nombre Empresa"
-              hint="Ingresar Nmombre"
+              hint="Ingresar Nombre"
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
@@ -29,17 +29,31 @@
               v-model="dato.nit"
               type="number"
               label="Numero de Nit"
-              hint="Ingresar Nk"
+              hint="Ingresar NIT"
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
-            <q-select
-            v-model="uni"
-            :options="unidades"
-            label="unidad"
-            hint="Seleccionar"
-            lazy-rules
-              :rules="[(val) => val!='' && val!=null || 'Por favor ingresa datos']"
+            <q-input
+              filled
+              v-model="dato.direccion"
+              type="text"
+              label="Direccion"
+              hint="Ingresar la direccion"
+            />
+            <q-input
+              filled
+              v-model="dato.telefono"
+              type="text"
+              label="telefono"
+              hint="Ingresar la telefono"
+            />
+
+            <q-input
+              filled
+              v-model="dato.padron"
+              type="text"
+              label="Padron"
+              hint="Ingresar el padron"
             />
 
             <div>
@@ -51,7 +65,7 @@
       </q-card>
     </q-dialog>
 
-    <q-table title="ITEMS" :data="data" :columns="columns" 
+    <q-table title="Items" :data="data" :columns="columns" 
     hide-header
     :filter="filter"
     :grid="$q.screen.xs"
@@ -237,10 +251,10 @@ export default {
           sortable: true,
         },
         {
-          name: "nombre",
+          name: "razonsocial",
           align: "left",
-          label: "nombre",
-          field: "nombre",
+          label: "Razonsocial",
+          field: "razonsocial",
           sortable: true,
         },
 
