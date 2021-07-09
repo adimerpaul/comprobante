@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Permiso;
 use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -10,7 +11,7 @@ use Illuminate\Support\Facades\Hash;
 class UserController extends Controller
 {
     public function index(){
-        return User::with('unid')->where('id','!=',1)->get();
+        return User::with('unid')->with('permisos')->where('id','!=',1)->get();
     }
     public function login(Request $request){
         if (!Auth::attempt($request->all())){
@@ -26,17 +27,43 @@ class UserController extends Controller
     }
     public function store(Request $request){
 //        return ;
-        return User::create([
-            "name"=>$request->name,
-            "email"=>$request->email,
-            "password"=> Hash::make($request->password) ,
-            "unid_id"=>$request->unid_id,
-            "fechalimite"=>$request->fechalimite,
-            "codigo"=>$request->codigo,
-        ]);
+        $user=new User();
+        $user->name=$request->name;
+        $user->email=$request->email;
+        $user->password= Hash::make($request->password) ;
+        $user->unid_id=$request->unid_id;
+        $user->fechalimite=$request->fechalimite;
+        $user->codigo= strtoupper( substr($request->name,0,3));
+        $user->save();
+        $permisos= array();
+        foreach ($request->permisos as $permiso){
+//            echo $permiso['estado'].'  ';
+            if ($permiso['estado']==true)
+            $permisos[]=$permiso['id'];
+        }
+        $permiso = Permiso::find($permisos);
+        $user->permisos()->attach($permiso);
+
     }
     public function update(Request $request,User $user){
         $user->update($request->all());
+        return $user;
+    }
+    public function updatepermisos(Request $request,User $user){
+        $permisos= array();
+        foreach ($request->permisos as $permiso){
+            if ($permiso['estado']==true)
+                $permisos[]=$permiso['id'];
+        }
+        $permiso = Permiso::find($permisos);
+        $user->permisos()->detach();
+        $user->permisos()->attach($permiso);
+    }
+    public function pass(Request $request,User $user){
+        return $request->password;
+        $user->update([
+            'password'=>Hash::make($request->password)
+        ]);
         return $user;
     }
     public function destroy(User $user){

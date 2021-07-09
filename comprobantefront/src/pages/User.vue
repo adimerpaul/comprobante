@@ -14,58 +14,67 @@
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-            <q-input
-              filled
-              v-model="dato.name"
-              type="text"
-              label="Nombre "
-              hint="Ingresar Nombre"
-              lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
-            />
-            <q-input
-              filled
-              v-model="dato.codigo"
-              type="text"
-              label="Codigo "
-              hint="Ingresar codigo"
-              lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
-            />
+            <div class="row">
+              <div class="col-6">
+                <q-input
+                  filled
+                  v-model="dato.name"
+                  type="text"
+                  label="Nombre "
+                  hint="Ingresar Nombre"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
+                />
+<!--                <q-input-->
+<!--                  filled-->
+<!--                  v-model="dato.codigo"-->
+<!--                  type="text"-->
+<!--                  label="Codigo "-->
+<!--                  hint="Ingresar codigo"-->
+<!--                  lazy-rules-->
+<!--                  :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"-->
+<!--                />-->
 
-            <q-input
-              filled
-              v-model="dato.email"
-              type="email"
-              label="Email"
-              hint="Correo electronico"
-              lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
-            />
+                <q-input
+                  filled
+                  v-model="dato.email"
+                  type="email"
+                  label="Email"
+                  hint="Correo electronico"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
+                />
 
-            <q-input
-              filled
-              v-model="dato.password"
-              type="password"
-              label="Contraseña"
-              hint="Contraseña"
-              lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
-            />
-            <q-select
-              filled
-              label="Unidad"
-              v-model="dato.unid_id"
-              :options="unidades"
-              option-label="nombre"
-              option-value="id"
-            />
-            <q-input
-              filled
-            label="Fecha limite"
-            type="date"
-            v-model="dato.fechalimite"
-            />
+                <q-input
+                  filled
+                  v-model="dato.password"
+                  type="password"
+                  label="Contraseña"
+                  hint="Contraseña"
+                  lazy-rules
+                  :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
+                />
+                <q-select
+                  filled
+                  label="Unidad"
+                  v-model="dato.unid_id"
+                  :options="unidades"
+                  option-label="nombre"
+                  option-value="id"
+                />
+                <q-input
+                  filled
+                  label="Fecha limite"
+                  type="date"
+                  v-model="dato.fechalimite"
+                />
+              </div>
+              <div class="col-6">
+                <div class="text-5">Permisos</div>
+                <q-checkbox style="width: 100%"  v-for="(permiso,index) in permisos" :key="index" :label="permiso.nombre" v-model="permiso.estado" />
+              </div>
+            </div>
+
             <div>
               <q-btn label="Crear" type="submit" color="positive" icon="add_circle" />
               <q-btn label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -108,14 +117,22 @@
               color="yellow"
               @click="editRow(props)"
               icon="edit"
-            ></q-btn>
+          />
             <q-btn
               dense
               round
               flat
             color="positive"
-            @click="prompt"
-            icon="password"
+            @click="cambiopass(props)"
+            icon="vpn_key"
+            />
+            <q-btn
+              dense
+              round
+              flat
+              color="green-10"
+              @click="mispermisos(props)"
+              icon="post_add"
             />
             <q-btn
               dense
@@ -184,7 +201,7 @@
 <!--        </q-td>-->
 <!--      </template>-->
     </q-table>
-
+<!--    {{permisos2}}-->
     <q-dialog v-model="dialog_mod">
       <q-card style="max-width: 80%; width: 50%">
         <q-card-section class="bg-warning text-white">
@@ -210,7 +227,6 @@
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
-
             <q-input
               filled
               v-model="dato2.email"
@@ -220,7 +236,6 @@
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
-
             <q-select
               filled
               label="Unidad"
@@ -258,6 +273,23 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="modelpermiso">
+      <q-card style="width: 700px;max-width: 80vw">
+        <q-card-section class="bg-info">
+          <div class="text-h6 text-white"><q-icon name="folder"/> Permisos Usuario</div>
+        </q-card-section>
+        <q-card-section>
+          <q-form @submit.prevent="updatepermisos">
+<!--          v-on:click.native="updatepermiso(permiso)"-->
+          <q-checkbox style="width: 100%"  v-for="(permiso,index) in permisos2" :key="index" :label="permiso.nombre" v-model="permiso.estado" />
+          <!--          <q-form>-->
+<!--&lt;!&ndash;            <q-checkbox v-model="permisos" />&ndash;&gt;-->
+<!--          </q-form>-->
+            <q-btn  type="submit" color="info" icon="send" label="Actualizar"></q-btn>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
@@ -274,10 +306,14 @@ export default {
       dato: {
         fechalimite:date.formatDate(Date.now(), 'YYYY-MM-DD')
       },
+      model:'',
       dato2: {},
       options: [],
       props: [],
       unidades:[],
+      permisos:[],
+      permisos2:[],
+      modelpermiso:false,
       uni:{},
       columns: [
         {name: "name", align: "left", label: "Nombre ", field: "name", sortable: true,},
@@ -298,12 +334,61 @@ export default {
       // console.log(res.data)
       this.unidades=res.data
     })
+    this.$axios.get(process.env.URL+'/permiso').then(res=>{
+      // console.log(res.data)
+      // this.permisos=res.data
+
+      res.data.forEach(r=>{
+          this.permisos.push({id:r.id,nombre:r.nombre,estado:false})
+          this.permisos2.push({id:r.id,nombre:r.nombre,estado:false})
+      })
+    })
   },
   methods: {
+    updatepermiso(permiso){
+      console.log(permiso)
+    },
+    updatepermisos(){
+
+      this.$axios.put(process.env.URL+'/updatepermisos/'+this.dato2.id,{permisos:this.permisos2}).then(res=>{
+        console.log(res.data)
+        this.modelpermiso=false
+        this.misdatos()
+      }).catch(err=>{
+        this.$q.notify({
+          message:err.response.data.message,
+          icon:'close',
+          color:'red'
+        })
+      })
+    },
+    mispermisos(i){
+      // console.log(i.row)
+      this.modelpermiso=true
+      this.dato2=i.row
+      // console.log(this.dato2.permisos)
+      let p;
+      // this.permisos2.forEach(r=>{
+      //
+      // })
+      this.permisos2.forEach(pe=>{
+        // console.log(pe);
+        p=this.dato2.permisos.find(r=>r.pivot.permiso_id==pe.id)
+        // console.log(p)
+        if (p!=undefined)
+          pe.estado=true
+        else
+          pe.estado=false
+        // console.log(p)
+      })
+
+
+
+    },
     misdatos() {
       this.$q.loading.show();
       this.$axios.get(process.env.URL + "/user").then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
         this.data = res.data;
         this.$q.loading.hide();
       });
@@ -328,6 +413,7 @@ export default {
         unid_id:this.dato.unid_id.id,
         fechalimite:this.dato.fechalimite,
         codigo:this.dato.codigo,
+        permisos:this.permisos
       }).then((res) => {
         // console.log(res.data)
         this.$q.notify({
@@ -339,7 +425,15 @@ export default {
         this.dato={fechalimite:date.formatDate(Date.now(), 'YYYY-MM-DD')}
         this.alert = false;
         this.misdatos();
-      });
+      }).catch(err=>{
+        // console.log(err.response.data.message);
+        this.$q.notify({
+          message:err.response.data.message,
+          icon:'close',
+          color:'red'
+        })
+        this.$q.loading.hide()
+      })
     },
     onMod() {
       this.$q.loading.show();
@@ -359,7 +453,8 @@ export default {
 
     onDel() {
       this.$q.loading.show();
-      this.$axios.delete(process.env.URL + "/user/" + this.dato2.id).then((res) => {
+      this.$axios.delete(process.env.URL + "/user/" + this.dato2.id)
+        .then((res) => {
         this.$q.notify({
           color: "green-4",
           textColor: "white",
@@ -368,7 +463,14 @@ export default {
         });
         this.dialog_del = false;
         this.misdatos();
-      });
+      }).catch(err=>{
+        this.$q.loading.hide()
+        this.$q.notify({
+          message:err.response.data.message,
+          icon:'error',
+          color:'red'
+        })
+      })
     },
 
     onReset() {
@@ -376,18 +478,24 @@ export default {
       this.dato.inicio = 0;
       this.dato.fin = 0;
     },
-    prompt () {
+    cambiopass (i) {
+      // console.log(i.row);
       this.$q.dialog({
-        title: 'Prompt',
-        message: 'What is your name?',
+        title: 'Cambiar password',
+        message: 'Ingresar nueva contraseña',
         prompt: {
           model: '',
-          type: 'text' // optional
+          type: 'password' // optional
         },
         cancel: true,
         persistent: true
       }).onOk(data => {
         // console.log('>>>> OK, received', data)
+        this.$q.loading.show()
+        this.$axios.put(process.env.URL+'/user/'+i.row.id,{password:data}).then(res=>{
+          // console.log(res.data)
+          this.$q.loading.hide()
+        })
       }).onCancel(() => {
         // console.log('>>>> Cancel')
       }).onDismiss(() => {

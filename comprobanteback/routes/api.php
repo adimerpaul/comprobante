@@ -31,10 +31,14 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::apiResource('/comprobante',\App\Http\Controllers\ComprobanteController::class);
     Route::apiResource('/cliente',\App\Http\Controllers\ClienteController::class);
     Route::apiResource('/subitem',\App\Http\Controllers\SubitemController::class);
+    Route::apiResource('/permiso',\App\Http\Controllers\PermisoController::class);
     Route::get('/cambiosubitem/{subitem}',[\App\Http\Controllers\SubitemController::class,'cambiosubitem']);
 
     Route::apiResource('/unid',\App\Http\Controllers\UnidController::class);
     Route::apiResource('/user',\App\Http\Controllers\UserController::class);
+    Route::put('/pass/{user}',[\App\Http\Controllers\UserController::class,'pass']);
+    Route::put('/updatepermisos/{user}',[\App\Http\Controllers\UserController::class,'updatepermisos']);
+
     Route::get('/lista/{ci}',[\App\Http\Controllers\ClienteController::class,'listacliente']);
     Route::get('/subitemlist/{id}',[\App\Http\Controllers\SubitemController::class,'listasubitem']);
 });
