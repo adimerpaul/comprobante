@@ -438,7 +438,13 @@ export default {
     onMod() {
       this.$q.loading.show();
       this.$axios
-        .put(process.env.URL + "/user/" + this.dato2.id, this.dato2)
+        .put(process.env.URL + "/user/" + this.dato2.id, {name:this.dato2.name,
+        password:this.dato2.password,
+        email:this.dato2.email,
+        unid_id:this.dato2.unid_id.id,
+        fechalimite:this.dato2.fechalimite,
+        codigo:this.dato2.codigo,
+      })
         .then((res) => {
           this.$q.notify({
             color: "green-4",

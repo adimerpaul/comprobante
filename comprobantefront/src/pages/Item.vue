@@ -202,7 +202,7 @@
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
             <q-select
-            v-model="dato2.unid_id"
+            v-model="uni2"
             :options="unidades"
             label="unidad"
             hint="Seleccionar"
@@ -391,6 +391,7 @@ export default {
     return {
       alert: false,
       dialog_mod: false,
+      dialog_modsub: false,
       dialog_add: false,
       dialog_del: false,
       dialog_delsub: false,
@@ -403,6 +404,7 @@ export default {
       props: [],
       unidades:[],
       uni:{},
+      uni2:{},
       unidad2:{},
 
       columns: [
@@ -527,6 +529,7 @@ export default {
     },
     editRow(item) {
       this.dato2 = item.row;
+      this.uni2={value:item.row.unid.id,label:item.row.unid.nombre}
       this.dialog_mod = true;
     },
     editsub(item) {
@@ -558,6 +561,7 @@ export default {
     },
     onMod() {
       this.$q.loading.show();
+      this.dato2.unid_id=this.uni2.value;
       this.$axios
         .put(process.env.URL + "/item/" + this.dato2.id, this.dato2)
         .then((res) => {

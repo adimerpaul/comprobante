@@ -55,6 +55,19 @@
               label="Padron"
               hint="Ingresar el padron"
             />
+            <q-input
+              v-model="cliente.ci"
+              type="text"
+              label="CI representante"
+              hint="Ingresar el padron"
+            />
+            <q-input
+              readonly
+              v-model="cliente.nombre"
+              type="text"
+              label="Nombre"
+              hint="Ingresar el padron"
+            />
 
             <div>
               <q-btn label="Crear" type="submit" color="positive" icon="add_circle" />
