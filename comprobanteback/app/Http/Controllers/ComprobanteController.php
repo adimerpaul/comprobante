@@ -19,6 +19,24 @@ class ComprobanteController extends Controller
     public function index(Request $request)
     {
         return Comprobante::with('cliente')->with('detalles')->whereDate('fechalimite','>=',now())->where('unid_id',$request->user()->unid_id)->where('estado','CREADO')->get();
+//        return Comprobante::with('cliente')->with('detalles')->get();
+    }
+
+    public function buscarimpreso(Request $request)
+    {
+        return Comprobante::with('cliente')->with('detalles')->whereDate('fechalimite','>=',now())->where('unid_id',$request->user()->unid_id)->where('estado','IMPRESO')->get();
+    }
+
+    public function mispagos(Request $request)
+    {
+//        return Comprobante::all();
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->whereDate('fechapago',$request->fecha)
+            ->where('cajero',$request->user()->name)
+            ->where('unid_id',$request->user()->unid_id)
+            ->where('estado','PAGADO')
+            ->get();
     }
 
     /**
@@ -29,7 +47,7 @@ class ComprobanteController extends Controller
      */
     public function store(Request $request)
     {
-//        return $request;
+//        return $request->user();
         if (Cliente::where('ci',$request->ci)->get()->count()==0 && $request->ci!=''){
             $cliente=Cliente::create([
                 'paterno'=>$request->paterno,
@@ -56,11 +74,13 @@ class ComprobanteController extends Controller
 //        return $cliente;
         $formatter = new NumeroALetras();
         $literal= $formatter->toWords($request->total);
+//        return $request->user()->unid_id;
         $comprobante=Comprobante::create([
+            'unid_id'=>$request->user()->unid_id,
             'nrotramite'=>$request->nrotramite,
 //            'nrocomprobante'=>'139044',
             'fecha'=>date('Y-m-d'),
-            'fechalimite'=>date("Y-m-d",strtotime(now()."+ 7 days")),
+            'fechalimite'=>date("Y-m-d",strtotime(now()."+ 21 days")),
             'tipo'=>'VARIOS',
             'codigo'=>'',
             'valorcatastral'=>'',
@@ -85,9 +105,9 @@ class ComprobanteController extends Controller
             'cajero'=>'',
             'user_id'=>$request->user()->id,
             'cliente_id'=>$cliente->id,
-            'unid_id'=>$request->user()->unid_id,
+            'item'=>$request->data[1]['coditem']
         ]);
-//        return $comprobante;
+
         foreach ($request->data as $row){
 //            echo $row['subtotal'].' -';
             Detalle::create([
@@ -102,6 +122,7 @@ class ComprobanteController extends Controller
                 'comprobante_id'=>$comprobante->id,
             ]);
         }
+//        return $request->data[1]['coditem'];
     }
 
     /**
@@ -125,14 +146,27 @@ class ComprobanteController extends Controller
     public function update(Request $request, Comprobante $comprobante)
     {
         $comprobante->update([
-            'fechapago'=>date('Y-m-d'),
-            'cajero'=>$request->user()->name,
-            'estado'=>'CANCELADO',
+//            'fechapago'=>date('Y-m-d'),
+//            'cajero'=>$request->user()->name,
+            'estado'=>'IMPRESO',
             'nrocomprobante'=>$request->nrocomprobante,
             'controlinterno'=>$request->nrocomprobante.date('d/m/Y'),
         ]);
 //        echo $comprobante;
         return Comprobante::with('cliente')->where('id',$comprobante->id)->with('detalles')->get();
+    }
+    public function pago(Request $request, Comprobante $comprobante)
+    {
+//         return $comprobante;
+        $comprobante->update([
+            'fechapago'=>date('Y-m-d'),
+            'cajero'=>$request->user()->name,
+            'estado'=>'PAGADO',
+//            'nrocomprobante'=>$request->nrocomprobante,
+//            'controlinterno'=>$request->nrocomprobante.date('d/m/Y'),
+        ]);
+        echo $comprobante;
+//        return Comprobante::with('cliente')->where('id',$comprobante->id)->with('detalles')->get();
     }
 
     /**

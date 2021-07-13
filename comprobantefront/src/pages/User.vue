@@ -498,7 +498,7 @@ export default {
       }).onOk(data => {
         // console.log('>>>> OK, received', data)
         this.$q.loading.show()
-        this.$axios.put(process.env.URL+'/user/'+i.row.id,{password:data}).then(res=>{
+        this.$axios.put(process.env.URL+'/pass/'+i.row.id,{password:data}).then(res=>{
           // console.log(res.data)
           this.$q.loading.hide()
         })

@@ -160,7 +160,27 @@
           <q-item-section
             avatar
           >
-            <q-icon name="article" />
+            <q-icon name="picture_as_pdf" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Imprimir Comprobantes</q-item-label>
+            <q-item-label caption>
+              Imprimir de comprobante
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
+          to="/cancelar"
+          exact
+          v-if="$store.state.boolcancelarcomprobante"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="paid" />
           </q-item-section>
 
           <q-item-section>

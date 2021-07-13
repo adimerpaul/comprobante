@@ -72,7 +72,7 @@
         :columns="columns"
         :data="model.detalles"
         />
-        <q-btn @click="cancelar" icon="add_circle" label="Cancelar comprobante" color="positive" class="full-width"></q-btn>
+        <q-btn @click="cancelar" icon="add_circle" label="Crear comprobante" color="positive" class="full-width"></q-btn>
 
       </div>
     </div>
@@ -109,6 +109,7 @@ export default {
   methods: {
     miscomprobante(){
       this.$axios.get(process.env.URL+'/comprobante').then(res=>{
+        console.log(res.data)
         this.comprobantes=[]
         res.data.forEach(r=>{
           this.comprobantes.push({
@@ -150,12 +151,12 @@ export default {
         this.$q.loading.hide()
         this.model=''
         this.$q.dialog({
-          title:'Cobro exitoso'
+          title:'Impreso exitoso'
         })
         this.miscomprobante()
         let dat=res.data[0];
         var doc = new jsPDF('p','cm','letter')
-        console.log(dat);
+        // console.log(dat);
         doc.setFont("courier");
         doc.setFontSize(9);
         var x=0,y=0;
@@ -166,7 +167,7 @@ export default {
         doc.text(x+15.6, y+7.5, dat.cliente.ci.toString()+' '+dat.cliente.expedido.toString());
         doc.text(x+18, y+7.5, dat.cliente.telefono.toString());
         doc.text(x+3, y+9, dat.varios.toString());
-        doc.text(x+9.5, y+9, 'OR '+ dat.fechapago.toString());
+        doc.text(x+9.5, y+9, 'OR '+ dat.fecha.toString());
         let xx=x+1.2
         let yy=x+9.7
         dat.detalles.forEach(r=>{
@@ -184,10 +185,11 @@ export default {
         doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
         doc.save("Comprobante.pdf");
       }).catch(err=>{
-        this.$q.dialog({
-          title:'Error',
-          message:err.toString()
-        })
+        console.log(err);
+        // this.$q.dialog({
+        //   title:'Error',
+        //   message:err.toString()
+        // })
         this.$q.loading.hide()
       })
     },

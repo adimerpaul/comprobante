@@ -60,7 +60,7 @@ class UserController extends Controller
         $user->permisos()->attach($permiso);
     }
     public function pass(Request $request,User $user){
-        return $request->password;
+//        return $request->password;
         $user->update([
             'password'=>Hash::make($request->password)
         ]);

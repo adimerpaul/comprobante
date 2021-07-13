@@ -20,6 +20,7 @@ class PermisoSeeder extends Seeder
             ["nombre"=>"Item"],
             ["nombre"=>"Unidades"],
             ["nombre"=>"Comprobante"],
+            ["nombre"=>"Imprimir comprobante"],
             ["nombre"=>"Pagos comprobante"],
             ["nombre"=>"Empresa"],
 //            ["nombre"=>"Contributente"],
