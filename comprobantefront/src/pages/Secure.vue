@@ -163,7 +163,7 @@
         >
         </q-table>
         <div class="bg-info q-ma-xs text-center text-red-7 text-h5 text-weight-bold">Total: {{total}} Bs </div>
-        <q-btn @click="crear" icon="add_circle" label="Crear comprobante" color="primary" class="full-width"></q-btn>
+        <q-btn @click="crear" icon="add_circle" label="Crear comprobante" color="positive" class="full-width"></q-btn>
       </div>
     </div>
   </q-page>
@@ -174,7 +174,7 @@ export default {
   data () {
     return {
       columns:[
-        {name:'codsubitem',label:'Codigo', align:'left',field:'codsubitem',sortable:true},
+        {name:'coditem',label:'Codigo', align:'left',field:'coditem',sortable:true},
         {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
         {name:'precio',label:'Precio', align:'left',field:'precio',    format: val => `${val} Bs`,sortable:true},
         {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad',sortable:true},
@@ -262,8 +262,8 @@ export default {
           direccion:this.direccion,
           numcasa:this.numcasa,
           data:this.data,
-        }).then(()=>{
-          // console.log(res.data)
+        }).then((res)=>{
+          console.log(res.data)
           this.numcomprobante();
           this.$q.loading.hide();
           // this.mireset();
@@ -280,10 +280,13 @@ export default {
             message:'Creado!!!'
           });
         }).catch(err=>{
-          console.log(err.toString());
-          this.$q.dialog({
+          // console.log(err.response);
+          this.$q.loading.hide();
+          this.$q.notify({
             title:'Error ',
-            message:err.toString()
+            message:err.response.data.message,
+            color:'red',
+            icon:'error'
           });
         })
       })

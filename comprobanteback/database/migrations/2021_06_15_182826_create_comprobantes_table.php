@@ -21,6 +21,7 @@ class CreateComprobantesTable extends Migration
             $table->date('fechalimite')->nullable();
             $table->date('fechapago')->nullable();
             $table->string('tipo')->default('')->nullable();
+            $table->string('item')->default('')->nullable();
             $table->string('codigo')->default('')->nullable();
             $table->string('valorcatastral')->default('')->nullable();
             $table->string('mtsfrte')->default('')->nullable();
@@ -46,7 +47,7 @@ class CreateComprobantesTable extends Migration
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('cliente_id');
             $table->foreign('cliente_id')->references('id')->on('clientes');
-            $table->unsignedBigInteger('unid_id')->default(1);
+            $table->unsignedBigInteger('unid_id');
             $table->foreign('unid_id')->references('id')->on('unids');
             $table->timestamps();
         });

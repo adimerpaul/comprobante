@@ -15,6 +15,7 @@ class Comprobante extends Model
         'fechapago',
         'fechalimite',
         'tipo',
+        'item',
         'codigo',
         'valorcatastral',
         'mtsfrte',
@@ -38,6 +39,7 @@ class Comprobante extends Model
         'cajero',
         'user_id',
         'cliente_id',
+        'unid_id',
     ];
     public function cliente(){
         return $this->belongsTo(Cliente::class);
