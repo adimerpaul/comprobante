@@ -242,6 +242,7 @@
               filled
               v-model="dato3.monto"
               type="number"
+              step="0.01"
               label="Monto SubItem"
               hint="Ingresar monto"
               lazy-rules
