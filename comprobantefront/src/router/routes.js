@@ -9,6 +9,7 @@ import Unid  from "../pages/Unid";
 import Pago from "pages/Pago";
 import User from "pages/User";
 import Cancelar from "pages/Cancelar";
+import Verificar from "pages/Verificar";
 const routes = [
   {
     path: '/',
@@ -24,6 +25,7 @@ const routes = [
       { path: '/pago', component: Pago,meta: {requiresAuth: true} },
       { path: '/user', component: User,meta: {requiresAuth: true} },
       { path: '/cancelar', component: Cancelar,meta: {requiresAuth: true} },
+      { path: '/verificar', component: Verificar,meta: {requiresAuth: true} },
     ]
   },
 

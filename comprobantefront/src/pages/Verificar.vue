@@ -1,90 +1,24 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row">
-      <div class="col-12 col-sm-6">
-        <q-select
-          outlined
-          filled
-          v-model="model"
-          use-input
-          input-debounce="0"
-          label="Selecionar comprobante"
-          :options="options"
-          @filter="filterFn"
-        >
-          <template v-slot:no-option>
-            <q-item>
-              <q-item-section class="text-grey">
-                No results
-              </q-item-section>
-            </q-item>
-          </template>
-        </q-select>
-      </div>
-<!--      <div class="col-12 col-sm-6">-->
-<!--        <q-input-->
-<!--        outlined-->
-<!--        label="Nro Comprobante"-->
-<!--        v-model="nrocomprobante"-->
-<!--        type="number"-->
-<!--        lazy-rules-->
-<!--        :rules="[-->
-<!--          val=>val && val.length>0||'Porfavor llenar este campo',-->
-<!--          val => val >= $store.state.user.unid.inicio && val <= $store.state.user.unid.fin || 'Tiene que estar en el rango de '+$store.state.user.unid.inicio+'-'+$store.state.user.unid.fin-->
-<!--          ]"-->
-<!--        />-->
-<!--      </div>-->
-      <div class="col-12 col-sm-3">
-        <q-input
-          outlined
-          label="Nombre completo"
-          v-model="model.nombrecompleto"
-        />
-      </div>
-      <div class="col-12 col-sm-3">
-        <q-input
-          outlined
-          label="Padron"
-          v-model="model.padron"
-        />
-      </div>
-      <div class="col-12 col-sm-3">
-        <q-input
-          outlined
-          label="Carnet de identidad"
-          v-model="model.ci"
-        />
-      </div>
-      <div class="col-12 col-sm-3">
-        <q-input
-          label-color="white"
-          color="white"
-          bg-color="red-5"
-          outlined
-          label="TOTAL"
-          v-model="model.total"
-        />
-      </div>
-      <div class="col-12 col-sm-3"></div>
-      <div class="col-12 col-sm-3">
-        <q-btn @click="cancelar" icon="add_circle" label="Cancelar comprobante" color="warning" />
-      </div>
-      <div class="col-12 q-mb-lg">
-        <q-table
-        title="Detalle"
-        dense
-        :columns="columns"
-        :data="model.detalles"
-        />
-      </div>
-      <div class="col-8">
-        <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>
-      </div>
-      <div class="col-4">
-        <q-btn color="primary" icon="search" @click="mispagos" label="Buscar" class="full-width full-height" />
+      <div class="col-12">
+      <q-form @submit.prevent="historial">
+        <div class="row">
+          <div class="col-4 q-pa-xs">
+            <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>
+          </div>
+          <div class="col-4 q-pa-xs">
+    <!--        <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>-->
+            <q-select v-model="unidad" outlined :options="unidades" option-label="nombre" option-value="id" required/>
+          </div>
+
+          <div class="col-4 q-pa-xs">
+            <q-btn color="primary" type="submit" icon="search"  label="Buscar" class="full-width full-height" />
+          </div>
+        </div>
+      </q-form>
       </div>
       <div class="col-12 q-pt-md">
-
         <q-table
         title="Historial de cobros"
         :columns="pcolumns"
@@ -93,22 +27,19 @@
       </div>
       <div class="col-12 q-pt-md">
         <q-btn color="info" :label="'Total '+ total +'BS'" class="full-width text-red text-bold"/>
-        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>
+<!--        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>-->
       </div>
     </div>
   </q-page>
 </template>
-
 <script>
-//const stringOptions = [
-//'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
-//]
 import { jsPDF } from "jspdf";
 import {date} from 'quasar'
 export default {
   data() {
     return {
       model:'',
+      unidad:'',
       fecha:date.formatDate(Date.now(),'YYYY-MM-DD'),
       options: [
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
@@ -122,8 +53,9 @@ export default {
         {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
       ],
       pcolumns:[
-        {name:'nrocomprobante',label:'Numero comprobante', align:'left',field:'nrocomprobante',sortable:true},
-        {name:'nrotramite',label:'Numero tramite', align:'left',field:'nrotramite',sortable:true},
+        {name:'nrocomprobante',label:'N comprobante', align:'left',field:'nrocomprobante',sortable:true},
+        {name:'nrotramite',label:'N tramite', align:'left',field:'nrotramite',sortable:true},
+        {name:'unidad',label:'Unidad', align:'left',field:'unidad',sortable:true},
         {name:'cliente',label:'Contribuyente', align:'left',field:'cliente', sortable:true},
         {name:'ci',label:'Carnet identidad', align:'left',field:'ci',sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
@@ -131,13 +63,44 @@ export default {
       ],
       comprobantes:[],
       pagos:[],
+      unidades:[]
     };
   },
   created() {
-    this.miscomprobante()
-    this.mispagos()
+    // this.miscomprobante()
+    // this.mispagos()
+    this.$axios.get(process.env.URL+'/unid').then(res=>{
+      this.unidades=res.data
+      // console.log(res.data)
+    })
   },
   methods: {
+    historial(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.URL+'/historial',{fecha:this.fecha,unid_id:this.unidad.id}).then(res=>{
+        console.log(res.data)
+        this.$q.loading.hide()
+        this.pagos=[]
+        res.data.forEach(r=>{
+          this.pagos.push({
+            nrotramite:r.nrotramite,
+            nrocomprobante:r.nrocomprobante,
+            cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            cajero:r.cajero,
+            ci:r.cliente.ci,
+            total:r.total,
+            unidad:r.unid.nombre,
+          })
+        })
+      }).catch(err=>{
+        // console.log(err.response)
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
+        })
+      })
+    },
     imprimir(){
       function header(fecha){
         var img = new Image()
@@ -184,22 +147,22 @@ export default {
 
       doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
     },
-    miscomprobante(){
-      this.$axios.post(process.env.URL+'/buscarimpreso').then(res=>{
-        this.comprobantes=[]
-        res.data.forEach(r=>{
-          this.comprobantes.push({
-            label:r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' '+r.nrocomprobante,
-            id:r.id,
-            detalles:r.detalles,
-            nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
-            padron:r.padron,
-            ci:r.cliente.ci,
-            total:r.total,
-          })
-        })
-      })
-    },
+    // miscomprobante(){
+    //   this.$axios.post(process.env.URL+'/buscarimpreso').then(res=>{
+    //     this.comprobantes=[]
+    //     res.data.forEach(r=>{
+    //       this.comprobantes.push({
+    //         label:r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' '+r.nrocomprobante,
+    //         id:r.id,
+    //         detalles:r.detalles,
+    //         nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+    //         padron:r.padron,
+    //         ci:r.cliente.ci,
+    //         total:r.total,
+    //       })
+    //     })
+    //   })
+    // },
     mispagos(){
       this.$q.loading.show()
       this.$axios.post(process.env.URL+'/mispagos',{fecha:this.fecha}).then(res=>{

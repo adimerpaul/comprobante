@@ -44,6 +44,9 @@ class Comprobante extends Model
     public function cliente(){
         return $this->belongsTo(Cliente::class);
     }
+    public function unid(){
+        return $this->belongsTo(Unid::class);
+    }
     public function detalles(){
         return $this->hasMany(Detalle::class);
     }

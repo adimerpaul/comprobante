@@ -109,7 +109,7 @@ export default {
   methods: {
     miscomprobante(){
       this.$axios.get(process.env.URL+'/comprobante').then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.comprobantes=[]
         res.data.forEach(r=>{
           this.comprobantes.push({
@@ -184,14 +184,16 @@ export default {
         doc.text(x+2, y+16, dat.literal.toString()+' 00/100Bs');
         doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
         doc.save("Comprobante.pdf");
-      }).catch(err=>{
-        console.log(err);
-        // this.$q.dialog({
-        //   title:'Error',
-        //   message:err.toString()
-        // })
-        this.$q.loading.hide()
       })
+      //   .catch(err=>{
+      //   console.log(err);
+      //   // this.$q.dialog({
+      //   //   message:err.response.data.message,
+      //   //   icon:'error',
+      //   //   color:'red'
+      //   // })
+      //   this.$q.loading.hide()
+      // })
     },
       filterFn (val, update) {
         if (val === '') {

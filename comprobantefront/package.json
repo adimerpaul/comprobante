@@ -2,7 +2,7 @@
   "name": "comprobantefront",
   "version": "0.0.1",
   "description": "A Quasar Framework app",
-  "productName": "Quasar App",
+  "productName": "Comprobantes",
   "author": "adimerpaul <adimer101@gmail.com>",
   "private": true,
   "scripts": {

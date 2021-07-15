@@ -45,6 +45,7 @@
                 label="Expedido"
                 v-model="expedido"
                 lazy-rules
+                style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
@@ -54,6 +55,7 @@
                 label="Paterno o razon"
                 v-model="paterno"
                 lazy-rules
+                style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
@@ -63,6 +65,7 @@
                 label="Materno"
                 v-model="materno"
                 lazy-rules
+                style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
@@ -72,6 +75,7 @@
                 label="Nombres"
                 v-model="nombre"
                 lazy-rules
+                style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
@@ -81,6 +85,7 @@
                 label="Padron"
                 v-model="padron"
                 lazy-rules
+                style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>
@@ -101,6 +106,7 @@
                 label="Numero casa"
                 v-model="numcasa"
                 lazy-rules
+                type="number"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
             </div>

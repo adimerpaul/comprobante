@@ -38,8 +38,19 @@ class ComprobanteController extends Controller
         return Comprobante::with('cliente')
             ->with('detalles')
             ->whereDate('fechapago',$request->fecha)
-            ->where('cajero',$request->user()->name)
+//            ->where('cajero',$request->user()->name)
             ->where('unid_id',$request->user()->unid_id)
+            ->where('estado','PAGADO')
+            ->get();
+    }
+    public function historial(Request $request){
+//        return $request;
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->whereDate('fechapago',$request->fecha)
+//            ->where('cajero',$request->user()->name)
+            ->where('unid_id',$request->unid_id)
+            ->with('unid')
             ->where('estado','PAGADO')
             ->get();
     }
@@ -62,25 +73,25 @@ class ComprobanteController extends Controller
 //        return $request->user();
         if (Cliente::where('ci',$request->ci)->get()->count()==0 && $request->ci!=''){
             $cliente=Cliente::create([
-                'paterno'=>$request->paterno,
-                'ci'=>$request->ci,
-                'materno'=>$request->materno,
-                'nombre'=>$request->nombre,
-                'padron'=>$request->padron,
-                'expedido'=>$request->expedido,
-                'direccion'=>$request->direccion,
-                'numcasa'=>$request->numcasa,
+                'paterno'=>$request->paterno==null?'':$request->paterno,
+                'ci'=>$request->ci==null?'':$request->ci,
+                'materno'=> strtoupper($request->materno==null?'':$request->materno),
+                'nombre'=>strtoupper($request->nombre==null?'':$request->nombre),
+                'padron'=>strtoupper($request->padron==null?'':$request->padron),
+                'expedido'=>strtoupper($request->expedido==null?'':$request->expedido),
+                'direccion'=>strtoupper($request->direccion==null?'':$request->direccion),
+                'numcasa'=>strtoupper($request->numcasa==null?'':$request->numcasa),
             ]);
 //            return $cliente;
         }else{
             $cliente=Cliente::where('ci',$request->ci)->firstOrFail();
-            $cliente->nombre=$request->nombre;
-            $cliente->paterno=$request->paterno;
-            $cliente->materno=$request->materno;
-            $cliente->padron=$request->padron;
-            $cliente->expedido=$request->expedido;
-            $cliente->direccion=$request->direccion;
-            $cliente->numcasa=$request->numcasa;
+            $cliente->nombre=strtoupper($request->nombre==null?'':$request->nombre);
+            $cliente->paterno=strtoupper($request->paterno==null?'':$request->paterno);
+            $cliente->materno=strtoupper($request->materno==null?'':$request->materno);
+            $cliente->padron=strtoupper($request->padron==null?'':$request->padron);
+            $cliente->expedido=strtoupper($request->expedido==null?'':$request->expedido);
+            $cliente->direccion=strtoupper($request->direccion==null?'':$request->direccion);
+            $cliente->numcasa=strtoupper($request->numcasa==null?'':$request->numcasa);
             $cliente->save();
         }
 //        return $cliente;

@@ -211,22 +211,25 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/empresa"
-          exact
-          v-if="$store.state.boolempresa"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/empresa" exact v-if="$store.state.boolempresa">
+          <q-item-section avatar>
             <q-icon name="settings_overscan" />
           </q-item-section>
-
           <q-item-section>
             <q-item-label>Empresa</q-item-label>
             <q-item-label caption>
               Registro de empresas
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable to="/verificar" exact v-if="$store.state.boolempresa">
+          <q-item-section avatar>
+            <q-icon name="history" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Verificar pagos</q-item-label>
+            <q-item-label caption>
+              Historial de pagos
             </q-item-label>
           </q-item-section>
         </q-item>
