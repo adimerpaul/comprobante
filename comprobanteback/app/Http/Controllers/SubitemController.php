@@ -71,7 +71,11 @@ class SubitemController extends Controller
      */
     public function show(Request $request,$item_id)
     {
-        return Subitem::where('item_id',$item_id)->where('unid_id',$request->user()->unid_id)->orderBy('monto')->get();
+        return Subitem::where('item_id',$item_id)
+//            ->where('unid_id',$request->user()->unid_id)
+            ->orderBy('monto')
+            ->where('estado','ACTIVO')
+            ->get();
 //        return
     }
 
@@ -98,7 +102,7 @@ class SubitemController extends Controller
     public function destroy($id)
     {
         //
-        
+
         $subitem=Subitem::find($id);
         $subitem->delete();
         return response()->json(['res'=>'Borrado exitoso'],200);

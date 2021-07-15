@@ -379,7 +379,7 @@ export default {
       this.$axios.get(process.env.URL+'/subitem/'+this.item.id).then(res=>{
         // console.log(res.data);
         res.data.forEach(r=>{
-          this.subitems.push({id:r.id,nombre:r.nombre+' '+r.monto+'Bs',monto:r.monto,codigo:r.codigo,nombre2:r.nombre})
+          this.subitems.push({id:r.id,nombre:r.nombre+' '+ Math.round( r.monto)+'Bs',monto:Math.round(r.monto),codigo:r.codigo,nombre2:r.nombre})
         });
       })
     },
