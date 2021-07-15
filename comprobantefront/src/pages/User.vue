@@ -236,6 +236,7 @@
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
+<!--            <pre>{{dato2}}</pre>-->
             <q-select
               filled
               label="Unidad"
@@ -244,6 +245,7 @@
               option-label="nombre"
               option-value="id"
             />
+
             <q-input
               filled
               label="Fecha limite"
@@ -295,6 +297,7 @@
 
 <script>
 import { date } from 'quasar'
+const { addToDate } = date
 
 export default {
   data() {
@@ -304,7 +307,7 @@ export default {
       dialog_del: false,
       filter:'',
       dato: {
-        fechalimite:date.formatDate(Date.now(), 'YYYY-MM-DD')
+        fechalimite:date.formatDate( addToDate(new Date(),{days:7}) , 'YYYY-MM-DD')
       },
       model:'',
       dato2: {},
@@ -337,7 +340,6 @@ export default {
     this.$axios.get(process.env.URL+'/permiso').then(res=>{
       // console.log(res.data)
       // this.permisos=res.data
-
       res.data.forEach(r=>{
           this.permisos.push({id:r.id,nombre:r.nombre,estado:false})
           this.permisos2.push({id:r.id,nombre:r.nombre,estado:false})
@@ -345,9 +347,9 @@ export default {
     })
   },
   methods: {
-    updatepermiso(permiso){
-      console.log(permiso)
-    },
+      // updatepermiso(permiso){
+      //   console.log(permiso)
+      // },
     updatepermisos(){
 
       this.$axios.put(process.env.URL+'/updatepermisos/'+this.dato2.id,{permisos:this.permisos2}).then(res=>{
@@ -395,7 +397,9 @@ export default {
     },
 
     editRow(item) {
-      this.dato2 = item.row;
+      this.dato2 = item.row
+      this.dato2.unid_id = item.row.unid
+      // console.log(this.dato2)
       this.dialog_mod = true;
     },
     deleteRow(item) {
@@ -437,15 +441,13 @@ export default {
     },
     onMod() {
       this.$q.loading.show();
-      this.$axios
-        .put(process.env.URL + "/user/" + this.dato2.id, {name:this.dato2.name,
+      this.$axios.put(process.env.URL + "/user/" + this.dato2.id, {name:this.dato2.name,
         password:this.dato2.password,
         email:this.dato2.email,
         unid_id:this.dato2.unid_id.id,
         fechalimite:this.dato2.fechalimite,
         codigo:this.dato2.codigo,
-      })
-        .then((res) => {
+      }).then((res) => {
           this.$q.notify({
             color: "green-4",
             textColor: "white",

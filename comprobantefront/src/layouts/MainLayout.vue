@@ -15,7 +15,8 @@
           {{$store.state.user.name}}
         </q-toolbar-title>
 
-        <div v-if="Object.keys($store.state.user).length>0">Unidad: {{$store.state.user.unid.nombre}}</div>
+        <div v-if="Object.keys($store.state.user).length>0">Uni: {{$store.state.user.unid.nombre}} </div>
+        <q-btn @click="logout" v-if="$store.getters.isLoggedIn" label="salir" color="black" />
       </q-toolbar>
     </q-header>
 
@@ -47,6 +48,25 @@
 
           <q-item-section>
             <q-item-label>Home</q-item-label>
+            <q-item-label caption>
+              Ingreso al sistema
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          v-if="!$store.getters.isLoggedIn"
+          clickable
+          exact
+          to="/login"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="login" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Login</q-item-label>
             <q-item-label caption>
               Ingreso al sistema
             </q-item-label>
@@ -251,8 +271,10 @@ export default {
   },
   methods:{
     logout(){
+      this.$q.loading.show()
         this.$store.dispatch('logout')
           .then(() => {
+            this.$q.loading.hide()
             this.$router.push('/login')
           })
     }

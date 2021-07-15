@@ -13,6 +13,7 @@
                        :rules="[
                          val => val && val.length > 0 || 'Porfavor llenar este campo',
                          ]"
+                       disable
               />
             </div>
 <!--            <div class="col-6">-->
@@ -154,7 +155,16 @@
         </div>
       </div>
       <div class="col-12">
-        <q-btn label="Reset" icon="delete" color="negative" @click="reset" class="q-mb-xs"></q-btn>
+        <q-btn label="Reset" icon="delete" color="negative" @click="reset" class="q-mb-xs"/>
+        <q-toggle
+          v-model="formulario"
+          color="positive"
+          label="Cobrar fomulario"
+          @input="cambio"
+        />
+      </div>
+      <div class="col-12">
+
         <q-table
           dense
           :columns="columns"
@@ -173,6 +183,7 @@
 export default {
   data () {
     return {
+      formulario:true,
       columns:[
         {name:'coditem',label:'Codigo', align:'left',field:'coditem',sortable:true},
         {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
@@ -215,7 +226,7 @@ export default {
   created() {
     this.numcomprobante()
     this.$axios.get(process.env.URL+'/item').then(res=>{
-      console.log(res.data);
+      // console.log(res.data);
       this.items=[];
       res.data.forEach(r=>{
         this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
@@ -224,6 +235,14 @@ export default {
     })
   },
   methods: {
+    cambio() {
+      // console.log(this.formulario)
+      if (this.formulario){
+        this.reset()
+      }else{
+        this.data=[]
+      }
+    },
     numcomprobante(){
       this.$axios.get(process.env.URL+'/comprobante/1').then(res=>{
         // console.log(res.data);
@@ -240,6 +259,12 @@ export default {
       if (this.detalle==''){
         this.$q.dialog({
           title:'Falta colocar detalle'
+        })
+        return false
+      }
+      if (this.nrotramite==''){
+        this.$q.dialog({
+          title:'Falta numero de tramite'
         })
         return false
       }

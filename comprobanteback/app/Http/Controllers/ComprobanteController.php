@@ -24,7 +24,12 @@ class ComprobanteController extends Controller
 
     public function buscarimpreso(Request $request)
     {
-        return Comprobante::with('cliente')->with('detalles')->whereDate('fechalimite','>=',now())->where('unid_id',$request->user()->unid_id)->where('estado','IMPRESO')->get();
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->whereDate('fechalimite','>=',now())
+            ->where('unid_id',$request->user()->unid_id)
+            ->where('estado','IMPRESO')
+            ->get();
     }
 
     public function mispagos(Request $request)
@@ -47,6 +52,13 @@ class ComprobanteController extends Controller
      */
     public function store(Request $request)
     {
+
+//        return count( $request->data);
+        if (count($request->data)==1){
+            $item=$request->data[0]['coditem'];
+        }else{
+            $item=$request->data[1]['coditem'];
+        }
 //        return $request->user();
         if (Cliente::where('ci',$request->ci)->get()->count()==0 && $request->ci!=''){
             $cliente=Cliente::create([
@@ -105,7 +117,7 @@ class ComprobanteController extends Controller
             'cajero'=>'',
             'user_id'=>$request->user()->id,
             'cliente_id'=>$cliente->id,
-            'item'=>$request->data[1]['coditem']
+            'item'=>$item
         ]);
 
         foreach ($request->data as $row){

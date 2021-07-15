@@ -82,7 +82,7 @@
 <!--            {{ props.row.subitems}}-->
             <ul>
               <span v-for="(subitem,index) in props.row.subitems" :key="index">
-                  <li v-if="index<10">
+                  <li >
                     {{subitem.codigo}} {{subitem.nombre}}
                     <q-badge @click="cambiosubitem(subitem)"  v-if="subitem.estado=='ACTIVO'" color="positive">
                       {{ subitem.estado }}
@@ -90,6 +90,7 @@
                     <q-badge @click="cambiosubitem(subitem)"  v-else color="negative">
                       {{ subitem.estado }}
                     </q-badge>
+                    {{subitem.monto}} Bs.
                   </li>
               </span>
 
@@ -590,7 +591,7 @@ export default {
           this.dialog_modsub = false;
           this.misdatos();
         });
-    },  
+    },
     onAdd() {
       this.$q.loading.show();
       this.$axios

@@ -74,7 +74,9 @@ class UserController extends Controller
         return response()->json(['res'=>'salido exitosamente'],200);
     }
     public function me(Request $request){
-        $user=$request->user()->with('unid')->with('permisos')->firstOrFail();
+//        $user=$request->user()->with('unid')->with('permisos')->firstOrFail();
+//        $user=$request->user()
+        $user=User::where('id',$request->user()->id)->with('unid')->with('permisos')->firstOrFail();
         return $user;
 
 //        return User::where('id',1)->with('unid')->get();

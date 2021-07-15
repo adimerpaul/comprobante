@@ -12,6 +12,7 @@ class Unid extends Model
         'nombre',
         'inicio',
         'fin',
+        'codigo',
     ];
     protected $hidden = [
         'created_at',

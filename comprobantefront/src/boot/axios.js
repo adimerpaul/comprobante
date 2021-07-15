@@ -7,8 +7,9 @@ Vue.prototype.$axios = axios
 const token = localStorage.getItem('token')
 if (token) {
   Vue.prototype.$axios.defaults.headers.common['Authorization'] = 'Bearer '+token
-  axios.post(process.env.URL+'/me').then(res=>{
+  Vue.prototype.$axios.post(process.env.URL+'/me').then(res=>{
     // console.log(res.data);
+    // return false;
     // store.state.user=res.data;
     store.commit('auth_success', {token:token,user:res.data})
   })

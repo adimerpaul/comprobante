@@ -14,7 +14,15 @@
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">
-
+            <q-input
+              filled
+              v-model="dato.codigo"
+              type="text"
+              label="Codigo de unidad"
+              hint="Codigo de la unidad"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
+            />
             <q-input
               filled
               v-model="dato.nombre"
@@ -55,7 +63,14 @@
       </q-card>
     </q-dialog>
 
-    <q-table title="Unidades" :data="data" :columns="columns" row-key="name" :rows-per-page-options="[50,100]">
+    <q-table title="Unidades" :data="data" :columns="columns" row-key="name" :rows-per-page-options="[50,100,0]" :filter="filter">
+      <template v-slot:top-right>
+        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+          <template v-slot:append>
+            <q-icon name="search" />
+          </template>
+        </q-input>
+      </template>
       <template v-slot:body-cell-opcion="props">
         <q-td :props="props">
         <q-btn
@@ -65,7 +80,15 @@
             color="yellow"
             @click="editRow(props)"
             icon="edit"
-          ></q-btn>
+          />
+          <q-btn
+            dense
+            round
+            flat
+            @click="comprobante(props)"
+            color="secondary"
+            icon="add_circle"
+          />
           <q-btn
             dense
             round
@@ -73,7 +96,7 @@
             color="red"
             @click="deleteRow(props)"
             icon="delete"
-          ></q-btn>
+          />
         </q-td>
       </template>
     </q-table>
@@ -85,6 +108,15 @@
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form @submit="onMod" class="q-gutter-md">
+            <q-input
+              filled
+              v-model="dato2.codigo"
+              type="text"
+              label="Codigo del Unidad"
+              hint="Ingresar codigo"
+              lazy-rules
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
+            />
             <q-input
               filled
               v-model="dato2.nombre"
@@ -142,6 +174,7 @@
 export default {
   data() {
     return {
+      filter:'',
       alert: false,
       dialog_mod: false,
       dialog_del: false,
@@ -152,29 +185,10 @@ export default {
       unidades:[],
       uni:{},
       columns: [
-
-        {
-          name: "nombre",
-          align: "left",
-          label: "nombre",
-          field: "nombre",
-          sortable: true,
-        },
-        {
-          name: "inicio",
-          align: "left",
-          label: "Inicio",
-          field: "inicio",
-          sortable: true,
-        },
-        {
-          name: "fin",
-          align: "left",
-          label: "Fin",
-          field: "fin",
-          sortable: true,
-        },
-
+        {name:"codigo",align: "right",label:"Codigo",field: "codigo",sortable: true},
+        {name: "nombre", align: "left", label: "nombre", field: "nombre", sortable: true,},
+        {name: "inicio", align: "left", label: "Inicio", field: "inicio", sortable: true,},
+        {name: "fin", align: "left", label: "Fin", field: "fin", sortable: true,},
         { name: "opcion", label: "Opcion", field: "action", sortable: false },
       ],
       data: [],
@@ -184,6 +198,36 @@ export default {
     this.misdatos();
   },
   methods: {
+    comprobante(item){
+      // this.dato2 = item.row;
+      this.$q.dialog({
+        title:'Numero de comprobante',
+        prompt:{
+          model:'',
+          type:'number'
+        },
+        cancel:true,
+        persistent:true
+      }).onOk(data=>{
+        // console.log(data);
+        this.$q.loading.show()
+        this.$axios.put(process.env.URL+'/unid/'+item.row.id,{inicio:data,fin: parseInt(data)+100}).then(res=>{
+          this.$q.notify({
+            message:'Modificado correctamente',
+            icon:'cloud_done',
+            color:'green-4'
+          })
+          this.misdatos()
+        }).catch(err=>{
+          this.$q.loading.hide()
+          this.$q.notify({
+            message:err.response.data.message,
+            color:'red',
+            icon:'error'
+          })
+        })
+      })
+    },
     misdatos() {
       this.$q.loading.show();
       this.$axios.get(process.env.URL + "/unid").then((res) => {

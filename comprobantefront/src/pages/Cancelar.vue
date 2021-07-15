@@ -67,10 +67,9 @@
       </div>
       <div class="col-12 col-sm-3"></div>
       <div class="col-12 col-sm-3">
-        <q-btn @click="cancelar" icon="add_circle" label="Cancelar comprobante" color="warning" ></q-btn>
+        <q-btn @click="cancelar" icon="add_circle" label="Cancelar comprobante" color="warning" />
       </div>
-      <div class="col-12">
-
+      <div class="col-12 q-mb-lg">
         <q-table
         title="Detalle"
         dense
@@ -78,8 +77,11 @@
         :data="model.detalles"
         />
       </div>
-      <div class="col-12">
+      <div class="col-8">
         <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>
+      </div>
+      <div class="col-4">
+        <q-btn color="primary" icon="search" @click="mispagos" label="Buscar" class="full-width full-height" />
       </div>
       <div class="col-12 q-pt-md">
 
@@ -201,6 +203,13 @@ export default {
             ci:r.cliente.ci,
             total:r.total,
           })
+        })
+      }).catch(err=>{
+        // console.log(err.response)
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
         })
       })
     },
