@@ -222,7 +222,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable to="/verificar" exact v-if="$store.state.boolempresa">
+        <q-item clickable to="/verificar" exact v-if="$store.state.boolverificar">
           <q-item-section avatar>
             <q-icon name="history" />
           </q-item-section>

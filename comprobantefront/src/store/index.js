@@ -28,6 +28,7 @@ export default new Vuex.Store({
     boolpagocomprobante:false,
     boolcancelarcomprobante:false,
     boolempresa:false,
+    boolverificar:false,
   },
   mutations: {
     auth_request(state){
@@ -46,6 +47,8 @@ export default new Vuex.Store({
       state.boolpagocomprobante=data.user.permisos.find( permiso => permiso.id === 6)!=undefined;
       state.boolcancelarcomprobante=data.user.permisos.find( permiso => permiso.id === 7)!=undefined;
       state.boolempresa=data.user.permisos.find( permiso => permiso.id === 8)!=undefined;
+      state.boolverificar=data.user.permisos.find( permiso => permiso.id === 9)!=undefined;
+
     },
     auth_error(state){
       state.status = 'error'
@@ -62,6 +65,7 @@ export default new Vuex.Store({
       state.boolpagocomprobante=false
       state.boolcancelarcomprobante=false
       state.boolempresa=false
+      state.boolverificar=false
     },
   },
   actions: {

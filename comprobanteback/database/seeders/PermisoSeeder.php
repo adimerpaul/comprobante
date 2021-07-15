@@ -15,14 +15,15 @@ class PermisoSeeder extends Seeder
     public function run()
     {
         DB::table('permisos')->insert([
-            ["nombre"=>"Contributente"],
-            ["nombre"=>"Usuarios"],
-            ["nombre"=>"Item"],
-            ["nombre"=>"Unidades"],
-            ["nombre"=>"Comprobante"],
-            ["nombre"=>"Imprimir comprobante"],
-            ["nombre"=>"Pagos comprobante"],
-            ["nombre"=>"Empresa"],
+            ["id"=>1,"nombre"=>"Contributente"],
+            ["id"=>2,"nombre"=>"Usuarios"],
+            ["id"=>3,"nombre"=>"Item"],
+            ["id"=>4,"nombre"=>"Unidades"],
+            ["id"=>5,"nombre"=>"Comprobante"],
+            ["id"=>6,"nombre"=>"Imprimir comprobante"],
+            ["id"=>7,"nombre"=>"Pagos comprobante"],
+            ["id"=>8,"nombre"=>"Empresa"],
+            ["id"=>9,"nombre"=>"Verificar pagos"],
 //            ["nombre"=>"Contributente"],
 //            ["nombre"=>"Contributente"],
 //            ["nombre"=>"Contributente"],
