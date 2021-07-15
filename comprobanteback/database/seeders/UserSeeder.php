@@ -23,7 +23,14 @@ class UserSeeder extends Seeder
                'codigo'=>'ADM',
                'password'=>Hash::make('admin'),
                'unid_id'=>16
-           ]
+           ],
+            [
+                'email'=>'c@t.com',
+                'name'=>'CELSO ACHOCALLE',
+                'codigo'=>'CEL',
+                'password'=>Hash::make('123456789'),
+                'unid_id'=>3
+            ],
         ]);
     }
 }

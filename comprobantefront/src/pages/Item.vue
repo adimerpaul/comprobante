@@ -280,6 +280,7 @@
               filled
               v-model="dato2.submonto"
               type="number"
+              step="0.01"
               label="Monto"
               hint="Ingresar monto"
               lazy-rules
