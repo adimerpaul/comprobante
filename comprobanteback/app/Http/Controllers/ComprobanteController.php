@@ -172,8 +172,8 @@ class ComprobanteController extends Controller
 //            'fechapago'=>date('Y-m-d'),
 //            'cajero'=>$request->user()->name,
             'estado'=>'IMPRESO',
-            'nrocomprobante'=>$request->nrocomprobante,
-            'controlinterno'=>$request->nrocomprobante.date('d/m/Y'),
+            'nrocomprobante'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT),
+            'controlinterno'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT).date('d/m/Y'),
         ]);
 //        echo $comprobante;
         return Comprobante::with('cliente')->where('id',$comprobante->id)->with('detalles')->get();

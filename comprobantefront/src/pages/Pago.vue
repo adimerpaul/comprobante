@@ -151,7 +151,7 @@ export default {
         this.$q.loading.hide()
         this.model=''
         this.$q.dialog({
-          title:'Impreso exitoso'
+          title:'Creado exitoso'
         })
         this.miscomprobante()
         let dat=res.data[0];
@@ -183,7 +183,10 @@ export default {
         doc.text(x+15.5, y+18, dat.total.toString()+' Bs');
         doc.text(x+2, y+16, dat.literal.toString()+' 00/100Bs');
         doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
-        doc.save("Comprobante.pdf");
+        // doc.save("Comprobante.pdf");
+
+        window.open(doc.output('bloburl'), '_blank');
+
       })
       //   .catch(err=>{
       //   console.log(err);

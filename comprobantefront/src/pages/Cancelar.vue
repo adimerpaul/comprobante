@@ -182,6 +182,7 @@ export default {
       doc.text(18, y+4, this.total+'Bs')
 
 
+
       doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
     },
     miscomprobante(){
@@ -189,7 +190,7 @@ export default {
         this.comprobantes=[]
         res.data.forEach(r=>{
           this.comprobantes.push({
-            label:r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' '+r.nrocomprobante,
+            label:'padron:'+r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' nro:'+r.nrocomprobante,
             id:r.id,
             detalles:r.detalles,
             nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
