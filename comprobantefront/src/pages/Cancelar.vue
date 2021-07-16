@@ -96,13 +96,21 @@
         <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>
       </div>
     </div>
+
+
+
+
   </q-page>
 </template>
 
 <script>
+
+
 //const stringOptions = [
 //'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
 //]
+
+
 import { jsPDF } from "jspdf";
 import {date} from 'quasar'
 export default {
@@ -136,6 +144,9 @@ export default {
   created() {
     this.miscomprobante()
     this.mispagos()
+  },
+  mounted() {
+
   },
   methods: {
     imprimir(){
@@ -180,6 +191,8 @@ export default {
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
       doc.text(18, y+4, this.total+'Bs')
+
+
 
 
 
@@ -329,4 +342,3 @@ export default {
 };
 </script>
 
-<style scoped></style>

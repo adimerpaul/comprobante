@@ -76,6 +76,8 @@
 
       </div>
     </div>
+    <div id="qr_code">
+    </div>
   </q-page>
 </template>
 
@@ -83,7 +85,9 @@
 //const stringOptions = [
 //'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
 //]
+import $ from 'jquery'
 import { jsPDF } from "jspdf";
+
 
 export default {
   data() {
@@ -105,6 +109,9 @@ export default {
   },
   created() {
     this.miscomprobante()
+  },
+  mounted() {
+
   },
   methods: {
     miscomprobante(){
@@ -146,8 +153,11 @@ export default {
       }
       // return  false;
       this.$q.loading.show()
-      this.$axios.put(process.env.URL+'/comprobante/'+this.model.id,{nrocomprobante:this.nrocomprobante}).then(res=>{
+      this.$axios.put(process.env.URL+'/comprobante/'+this.model.id,{nrocomprobante:this.nrocomprobante}).then(
+        async res=>{
         // console.log(res.data)
+
+
         this.$q.loading.hide()
         this.model=''
         this.$q.dialog({
@@ -182,10 +192,52 @@ export default {
 
         doc.text(x+15.5, y+18, dat.total.toString()+' Bs');
         doc.text(x+2, y+16, dat.literal.toString()+' 00/100Bs');
-        doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
+        // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
         // doc.save("Comprobante.pdf");
 
-        window.open(doc.output('bloburl'), '_blank');
+            // var qrcode = await new QRCode(document.getElementById("qr_code"), {
+            //   text: "https://cravecookie.com/",
+            //   width: 128,
+            //   height: 128,
+            //   colorDark : "#000000",
+            //   colorLight : "#ffffff",
+            //   correctLevel : QRCode.CorrectLevel.H
+            // });
+            // let base64Image =  await $('#qr_code img').attr('src');
+            // await  console.log(base64Image);
+            //
+            // await doc.addImage(base64Image, 'png', 0, 0, 2, 2);
+            //
+            // await  window.open(doc.output('bloburl'), '_blank');
+        let miPrimeraPromise = new Promise((resolve, reject) => {
+          // Llamamos a resolve(...) cuando lo que estabamos haciendo finaliza con éxito, y reject(...) cuando falla.
+          // En este ejemplo, usamos setTimeout(...) para simular código asíncrono.
+          // En la vida real, probablemente uses algo como XHR o una API HTML5.
+          var qrcode = new QRCode(document.getElementById("qr_code"), {
+            text: dat.controlinterno.toString(),
+            width: 128,
+            height: 128,
+            colorDark : "#000000",
+            colorLight : "#ffffff",
+            correctLevel : QRCode.CorrectLevel.H
+          });
+
+          setTimeout(function(){
+            resolve("¡Éxito!"); // ¡Todo salió bien!
+          }, 250);
+        });
+        miPrimeraPromise.then((successMessage) => {
+          // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
+          // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
+          console.log("¡Sí! " + successMessage);
+          let base64Image = $('#qr_code img').attr('src');
+          console.log(base64Image);
+
+          doc.addImage(base64Image, 'png', x+8.7, y+20.5, 1.5, 1.5);
+
+          window.open(doc.output('bloburl'), '_blank');
+        });
+
 
       })
       //   .catch(err=>{
@@ -219,4 +271,8 @@ export default {
 };
 </script>
 
-<style scoped></style>
+<style scoped>
+#qr_code{
+  display: none;
+}
+</style>
