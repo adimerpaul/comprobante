@@ -49,9 +49,9 @@ class UnidController extends Controller
      * @param  \App\Models\Unid  $unid
      * @return \Illuminate\Http\Response
      */
-    public function show(Unid $unid)
+    public function show(Request $request,Unid $unid)
     {
-        //
+        return Unid::where('id',$request->user()->unid_id)->firstOrFail();
     }
 
     /**

@@ -33,6 +33,10 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/mispagos',[\App\Http\Controllers\ComprobanteController::class,'mispagos']);
     Route::post('/historial',[\App\Http\Controllers\ComprobanteController::class,'historial']);
     Route::put('/pago/{comprobante}',[\App\Http\Controllers\ComprobanteController::class,'pago']);
+    Route::post('/loscomprobantes',[\App\Http\Controllers\ComprobanteController::class,'loscomprobantes']);
+    Route::put('/pagocaja/{comprobante}',[\App\Http\Controllers\ComprobanteController::class,'pagocaja']);
+    Route::post('/mispagoscaja',[\App\Http\Controllers\ComprobanteController::class,'mispagoscaja']);
+
 
 
     Route::apiResource('/cliente',\App\Http\Controllers\ClienteController::class);
@@ -47,5 +51,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
 
     Route::get('/lista/{ci}',[\App\Http\Controllers\ClienteController::class,'listacliente']);
     Route::get('/subitemlist/{id}',[\App\Http\Controllers\SubitemController::class,'listasubitem']);
+
+    Route::resource('/anulado',\App\Http\Controllers\AnuladoController::class);
 
 });

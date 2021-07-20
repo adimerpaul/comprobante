@@ -39,10 +39,26 @@ class ComprobanteController extends Controller
             ->with('detalles')
             ->whereDate('fechapago',$request->fecha)
 //            ->where('cajero',$request->user()->name)
+            ->where('porcaja',false)
             ->where('unid_id',$request->user()->unid_id)
             ->where('estado','PAGADO')
             ->get();
     }
+
+    public function mispagoscaja(Request $request)
+    {
+//        return Comprobante::all();
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->with('unid')
+            ->whereDate('fechapago',$request->fecha)
+            ->where('cajero',$request->user()->name)
+            ->where('porcaja',true)
+//            ->where('unid_id',$request->unid_id)
+            ->where('estado','PAGADO')
+            ->get();
+    }
+
     public function historial(Request $request){
 //        return $request;
         return Comprobante::with('cliente')
@@ -158,6 +174,14 @@ class ComprobanteController extends Controller
     {
         return Comprobante::where('user_id',$request->user()->id)->get()->count();
     }
+    public function loscomprobantes(Request $request){
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->whereDate('fechalimite','>=',now())
+            ->where('unid_id',$request->unid_id)
+            ->where('estado','IMPRESO')
+            ->get();
+    }
 
     /**
      * Update the specified resource in storage.
@@ -190,6 +214,17 @@ class ComprobanteController extends Controller
         ]);
         echo $comprobante;
 //        return Comprobante::with('cliente')->where('id',$comprobante->id)->with('detalles')->get();
+    }
+    public function pagocaja(Request $request, Comprobante $comprobante)
+    {
+//        return 12;
+        $comprobante->update([
+            'fechapago'=>date('Y-m-d'),
+            'cajero'=>$request->user()->name,
+            'estado'=>'PAGADO',
+            'porcaja'=>1
+        ]);
+        echo $comprobante;
     }
 
     /**

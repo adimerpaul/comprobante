@@ -29,6 +29,8 @@ export default new Vuex.Store({
     boolcancelarcomprobante:false,
     boolempresa:false,
     boolverificar:false,
+    boolpagocaja:false,
+    boolanular:false,
   },
   mutations: {
     auth_request(state){
@@ -39,16 +41,17 @@ export default new Vuex.Store({
       state.token = data.token
       state.user = data.user
       // console.log(data.user)
-      state.boolcontribuyente=data.user.permisos.find( permiso => permiso.id === 1)!=undefined;
-      state.boolusuario=data.user.permisos.find( permiso => permiso.id === 2)!=undefined;
-      state.boolitem=data.user.permisos.find( permiso => permiso.id === 3)!=undefined;
-      state.boolunidad=data.user.permisos.find( permiso => permiso.id === 4)!=undefined;
-      state.boolcomprobante=data.user.permisos.find( permiso => permiso.id === 5)!=undefined;
-      state.boolpagocomprobante=data.user.permisos.find( permiso => permiso.id === 6)!=undefined;
-      state.boolcancelarcomprobante=data.user.permisos.find( permiso => permiso.id === 7)!=undefined;
-      state.boolempresa=data.user.permisos.find( permiso => permiso.id === 8)!=undefined;
-      state.boolverificar=data.user.permisos.find( permiso => permiso.id === 9)!=undefined;
-
+      state.boolcontribuyente=data.user.permisos.find( permiso => permiso.id === 1)!=undefined
+      state.boolusuario=data.user.permisos.find( permiso => permiso.id === 2)!=undefined
+      state.boolitem=data.user.permisos.find( permiso => permiso.id === 3)!=undefined
+      state.boolunidad=data.user.permisos.find( permiso => permiso.id === 4)!=undefined
+      state.boolcomprobante=data.user.permisos.find( permiso => permiso.id === 5)!=undefined
+      state.boolpagocomprobante=data.user.permisos.find( permiso => permiso.id === 6)!=undefined
+      state.boolcancelarcomprobante=data.user.permisos.find( permiso => permiso.id === 7)!=undefined
+      state.boolempresa=data.user.permisos.find( permiso => permiso.id === 8)!=undefined
+      state.boolverificar=data.user.permisos.find( permiso => permiso.id === 9)!=undefined
+      state.boolpagocaja=data.user.permisos.find( permiso => permiso.id === 10)!=undefined
+      state.boolanular=data.user.permisos.find( permiso => permiso.id === 11)!=undefined
     },
     auth_error(state){
       state.status = 'error'
@@ -66,6 +69,8 @@ export default new Vuex.Store({
       state.boolcancelarcomprobante=false
       state.boolempresa=false
       state.boolverificar=false
+      state.boolpagocaja=false
+      state.boolanular=false
     },
   },
   actions: {

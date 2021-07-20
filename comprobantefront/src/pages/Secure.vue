@@ -2,8 +2,7 @@
   <q-page class="q-px-md q-pt-lg">
     <div class="row">
       <div class="col-12 col-md-6 q-pa-xs ">
-        <q-form
-        >
+        <q-form ref="myForm">
           <div class="row">
             <div class="col-12">
               <q-input label="No Tramite:"
@@ -33,14 +32,15 @@
               <q-input label="CI NIT RUC:"
                        outlined
                        v-model="ci"
-                       @keyup.prevent="buscarcliente"
+                       @input="buscarcliente"
                        lazy-rules
                        :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
               />
               <i v-if="spinner" class="fa fa-spinner"></i>
             </div>
             <div class="col-4">
-              <q-input
+              <q-select
+                :options="['CH','LP','CB','OR','PT','TJ','SC','BE','PD','OTROS']"
                 outlined
                 label="Expedido"
                 v-model="expedido"
@@ -194,7 +194,7 @@ export default {
         {name:'coditem',label:'Codigo', align:'left',field:'coditem',sortable:true},
         {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
         {name:'precio',label:'Precio', align:'left',field:'precio',    format: val => `${val} Bs`,sortable:true},
-        {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad',sortable:true},
+        {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad', sortable:true},
         {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
       ],
       data:[
@@ -250,9 +250,11 @@ export default {
       }
     },
     numcomprobante(){
+      this.$q.loading.show()
       this.$axios.get(process.env.URL+'/comprobante/1').then(res=>{
         // console.log(res.data);
         this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
+        this.$q.loading.hide()
       })
     },
     crear(){
@@ -294,10 +296,12 @@ export default {
           numcasa:this.numcasa,
           data:this.data,
         }).then((res)=>{
-          console.log(res.data)
-          this.numcomprobante();
-          this.$q.loading.hide();
-          // this.mireset();
+          // console.log(res.data)
+          this.$refs.myForm.resetValidation()
+          this.numcomprobante()
+          this.$q.loading.hide()
+          this.mireset()
+          this.detalle=''
           this.ci='';
           this.paterno='';
           this.materno='';
@@ -374,10 +378,12 @@ export default {
     buscarsubitems(){
       // console.log('a');
       // console.log(this.item);
+      this.$q.loading.show()
       this.subitems=[];
       this.subitem='';
       this.$axios.get(process.env.URL+'/subitem/'+this.item.id).then(res=>{
         // console.log(res.data);
+        this.$q.loading.hide()
         res.data.forEach(r=>{
           this.subitems.push({id:r.id,nombre:r.nombre+' '+ Math.round( r.monto)+'Bs',monto:Math.round(r.monto),codigo:r.codigo,nombre2:r.nombre})
         });
@@ -394,6 +400,7 @@ export default {
       this.direccion=''
       this.numcasa=''
       this.spinner=true
+      if (this.ci!='')
       this.$axios.get(process.env.URL+'/cliente/'+this.ci).then(res=>{
         // console.log(res.data);
         this.spinner=false;

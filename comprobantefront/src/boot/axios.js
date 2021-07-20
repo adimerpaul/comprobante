@@ -13,4 +13,6 @@ if (token) {
     // store.state.user=res.data;
     store.commit('auth_success', {token:token,user:res.data})
   })
+}else{
+  // store.dispatch('logout')
 }

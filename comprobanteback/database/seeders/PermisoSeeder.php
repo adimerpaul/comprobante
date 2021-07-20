@@ -24,6 +24,8 @@ class PermisoSeeder extends Seeder
             ["id"=>7,"nombre"=>"Pagos comprobante"],
             ["id"=>8,"nombre"=>"Empresa"],
             ["id"=>9,"nombre"=>"Verificar pagos"],
+            ["id"=>10,"nombre"=>"Pagos caja"],
+            ["id"=>11,"nombre"=>"Anular comprobante"],
 //            ["nombre"=>"Contributente"],
 //            ["nombre"=>"Contributente"],
 //            ["nombre"=>"Contributente"],

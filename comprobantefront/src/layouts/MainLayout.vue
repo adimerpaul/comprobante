@@ -165,7 +165,7 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Comprobantes</q-item-label>
+            <q-item-label>Crear comprobantes</q-item-label>
             <q-item-label caption>
               Crear comprobante
             </q-item-label>
@@ -193,6 +193,26 @@
 
         <q-item
           clickable
+          to="/anular"
+          exact
+          v-if="$store.state.boolanular"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="running_with_errors" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Anular Comprobantes</q-item-label>
+            <q-item-label caption>
+              Imprimir de comprobante
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+        <q-item
+          clickable
           to="/cancelar"
           exact
           v-if="$store.state.boolcancelarcomprobante"
@@ -204,9 +224,28 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Pagos Comprobantes</q-item-label>
+            <q-item-label>Pagos Comprobantes por unidad</q-item-label>
             <q-item-label caption>
-              Pagos de comprobante
+              Pagos de comprobante por unidad
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item
+          clickable
+          to="/pagocaja"
+          exact
+          v-if="$store.state.boolpagocaja"
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="paid" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Pagos por Caja</q-item-label>
+            <q-item-label caption>
+              Pagos por caja
             </q-item-label>
           </q-item-section>
         </q-item>

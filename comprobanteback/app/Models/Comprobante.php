@@ -34,12 +34,14 @@ class Comprobante extends Model
         'formulario',
         'total',
         'literal',
+        'porcaja',
         'controlinterno',
         'estado',
         'cajero',
         'user_id',
         'cliente_id',
         'unid_id',
+        'anulado'
     ];
     public function cliente(){
         return $this->belongsTo(Cliente::class);

@@ -1,7 +1,18 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row">
-      <div class="col-12 col-sm-6">
+      <div class="col-12 col-sm-6 q-pa-xs">
+        <q-select
+        filled
+        v-model="unid"
+        label="Selecionar unidad"
+        :options="unidades"
+        option-value="id"
+        option-label="nombre"
+        @input="loscomprobantes"
+        />
+      </div>
+      <div class="col-12 col-sm-6 q-pa-xs">
         <q-select
           outlined
           filled
@@ -69,9 +80,10 @@
           disable
         />
       </div>
-      <div class="col-12 col-sm-3"></div>
+      <div class="col-12 col-sm-9"></div>
       <div class="col-12 col-sm-3">
         <q-btn @click="cancelar" icon="add_circle" label="Cobrar comprobante" color="warning" />
+
       </div>
       <div class="col-12 q-mb-lg">
         <q-table
@@ -136,23 +148,56 @@ export default {
       pcolumns:[
         {name:'nrocomprobante',label:'Numero comprobante', align:'left',field:'nrocomprobante',sortable:true},
         {name:'nrotramite',label:'Numero tramite', align:'left',field:'nrotramite',sortable:true},
-        {name:'cliente',label:'Contribuyente', align:'left',field:'cliente', sortable:true},
         {name:'ci',label:'Carnet identidad', align:'left',field:'ci',sortable:true},
+        {name:'cliente',label:'Contribuyente', align:'left',field:'cliente', sortable:true},
+        {name:'unidad',label:'Unidad', align:'left',field:'unidad',sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
         {name:'cajero',label:'Cajero', align:'left',field:'cajero',sortable:true},
       ],
       comprobantes:[],
       pagos:[],
+      unidades:[],
+      unid:''
     };
   },
   created() {
-    this.miscomprobante()
+    this.$axios.get(process.env.URL+'/unid').then(res=>{
+      this.unidades=res.data
+      // console.log(this.unidades)
+    }).catch(err=>{
+      this.$q.notify({
+        message:err.response.data.message,
+        color:'red',
+        icon:'error'
+      })
+    })
+    // this.miscomprobante()
     this.mispagos()
+    // this.loscomprobantes()
   },
   mounted() {
 
   },
   methods: {
+    loscomprobantes(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.URL+'/loscomprobantes',{unid_id:this.unid.id}).then(res=>{
+        // console.log(res.data)
+        this.comprobantes=[]
+        this.$q.loading.hide()
+        res.data.forEach(r=>{
+          this.comprobantes.push({
+            label:'padron:'+r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' nro:'+r.nrocomprobante,
+            id:r.id,
+            detalles:r.detalles,
+            nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            padron:r.padron,
+            ci:r.cliente.ci,
+            total:r.total,
+          })
+        })
+      })
+    },
     imprimir(){
       function header(fecha){
         var img = new Image()
@@ -163,10 +208,11 @@ export default {
         doc.text(5, 1.5, 'REGULACION URBANA DE '+fecha)
         doc.text(1, 3, 'Nº COMPROBANTE')
         doc.text(4, 3, 'Nº TRAMITE')
-        doc.text(7, 3, 'CONTRIBUYENTE')
-        doc.text(12, 3, 'CI / RUN / RUC')
-        doc.text(16, 3, 'MONTO BS.')
-        doc.text(18, 3, 'CAJERO')
+        doc.text(6.5, 3, 'CONTRIBUYENTE')
+        doc.text(11.5, 3, 'CI/RUN')
+        doc.text(13.5, 3, 'UNIDAD')
+        doc.text(17, 3, 'MONTO BS.')
+        doc.text(19, 3, 'CAJERO')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -183,10 +229,11 @@ export default {
         y+=0.5
         doc.text(1, y+3, r.nrocomprobante)
         doc.text(4, y+3, r.nrotramite)
-        doc.text(7, y+3, r.cliente)
-        doc.text(12, y+3, r.ci)
-        doc.text(16, y+3, r.total)
-        doc.text(18, y+3, r.cajero )
+        doc.text(6.5, y+3, r.cliente)
+        doc.text(11.5, y+3, r.ci)
+        doc.text(13.5, y+3, r.unidad)
+        doc.text(17, y+3, r.total)
+        doc.text(19, y+3, r.cajero )
         if (y+3>25){
           doc.addPage();
           header(this.fecha)
@@ -202,31 +249,33 @@ export default {
 
       doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
     },
-    miscomprobante(){
-      this.$axios.post(process.env.URL+'/buscarimpreso').then(res=>{
-        this.comprobantes=[]
-        res.data.forEach(r=>{
-          this.comprobantes.push({
-            label:'padron:'+r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' nro:'+r.nrocomprobante,
-            id:r.id,
-            detalles:r.detalles,
-            nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
-            padron:r.padron,
-            ci:r.cliente.ci,
-            total:r.total,
-          })
-        })
-      })
-    },
+    // miscomprobante(){
+    //   this.$axios.post(process.env.URL+'/buscarimpreso').then(res=>{
+    //     this.comprobantes=[]
+    //     res.data.forEach(r=>{
+    //       this.comprobantes.push({
+    //         label:'padron:'+r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' nro:'+r.nrocomprobante,
+    //         id:r.id,
+    //         detalles:r.detalles,
+    //         nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+    //         padron:r.padron,
+    //         ci:r.cliente.ci,
+    //         total:r.total,
+    //       })
+    //     })
+    //   })
+    // },
     mispagos(){
       this.$q.loading.show()
-      this.$axios.post(process.env.URL+'/mispagos',{fecha:this.fecha}).then(res=>{
-        // console.log(res.data)
+      this.$axios.post(process.env.URL+'/mispagoscaja',{fecha:this.fecha}).then(res=>{
+        console.log(res.data)
+
         this.$q.loading.hide()
         this.pagos=[]
         res.data.forEach(r=>{
           this.pagos.push({
             nrotramite:r.nrotramite,
+            unidad:r.unid.nombre,
             nrocomprobante:r.nrocomprobante,
             cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
             cajero:r.cajero,
@@ -257,23 +306,24 @@ export default {
         return false;
       }
       // console.log(      parseInt(this.nrocomprobante)+'---'+this.$store.state.user.unid.fin)
-      if ( parseInt(this.nrocomprobante)< parseInt(this.$store.state.user.unid.inicio) || parseInt(this.nrocomprobante)> parseInt(this.$store.state.user.unid.fin)){
-        this.$q.dialog({
-          title:'Rango de comprobantes no permitidos'
-        })
-        return false;
-      }
+      // if ( parseInt(this.nrocomprobante)< parseInt(this.$store.state.user.unid.inicio) || parseInt(this.nrocomprobante)> parseInt(this.$store.state.user.unid.fin)){
+      //   this.$q.dialog({
+      //     title:'Rango de comprobantes no permitidos'
+      //   })
+      //   return false;
+      // }
       // return  false;
       this.$q.loading.show()
-      this.$axios.put(process.env.URL+'/pago/'+this.model.id,{nrocomprobante:this.nrocomprobante})
+      this.$axios.put(process.env.URL+'/pagocaja/'+this.model.id)
         .then(res=>{
-        // console.log(res.data)
+          this.loscomprobantes()
+        console.log(res.data)
         this.$q.loading.hide()
         this.model=''
         this.$q.dialog({
           title:'Cobro exitoso'
         })
-        this.miscomprobante()
+        // this.miscomprobante()
           this.mispagos()
         // let dat=res.data[0];
         // var doc = new jsPDF('p','cm','letter')
@@ -305,7 +355,8 @@ export default {
         // doc.text(x+2, y+16, dat.literal.toString()+' 00/100Bs');
         // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
         // doc.save("Comprobante.pdf");
-      }).catch(err=>{
+      })
+        .catch(err=>{
         // console.log(err.response.data)
         this.$q.notify({
           // title:'Error',

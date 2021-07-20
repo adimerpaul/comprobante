@@ -28,9 +28,10 @@
         v-model="nrocomprobante"
         type="number"
         lazy-rules
+        @input="misrangos"
         :rules="[
           val=>val && val.length>0||'Porfavor llenar este campo',
-          val => val >= $store.state.user.unid.inicio && val <= $store.state.user.unid.fin || 'Tiene que estar en el rango de '+$store.state.user.unid.inicio+'-'+$store.state.user.unid.fin
+          val => val >= min && val <= max || 'Tiene que estar en el rango de '+min+'-'+max
           ]"
         />
       </div>
@@ -39,6 +40,7 @@
           outlined
           label="Nombre completo"
           v-model="model.nombrecompleto"
+          disable
         />
       </div>
       <div class="col-12 col-sm-3">
@@ -46,6 +48,7 @@
           outlined
           label="Padron"
           v-model="model.padron"
+          disable
         />
       </div>
       <div class="col-12 col-sm-3">
@@ -53,6 +56,7 @@
           outlined
           label="Carnet de identidad"
           v-model="model.ci"
+          disable
         />
       </div>
       <div class="col-12 col-sm-3">
@@ -63,6 +67,7 @@
           outlined
           label="TOTAL"
           v-model="model.total"
+          disable
         />
       </div>
       <div class="col-12">
@@ -92,6 +97,8 @@ import { jsPDF } from "jspdf";
 export default {
   data() {
     return {
+      min:0,
+      max:0,
       model:'',
       options: [
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
@@ -109,14 +116,30 @@ export default {
   },
   created() {
     this.miscomprobante()
+    this.misrangos()
   },
   mounted() {
 
   },
   methods: {
+    misrangos(){
+      this.$axios.get(process.env.URL+'/unid/1').then(res=>{
+        // console.log(res.data)
+        this.min=res.data.inicio
+        this.max=res.data.fin
+      }).catch(err=>{
+        this.$q.notify({
+          message:err.response.data.message,
+          icon:'error',
+          color:'red'
+        })
+      })
+    },
     miscomprobante(){
+      this.$q.loading.show()
       this.$axios.get(process.env.URL+'/comprobante').then(res=>{
         // console.log(res.data)
+        this.$q.loading.hide()
         this.comprobantes=[]
         res.data.forEach(r=>{
           this.comprobantes.push({
@@ -229,7 +252,7 @@ export default {
         miPrimeraPromise.then((successMessage) => {
           // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
           // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
-          console.log("¡Sí! " + successMessage);
+          // console.log("¡Sí! " + successMessage);
           let base64Image = $('#qr_code img').attr('src');
           console.log(base64Image);
 
