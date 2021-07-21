@@ -77,6 +77,7 @@
         :columns="columns"
         :data="model.detalles"
         />
+        <q-btn @click="proforma" icon="add_circle" label="Proforma" color="warning" class="full-width"></q-btn>
         <q-btn @click="cancelar" icon="add_circle" label="Crear comprobante" color="positive" class="full-width"></q-btn>
 
       </div>
@@ -154,6 +155,7 @@ export default {
         })
       })
     },
+
     cancelar(){
       if (this.nrocomprobante==''){
         this.$q.dialog({
@@ -273,6 +275,63 @@ export default {
       //   this.$q.loading.hide()
       // })
     },
+
+    proforma(){
+      if (this.model==''){
+        this.$q.dialog({
+          title:'Seleccione comprobante'
+        })
+        return false;
+      }
+      this.$axios.post(process.env.URL+'/proforma/'+this.model.id).then(
+        async res=>{
+        // console.log(res.data)
+          let dat2=res.data[0];
+
+        
+        var doc = new jsPDF('p','cm','letter')
+        // console.log(dat);
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        var x=0,y=0;
+        doc.text(x+=1, y+=1, 'HONORABLE GOBIERNO MUNICIPAL DE ORURO');
+        doc.text(x+=1, y+=.5, dat2.unid.nombre.toString());
+        doc.text(x+=14, y-=0.5,   'OPERADOR:'+dat2.user.name.toString());
+        doc.text(x, y+=0.5, 'FECHA   :'+dat2.fecha.toString());
+
+        doc.text(x-=5, y+=1, 'PROFORMA DE PAGO');
+        doc.text(x-=10, y+=0.5, '------------------------------------');
+        doc.text(x, y+=0.5, 'TRAMITE : '+dat2.nrotramite.toString());
+        doc.text(x, y+=0.5, 'NOMBRE O RAZON SOCIAL CONTRIBUYENTE: '+dat2.cliente.paterno.toString()+' '+dat2.cliente.materno.toString()+' '+dat2.cliente.nombre.toString()+'  C.I./RUC: '+dat2.cliente.ci.toString()+' '+dat2.cliente.expedido.toString());
+        doc.text(x, y+=0.5, 'DIRECCION : '+dat2.cliente.direccion.toString() + '   PADRON MUNICIPAL : '+dat2.cliente.padron.toString());
+        doc.text(x, y+=0.5, '------------------------------------');
+
+        let xx=x
+        let yy=y+0.7
+        dat2.detalles.forEach(r=>{
+          doc.text(xx, yy, r.codsubitem.toString());
+          doc.text(xx+2.5, yy, r.nombreitem.toString());
+          // doc.text(xx, yy, r.codsubitem.toString());
+          doc.text(xx+14.5, yy, r.subtotal.toString());
+          doc.text(xx+2.5, yy+0.5, r.detalle.toString());
+          yy++
+          // console.log(r)
+        })
+
+        doc.text(xx+5.5, yy+1, 'TOTAL A PAGAR : '+dat2.total.toString()+' Bs');
+
+          // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
+          // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
+          // console.log("¡Sí! " + successMessage);
+
+
+          window.open(doc.output('bloburl'), '_blank');
+
+
+      })
+    },
+
+
       filterFn (val, update) {
         if (val === '') {
           update(() => {

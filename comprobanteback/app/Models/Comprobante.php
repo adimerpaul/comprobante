@@ -49,6 +49,9 @@ class Comprobante extends Model
     public function unid(){
         return $this->belongsTo(Unid::class);
     }
+    public function user(){
+        return $this->belongsTo(User::class);
+    }
     public function detalles(){
         return $this->hasMany(Detalle::class);
     }

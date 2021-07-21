@@ -54,19 +54,22 @@
               type="text"
               label="Padron"
               hint="Ingresar el padron"
+                lazy-rules
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
             <q-input
               v-model="cliente.ci"
               type="text"
               label="CI representante"
-              hint="Ingresar el padron"
+              hint="Ingresar Ci"
+               lazy-rules
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
             <q-input
               readonly
               v-model="cliente.nombre"
               type="text"
-              label="Nombre"
-              hint="Ingresar el padron"
+              label="Nombre Cliente"
             />
 
             <div>
@@ -78,30 +81,11 @@
       </q-card>
     </q-dialog>
 
-    <q-table title="Items" :data="data" :columns="columns" 
-    hide-header
-    :filter="filter"
-    :grid="$q.screen.xs"
+    <q-table title="Empresa" :data="data" :columns="columns" 
     row-key="name">
       <template v-slot:body-cell-opcion="props">
         <q-td :props="props">
-          <q-btn
-            dense
-            round
-            flat
-            color="green"
-            @click="addRow(props)"
-            icon="playlist_add"
-          ></q-btn>
             <q-btn
-            dense
-            round
-            flat
-            color="green"
-            @click="verRow(props)"
-            icon="list"
-          ></q-btn>
-        <q-btn
             dense
             round
             flat
@@ -118,13 +102,6 @@
             icon="delete"
           ></q-btn>
         </q-td>
-      </template>
-      <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
-          <template v-slot:append>
-            <q-icon name="search" />
-          </template>
-        </q-input>
       </template>
     </q-table>
 
@@ -163,62 +140,8 @@
       </q-card>
     </q-dialog>
 
-    <q-dialog v-model="dialog_add">
-      <q-card style="max-width: 80%; width: 50%">
-        <q-card-section class="bg-green-14 text-white">
-          <div class="text-h6">Agregar Subitem</div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-          <q-form @submit="onAdd" class="q-gutter-md">
-            <q-input
-              filled
-              v-model="dato2.subnombre"
-              type="text"
-              label="Nombre del SubItem"
-              hint="Ingresar nombre"
-              lazy-rules
-              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
-            />
-
-            <q-input
-              filled
-              v-model="dato2.submonto"
-              type="number"
-              label="Monto"
-              hint="Ingresar monto"
-              lazy-rules
-              :rules="[(val) => (val>=0 && val.length > 0) || 'Por favor ingresa datos']"
-            />
-
-
-            <div>
-              <q-btn label="Agregar" type="submit" color="positive" icon="add_circle" />
-              <q-btn label="Cancelar" icon="delete" color="negative" v-close-popup />
-            </div>
-          </q-form>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
-    <q-dialog v-model="dialog_list">
-      <q-card style="max-width: 80%; width: 50%">
-        <q-card-section class="bg-green-14 text-white">
-          <div class="text-h6">Lista de Subitem</div>
-        </q-card-section>
-        <q-card-section class="q-pt-xs">
-                <q-table
-                    title="Subitems"
-                    :data="subitem"
-                    :columns="subcol"
-                    row-key="codigo"
-                    />
-            <div>
-              <q-btn label="Cancelar" icon="delete" color="negative" v-close-popup />
-            </div>
-        </q-card-section>
-      </q-card>
-    </q-dialog>
-
+ 
+ 
 
     <q-dialog v-model="dialog_del">
       <q-card>
@@ -242,24 +165,21 @@ export default {
     return {
       alert: false,
       dialog_mod: false,
-      dialog_add: false,
       dialog_del: false,
-      dialog_list: false,
       filter:'',
       dato: {},
       dato2: {},
       options: [],
       props: [],
-      unidades:[],
       uni:{},
       
       columns: [
         {
-          name: "codigo",
+          name: "nit",
           required: true,
-          label: "codigo",
+          label: "nit",
           align: "left",
-          field: (row) => row.codigo,
+          field: (row) => row.nit,
           // format: val => `${val}`,
           sortable: true,
         },

@@ -241,4 +241,8 @@ class ComprobanteController extends Controller
     public function contribuyente($comun){
         return DB::connection('simat')->table('pm01cont')->select('comun','expedido','paterno','materno','nombre','descrip','numcasa','telefono')->where('comun','like','%'.$comun.'%')->limit(10)->get();
     }
+
+    public function proforma($id){
+        return Comprobante::with('cliente')->with('user')->with('unid')->where('id',$id)->with('detalles')->get();
+    }
 }
