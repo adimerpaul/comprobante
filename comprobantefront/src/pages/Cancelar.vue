@@ -160,7 +160,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-        doc.text(5, 1.5, 'REGULACION URBANA DE '+fecha)
+        doc.text(5, 1.5, 'REGULACION DE '+fecha)
         doc.text(1, 3, 'Nº COMPROBANTE')
         doc.text(4, 3, 'Nº TRAMITE')
         doc.text(7, 3, 'CONTRIBUYENTE')
@@ -195,11 +195,6 @@ export default {
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
       doc.text(18, y+4, this.total+'Bs')
-
-
-
-
-
       doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
     },
     miscomprobante(){

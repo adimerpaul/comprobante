@@ -30,8 +30,18 @@
           </template>
         </q-table>
       </div>
+      <div class="col-12 col-md-6 q-pa-xs">
+        <q-input outlined filled type="date" v-model="fecha" label="Fecha de consulta"/>
+      </div>
+      <div class="col-12 col-md-6 q-pa-xs" >
+        <q-btn label="Consultar" @click="misanulados" icon="send" color="warning" class="full-width full-height "/>
+      </div>
       <div class="col-12 q-mt-ms">
         <q-table title="Historial Anulados" :columns="columns" :data="anulados"/>
+      </div>
+      <div class="col-12">
+        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>
+
       </div>
     </div>
   </q-page>
@@ -40,10 +50,11 @@
 <script>
 import $ from 'jquery'
 import { jsPDF } from "jspdf";
-
+import {date} from 'quasar'
 export default {
   data() {
     return {
+      fecha: date.formatDate(Date.now(),'YYYY-MM-DD'),
       comprobantes:[],
       columcomprobantes:[
         {name:'id',label:'#',field:'id',sort:true},
@@ -60,6 +71,7 @@ export default {
         {name:'nrotramite',label:'N Tramite',field:'nrotramite',sort:true},
         {name:'cliente',label:'Cliente',field:'cliente',sort:true},
         {name:'unidad',label:'Unidad',field:'unidad',sort:true},
+        {name:'usuario',label:'Usuario',field:'usuario',sort:true},
         {name:'fecha',label:'Fecha',field:'fecha',sort:true},
       ],
       anulados:[]
@@ -70,6 +82,50 @@ export default {
     this.misanulados()
   },
   methods: {
+    imprimir(){
+      function header(fecha){
+        var img = new Image()
+        img.src = 'logo.jpg'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'RESUMEN DIARIO DE ANULADOS')
+        doc.text(5, 1.5, 'REGULACION DE '+fecha)
+        doc.text(1, 3, 'Nº COMPROBANTE')
+        doc.text(4, 3, 'Nº TRAMITE')
+        doc.text(6.2, 3, 'CONTRIBUYENTE')
+        doc.text(11.5, 3, 'UNIDAD')
+        doc.text(15, 3, 'USUARIO')
+        doc.text(17.5, 3, 'FECHA Y HORA')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header(this.fecha)
+      // let xx=x
+      // let yy=y
+      let y=0
+      this.anulados.forEach(r=>{
+        // xx+=0.5
+        y+=0.5
+        doc.text(1, y+3, r.nrocomprobante)
+        doc.text(4, y+3, r.nrotramite)
+        doc.text(6.2, y+3, r.cliente)
+        doc.text(11.5, y+3, r.unidad)
+        doc.text(15, y+3, r.usuario)
+        doc.text(17.5, y+3, r.fecha )
+        if (y+3>25){
+          doc.addPage();
+          header(this.fecha)
+          y=0
+        }
+      })
+      // doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
+      // doc.text(18, y+4, this.total+'Bs')
+      doc.save("Anulados"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+    },
     anular(props){
       // console.log(props.row)
       this.$q.dialog({
@@ -79,18 +135,20 @@ export default {
       }).onOk(()=>{
         // console.log('a')
         this.$axios.post(process.env.URL+'/anulado',{comprobante_id:props.row.id}).then(res=>{
-          console.log(res.data)
+          // console.log(res.data)
           this.miscomprobante()
           this.misanulados()
         })
       })
     },
     misanulados(){
-      // console.log('a');
+      // console.log(this.fecha);
       this.$q.loading.show()
-      this.$axios.get(process.env.URL+'/anulado').then(res=>{
+      this.$axios.get(process.env.URL+'/anulado/'+this.fecha).then(res=>{
         console.log(res.data)
         this.$q.loading.hide()
+        // return false
+
         this.anulados=[]
         res.data.forEach(r=>{
           this.anulados.push({
@@ -99,15 +157,14 @@ export default {
             fecha:r.fecha+' '+r.hora,
             // unidad:r.unid.nombre,
             nrocomprobante:r.nrocomprobante,
-            // nrotramite:r.nrotramite,
+            nrotramite:r.comprobante.nrotramite,
             // detalles:r.detalles,
-            // nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
-            // padron:r.padron,
-            // ci:r.cliente.ci,
+            cliente:r.comprobante.cliente.paterno+' '+r.comprobante.cliente.materno+' '+r.comprobante.cliente.nombre,
+            unidad:r.unid.nombre,
+            usuario:r.user.name,
             // total:r.total,
           })
         })
-
         // console.log('s')
       })
     },

@@ -168,9 +168,9 @@ export default {
         return false;
       }
       // console.log(      parseInt(this.nrocomprobante)+'---'+this.$store.state.user.unid.fin)
-      if ( parseInt(this.nrocomprobante)< parseInt(this.$store.state.user.unid.inicio) || parseInt(this.nrocomprobante)> parseInt(this.$store.state.user.unid.fin)){
+      if ( parseInt(this.nrocomprobante)>=parseInt(this.max) && parseInt(this.nrocomprobante)<= parseInt(this.min)){
         this.$q.dialog({
-          title:'Rango de comprobantes no permitidos'
+          title:'Rango de comprobantes no permitidos!'
         })
         return false;
       }

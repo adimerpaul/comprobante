@@ -17,7 +17,7 @@ class Anulado extends Model
         'user_id',
     ];
     public function comprobante(){
-        return $this->belongsTo(Comprobante::class);
+        return $this->belongsTo(Comprobante::class)->with('cliente');
     }
     public function unid(){
         return $this->belongsTo(Unid::class);

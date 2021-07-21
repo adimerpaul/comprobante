@@ -15,6 +15,7 @@ class AnuladoController extends Controller
      */
     public function index(Request $request)
     {
+//        return $request->all();
         return Anulado::with('user')
             ->with('unid')
             ->with('comprobante')
@@ -32,6 +33,7 @@ class AnuladoController extends Controller
      */
     public function create(Request $request)
     {
+        /*no usado*/
         return Comprobante::with('cliente')
             ->with('detalles')
             ->with('unid')
@@ -72,9 +74,15 @@ class AnuladoController extends Controller
      * @param  \App\Models\Anulado  $anulado
      * @return \Illuminate\Http\Response
      */
-    public function show(Anulado $anulado)
+    public function show($fecha)
     {
-        //
+        return Anulado::with('user')
+            ->with('unid')
+            ->with('comprobante')
+//            ->where('user_id',$request->user()->id)
+//            ->where('user_id',$request->user()->id)
+            ->whereDate('fecha',$fecha)
+            ->get();
     }
 
     /**
