@@ -38,7 +38,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/loscomprobantes',[\App\Http\Controllers\ComprobanteController::class,'loscomprobantes']);
     Route::put('/pagocaja/{comprobante}',[\App\Http\Controllers\ComprobanteController::class,'pagocaja']);
     Route::post('/mispagoscaja',[\App\Http\Controllers\ComprobanteController::class,'mispagoscaja']);
-
+    Route::post('/convertirletra/{total}',[\App\Http\Controllers\ComprobanteController::class,'convertirletra']);
+    
 
 
     Route::apiResource('/cliente',\App\Http\Controllers\ClienteController::class);

@@ -268,7 +268,9 @@ class ComprobanteController extends Controller
         ->whereDate('fechapago','<=',$request->fin)->where('cajero',$request->cajero);
     }
 
-    public function listcajero(){
-        return '';
+    public function convertirletra($total){
+        $formatter = new NumeroALetras();
+        
+        return  $formatter->toWords(str_replace(',','',$total));
     }
 }

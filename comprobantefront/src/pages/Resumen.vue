@@ -44,6 +44,7 @@ export default {
       model:'',
       un:'',
       opunid:[],
+      literal:'',
       fecha:{"inicio":date.formatDate(Date.now(),'YYYY-MM-DD'),"fin":date.formatDate(Date.now(),'YYYY-MM-DD')},
       ahora:date.formatDate(Date.now(),'YYYY-MM-DD'),
       options: [
@@ -135,16 +136,29 @@ export default {
         doc.text(20, y+4, r.usuarioimp )
         if (y+4>25){
           doc.addPage();
-          header(this.fecha)
+          header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
           y=0
         }
+
         })
-
-      doc.setFontSize(9);
-
+        var c = this.total.toString().split(".")
+        this.$axios.post(process.env.URL+'/convertirletra/'+c[0]).then(res=>{
+          console.log(res.data);
+          this.literal=res.data;
+                doc.setFontSize(9);
+      if(c[1] == null || c[1]=='')
+      c[1]=0;
+      doc.text(1, y+4.5, 'SON: '+this.literal+' '+c[1]+'/100 Bs')
       doc.text(12, y+4.5, 'TOTAL RECAUDADCION: ')
       doc.text(18, y+4.5, this.total+'Bs')
-      doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      doc.setFontSize(6);
+      y+=4.5;
+      doc.text(1, y+4,   '____________________                     _____________________________                    ________________________ ')
+      doc.text(1, y+4.5, 'FIRMA Y SELLO CAJERO                     FIRMA Y SELLO CONTROL INTERNO                    FIRMA Y SELLO LIQUIDADOR')
+      doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");   
+        })
+
+
       }).catch(err=>{
         // console.log(err.response)
         this.$q.notify({
