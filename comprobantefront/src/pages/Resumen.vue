@@ -1,11 +1,15 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row">
+      <q-form
+      @submit="imprimir">
       <div class="col-3 col-sm-12">
         <q-input 
         type="date"
         label="Fecha Inicial"
         v-model="fecha.inicio"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 && val<=this.fecha.fin || 'Ingrese la fecha correcta']"
         />
       </div>
       <div class="col-3 col-sm-12">
@@ -14,13 +18,16 @@
         type="date"
         label="Fecha Final"
         v-model="fecha.fin"
+        lazy-rules
+        :rules="[ val => val && val.length > 0 && val>=this.fecha.inicio || 'Ingrese la fecha correcta']"
         />
       </div>
 
 
       <div class="col-12 q-pt-md">
-        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir"/>
+        <q-btn class="full-width" type="submit" color="secondary"  icon="print" label="Imprimir"/>
       </div>
+    </q-form>
     </div>
   </q-page>
 </template>
