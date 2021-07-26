@@ -136,7 +136,7 @@ class SubitemSeeder extends Seeder
 ['unid_id'=>'3','item_id'=>'18','codigo'=>'151001101','nombre'=>'Registro Comerciante Formal ','monto'=>'379.55 '],
 ['unid_id'=>'3','item_id'=>'18','codigo'=>'151001102','nombre'=>'Registro Actividad Formal ','monto'=>'76.37 '],
 ['unid_id'=>'3','item_id'=>'18','codigo'=>'151001103','nombre'=>'Registro Comerciante Eventual ','monto'=>'76.37 '],
-['unid_id'=>'3','item_id'=>'18','codigo'=>'151001104','nombre'=>'REgistro Actividad Eventual ','monto'=>'76.37 '],
+['unid_id'=>'3','item_id'=>'18','codigo'=>'151001104','nombre'=>'Registro Actividad Eventual ','monto'=>'76.37 '],
 ['unid_id'=>'3','item_id'=>'18','codigo'=>'151001105','nombre'=>'Traspaso de Comerciante Eventual a Formal ','monto'=>'379.55 '],
 ['unid_id'=>'3','item_id'=>'19','codigo'=>'151001201','nombre'=>'Derecho Instalación Caseta Formal y Eventual ','monto'=>'304.32 '],
 ['unid_id'=>'3','item_id'=>'19','codigo'=>'151001202','nombre'=>'Derecho de Refacción Caseta formal y Eventual ','monto'=>'304.32 '],
