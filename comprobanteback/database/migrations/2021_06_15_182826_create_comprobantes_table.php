@@ -44,6 +44,7 @@ class CreateComprobantesTable extends Migration
             $table->string('controlinterno')->default('')->nullable();
             $table->string('estado')->default('CREADO')->nullable();
             $table->string('cajero')->default('')->nullable();
+            $table->string('usuarioimp')->default('')->nullable();
             $table->string('anulado')->default('')->nullable();
             $table->boolean('porcaja')->default(false);
             $table->unsignedBigInteger('user_id');
