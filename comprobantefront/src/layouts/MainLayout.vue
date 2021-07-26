@@ -230,6 +230,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+
         <q-item
           clickable
           to="/pagocaja"
@@ -246,6 +247,26 @@
             <q-item-label>Pagos por Caja</q-item-label>
             <q-item-label caption>
               Pagos por caja
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+       <q-item
+          clickable
+          to="/resumen"
+          exact
+          
+        >
+          <q-item-section
+            avatar
+          >
+            <q-icon name="list" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>Resumen Caja</q-item-label>
+            <q-item-label caption>
+              Resumen de Pagos del cajero
             </q-item-label>
           </q-item-section>
         </q-item>

@@ -31,6 +31,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::apiResource('/comprobante',\App\Http\Controllers\ComprobanteController::class);
     Route::post('/buscarimpreso',[\App\Http\Controllers\ComprobanteController::class,'buscarimpreso']);
     Route::post('/mispagos',[\App\Http\Controllers\ComprobanteController::class,'mispagos']);
+    Route::post('/misimpreso',[\App\Http\Controllers\ComprobanteController::class,'misimpreso']);
     Route::post('/historial',[\App\Http\Controllers\ComprobanteController::class,'historial']);
     Route::put('/pago/{comprobante}',[\App\Http\Controllers\ComprobanteController::class,'pago']);
     Route::post('/proforma/{id}',[\App\Http\Controllers\ComprobanteController::class,'proforma']);

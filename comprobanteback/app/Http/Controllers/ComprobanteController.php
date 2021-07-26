@@ -45,6 +45,19 @@ class ComprobanteController extends Controller
             ->get();
     }
 
+    public function misimpreso(Request $request)
+    {
+//        return Comprobante::all();
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->whereDate('fechaimpreso','>=',$request->inicio)
+            ->whereDate('fechaimpreso','<=',$request->fin)
+//            ->where('cajero',$request->user()->name)
+            ->where('unid_id',$request->user()->unid_id)
+            ->where('estado','IMPRESO')
+            ->get();
+    }
+
     public function mispagoscaja(Request $request)
     {
 //        return Comprobante::all();
@@ -52,7 +65,7 @@ class ComprobanteController extends Controller
             ->with('detalles')
             ->with('unid')
             ->whereDate('fechapago',$request->fecha)
-            ->where('cajero',$request->user()->name)
+            ->where('cajero',$request->user()->id)
             ->where('porcaja',true)
 //            ->where('unid_id',$request->unid_id)
             ->where('estado','PAGADO')
@@ -194,7 +207,9 @@ class ComprobanteController extends Controller
     {
         $comprobante->update([
 //            'fechapago'=>date('Y-m-d'),
-//            'cajero'=>$request->user()->name,
+            'usuarioimp'=>$request->user()->name,
+            'impreso_id'=>$request->user()->id,
+            'fechaimpreso'=>date('Y-m-d'),
             'estado'=>'IMPRESO',
             'nrocomprobante'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT),
             'controlinterno'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT).date('d/m/Y'),
@@ -208,6 +223,7 @@ class ComprobanteController extends Controller
         $comprobante->update([
             'fechapago'=>date('Y-m-d'),
             'cajero'=>$request->user()->name,
+            'cajero_id'=>$request->user()->id,
             'estado'=>'PAGADO',
 //            'nrocomprobante'=>$request->nrocomprobante,
 //            'controlinterno'=>$request->nrocomprobante.date('d/m/Y'),
@@ -221,6 +237,7 @@ class ComprobanteController extends Controller
         $comprobante->update([
             'fechapago'=>date('Y-m-d'),
             'cajero'=>$request->user()->name,
+            'cajero_id'=>$request->user()->id,
             'estado'=>'PAGADO',
             'porcaja'=>1
         ]);
@@ -244,5 +261,14 @@ class ComprobanteController extends Controller
 
     public function proforma($id){
         return Comprobante::with('cliente')->with('user')->with('unid')->where('id',$id)->with('detalles')->get();
+    }
+
+    public function resumen(Request $request){
+        return comprobante::whith('cliente')->where('estado','pagado')->whereDate('fechapago','>=',$request->inicio)
+        ->whereDate('fechapago','<=',$request->fin)->where('cajero',$request->cajero);
+    }
+
+    public function listcajero(){
+        return '';
     }
 }

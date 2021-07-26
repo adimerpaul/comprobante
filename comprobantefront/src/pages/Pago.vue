@@ -293,18 +293,18 @@ export default {
         // console.log(dat);
         doc.setFont("courier");
         doc.setFontSize(9);
-        var x=0,y=0;
+        var x=0,y=4;
         doc.text(x+=1, y+=1, 'HONORABLE GOBIERNO MUNICIPAL DE ORURO');
         doc.text(x+=1, y+=.5, dat2.unid.nombre.toString());
         doc.text(x+=14, y-=0.5,   'OPERADOR:'+dat2.user.name.toString());
         doc.text(x, y+=0.5, 'FECHA   :'+dat2.fecha.toString());
 
         doc.text(x-=5, y+=1, 'PROFORMA DE PAGO');
-        doc.text(x-=10, y+=0.5, '------------------------------------');
+        doc.text(x-=10, y+=0.5, '-------------------------------------------------------------------------------');
         doc.text(x, y+=0.5, 'TRAMITE : '+dat2.nrotramite.toString());
         doc.text(x, y+=0.5, 'NOMBRE O RAZON SOCIAL CONTRIBUYENTE: '+dat2.cliente.paterno.toString()+' '+dat2.cliente.materno.toString()+' '+dat2.cliente.nombre.toString()+'  C.I./RUC: '+dat2.cliente.ci.toString()+' '+dat2.cliente.expedido.toString());
         doc.text(x, y+=0.5, 'DIRECCION : '+dat2.cliente.direccion.toString() + '   PADRON MUNICIPAL : '+dat2.cliente.padron.toString());
-        doc.text(x, y+=0.5, '------------------------------------');
+        doc.text(x, y+=0.5, '---------------------------------------------------------------------------------');
 
         let xx=x
         let yy=y+0.7
@@ -318,7 +318,7 @@ export default {
           // console.log(r)
         })
 
-        doc.text(xx+5.5, yy+1, 'TOTAL A PAGAR : '+dat2.total.toString()+' Bs');
+        doc.text(xx+5.5, yy+1, 'TOTAL A PAGAR POR SERVICIOS TECNICOS: '+dat2.total.toString()+' Bs');
 
           // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
           // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
