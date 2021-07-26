@@ -20,6 +20,7 @@ class CreateComprobantesTable extends Migration
             $table->date('fecha')->nullable();
             $table->date('fechalimite')->nullable();
             $table->date('fechapago')->nullable();
+            $table->date('fechaimpreso')->nullable();
             $table->string('tipo')->default('')->nullable();
             $table->string('item')->default('')->nullable();
             $table->string('codigo')->default('')->nullable();
