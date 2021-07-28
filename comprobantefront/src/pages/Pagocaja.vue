@@ -267,7 +267,7 @@ export default {
     // },
     mispagos(){
       this.$q.loading.show()
-      this.$axios.post(process.env.URL+'/mispagoscaja',{fecha:this.fecha}).then(res=>{
+      this.$axios.post(process.env.URL+'/mispagoscaja',{'fecha':this.fecha}).then(res=>{
         console.log(res.data)
 
         this.$q.loading.hide()
