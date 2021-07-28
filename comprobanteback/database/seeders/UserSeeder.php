@@ -21,14 +21,14 @@ class UserSeeder extends Seeder
                'email'=>'admin@test.com',
                'name'=>'admin',
                'codigo'=>'ADM',
-               'password'=>Hash::make('admin'),
+               'password'=>Hash::make('G4M02021#'),
                'unid_id'=>16
            ],
             [
                 'email'=>'c@t.com',
                 'name'=>'CELSO ACHOCALLE',
                 'codigo'=>'CEL',
-                'password'=>Hash::make('123456789'),
+                'password'=>Hash::make('#123456789#'),
                 'unid_id'=>3
             ],
         ]);

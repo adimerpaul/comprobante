@@ -255,7 +255,7 @@
           clickable
           to="/resumen"
           exact
-          
+          v-if="$store.state.boolpagocaja"
         >
           <q-item-section
             avatar
