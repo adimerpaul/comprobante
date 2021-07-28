@@ -31,6 +31,7 @@ export default new Vuex.Store({
     boolverificar:false,
     boolpagocaja:false,
     boolanular:false,
+    boolresumen:false,
   },
   mutations: {
     auth_request(state){
@@ -52,6 +53,7 @@ export default new Vuex.Store({
       state.boolverificar=data.user.permisos.find( permiso => permiso.id === 9)!=undefined
       state.boolpagocaja=data.user.permisos.find( permiso => permiso.id === 10)!=undefined
       state.boolanular=data.user.permisos.find( permiso => permiso.id === 11)!=undefined
+      state.boolresumen=data.user.permisos.find( permiso => permiso.id === 12)!=undefined
     },
     auth_error(state){
       state.status = 'error'
@@ -71,6 +73,7 @@ export default new Vuex.Store({
       state.boolverificar=false
       state.boolpagocaja=false
       state.boolanular=false
+      state.boolresumen=false
     },
   },
   actions: {
