@@ -96,7 +96,6 @@ export default {
         doc.text(20, 4, 'USUARIO')
         doc.setFont(undefined,'normal')
         doc.setFontSize(9);
-
       }
       var doc = new jsPDF('p','cm','letter')
       // console.log(dat);
@@ -155,7 +154,7 @@ export default {
       y+=4.5;
       doc.text(1, y+4,   '____________________                     _____________________________                    ________________________ ')
       doc.text(1, y+4.5, 'FIRMA Y SELLO CAJERO                     FIRMA Y SELLO CONTROL INTERNO                    FIRMA Y SELLO LIQUIDADOR')
-      doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");   
+      doc.save("Impreso"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");   
         })
 
 
