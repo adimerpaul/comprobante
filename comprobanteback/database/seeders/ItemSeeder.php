@@ -89,6 +89,21 @@ class ItemSeeder extends Seeder
 ["unid_id"=>16,"id"=>58,'codigo'=>'1630010','nombre'=>'ALQUILER DE CAMPOS DEPORTIVOS                          '],
 ["unid_id"=>16,"id"=>59,'codigo'=>'1630011','nombre'=>'ALQUILER SALON LUIS RAMIRO BELTRAN                     '],
 ["unid_id"=>16,"id"=>60,'codigo'=>'1630012','nombre'=>'ALQUILER MAQUINARIA PESADA                             '],
+["unid_id"=>16,"id"=>61,'codigo'=>'1339000','nombre'=>'OTROS (USO DE SUELO COTEOR SELA ELFEO)'],
+["unid_id"=>16,"id"=>62,'codigo'=>'1510001','nombre'=>'TASA ALCANTARILLADO SANITARIO   '],
+["unid_id"=>16,"id"=>63,'codigo'=>'1510002','nombre'=>'ALUMBRADO PUBLICO (TASA ADICIONAL ELFEO)'],
+["unid_id"=>16,"id"=>64,'codigo'=>'1510003','nombre'=>'ALUMBRADO PUBLICO (GESTIONES ANTERIORES)'],
+["unid_id"=>16,"id"=>65,'codigo'=>'1510004','nombre'=>'RECOLECCION DE BASURA (GESTIONES ANTERIORES)'],
+["unid_id"=>16,"id"=>66,'codigo'=>'1510016','nombre'=>'REGISTRO DE VEHICULOS'],
+["unid_id"=>16,"id"=>67,'codigo'=>'1533001','nombre'=>'CONCESIONES MINERAS'],
+["unid_id"=>16,"id"=>68,'codigo'=>'1534001','nombre'=>'PATENTE A LA INDUSTRIA EN GENERAL'],
+["unid_id"=>16,"id"=>69,'codigo'=>'1534002','nombre'=>'PATENTE A LOS SERVICIOS FINACIEROS BANCARIOS'],
+["unid_id"=>16,"id"=>70,'codigo'=>'1534003','nombre'=>'PATENTE A LOS SERVICIOS FINACIEROS DE SEGUROS Y REASEGUROS'],
+["unid_id"=>16,"id"=>71,'codigo'=>'1534004','nombre'=>'PATENTE A LOS SERVICIOS ESPECIFICOS'],
+["unid_id"=>16,"id"=>72,'codigo'=>'1534005','nombre'=>'PATENTE A LA ACTIVIDAD HOTELES EN GENERAL'],
+["unid_id"=>16,"id"=>73,'codigo'=>'1599001','nombre'=>'VENTA DE ARTESANIAS EN EL MUSEO'],
+["unid_id"=>16,"id"=>74,'codigo'=>'1650001','nombre'=>'ALQUILER CASA MUNICIPAL DE CULTURA'],
+
 
         ]);
     }
