@@ -78,7 +78,6 @@ class ItemSeeder extends Seeder
 ["unid_id"=>16,"id"=>47,'codigo'=>'1630008','nombre'=>'ALQUILER TEATROS AL AIRE LIBRE                         '],
 ["unid_id"=>16,"id"=>48,'codigo'=>'1630009','nombre'=>'OTROS ALQUILERES (DEVENGADOS, MATADERO)                '],
 ["unid_id"=>16,"id"=>49,'codigo'=>'1510007','nombre'=>'LEGALIZACION DE PLANOS                                 '],
-["unid_id"=>16,"id"=>50,'codigo'=>'1210001','nombre'=>'VENTA DE TERRENOS BALDIOS                              '],
 ["unid_id"=>16,"id"=>51,'codigo'=>'1220008','nombre'=>'VENTA DE ENTRADAS BALNEARIO CAPACHOS                   '],//50
 ["unid_id"=>16,"id"=>52,'codigo'=>'1220009','nombre'=>'VENTA DE ENTRADAS MON. ESC. VIRGEN DEL SOCAVON         '],
 ["unid_id"=>16,"id"=>53,'codigo'=>'1510024','nombre'=>'TASAS POR RESONANCIA MAGNÉTICA                         '],
