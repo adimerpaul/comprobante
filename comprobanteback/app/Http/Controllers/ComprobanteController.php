@@ -204,6 +204,9 @@ class ComprobanteController extends Controller
      */
     public function update(Request $request, Comprobante $comprobante)
     {
+//        if ()
+
+
         $comprobante->update([
 //            'fechapago'=>date('Y-m-d'),
             'usuarioimp'=>$request->user()->name,
@@ -269,7 +272,7 @@ class ComprobanteController extends Controller
 
     public function convertirletra($total){
         $formatter = new NumeroALetras();
-        
+
         return  $formatter->toWords(str_replace(',','',$total));
     }
 }

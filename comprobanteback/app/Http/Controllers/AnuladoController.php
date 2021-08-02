@@ -74,13 +74,13 @@ class AnuladoController extends Controller
      * @param  \App\Models\Anulado  $anulado
      * @return \Illuminate\Http\Response
      */
-    public function show($fecha)
+    public function show($fecha,Request $request)
     {
         return Anulado::with('user')
             ->with('unid')
             ->with('comprobante')
 //            ->where('user_id',$request->user()->id)
-//            ->where('user_id',$request->user()->id)
+            ->where('unid_id',$request->user()->unid_id)
             ->whereDate('fecha',$fecha)
             ->get();
     }

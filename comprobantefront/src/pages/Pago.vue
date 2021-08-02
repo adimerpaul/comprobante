@@ -161,28 +161,27 @@ export default {
         this.$q.dialog({
           title:'Falta numero comprobante'
         })
-        return false;
+        return false
       }
       if (this.model==''){
         this.$q.dialog({
           title:'Seleccione comprobante'
         })
-        return false;
+        return false
       }
       // console.log(      parseInt(this.nrocomprobante)+'---'+this.$store.state.user.unid.fin)
-      if ( parseInt(this.nrocomprobante)>=parseInt(this.max) && parseInt(this.nrocomprobante)<= parseInt(this.min)){
+      if ( parseInt(this.nrocomprobante)>parseInt(this.max) || parseInt(this.nrocomprobante)< parseInt(this.min)){
         this.$q.dialog({
           title:'Rango de comprobantes no permitidos!'
         })
-        return false;
+        return false
       }
-      // return  false;
+      // return  false
       this.$q.loading.show()
       this.$axios.put(process.env.URL+'/comprobante/'+this.model.id,{nrocomprobante:this.nrocomprobante}).then(
         async res=>{
         // console.log(res.data)
-
-
+        this.nrocomprobante=''
         this.$q.loading.hide()
         this.model=''
         this.$q.dialog({
@@ -264,16 +263,15 @@ export default {
         });
 
 
+      }).catch(err=>{
+        console.log(err);
+        // this.$q.dialog({
+        //   message:err.response.data.message,
+        //   icon:'error',
+        //   color:'red'
+        // })
+        this.$q.loading.hide()
       })
-      //   .catch(err=>{
-      //   console.log(err);
-      //   // this.$q.dialog({
-      //   //   message:err.response.data.message,
-      //   //   icon:'error',
-      //   //   color:'red'
-      //   // })
-      //   this.$q.loading.hide()
-      // })
     },
 
     proforma(){
@@ -288,7 +286,7 @@ export default {
         // console.log(res.data)
           let dat2=res.data[0];
 
-        
+
         var doc = new jsPDF('p','cm','letter')
         // console.log(dat);
         doc.setFont("courier");

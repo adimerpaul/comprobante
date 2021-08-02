@@ -145,7 +145,7 @@ export default {
       // console.log(this.fecha);
       this.$q.loading.show()
       this.$axios.get(process.env.URL+'/anulado/'+this.fecha).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.$q.loading.hide()
         // return false
 
