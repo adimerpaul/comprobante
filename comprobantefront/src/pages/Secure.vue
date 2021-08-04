@@ -144,7 +144,7 @@
             <q-btn color="positive" @click="cantidad++" icon="add_circle" class="full-width full-height" text-color="white" />
           </div>
           <div class="col-2">
-            <q-input outlined label="Precio" v-model="precio"/>
+            <q-input outlined label="Precio" v-model="precio" disable/>
           </div>
           <div class="col-2">
             <q-input outlined label="Cantidad" v-model="cantidad"/>
@@ -153,7 +153,7 @@
             <q-btn color="negative" @click="cantidad--" icon="remove_circle" class="full-width full-height" text-color="white" />
           </div>
           <div class="col-2">
-            <q-input outlined label="Subtotal" v-model="subtotal"/>
+            <q-input outlined label="Subtotal" v-model="subtotal" disable/>
           </div>
           <div class="col-4">
             <q-btn color="positive" @click="agregar" label="Agregar"  class="full-width full-height" text-color="white" />
@@ -351,12 +351,24 @@ export default {
           title: 'Error',
           message: 'Debes selecionar subitem',
           icon:'error'
-        }).onOk(() => {
+        })
+            .onOk(() => {
           // console.log('OK')
-        }).onCancel(() => {
+        })
+            .onCancel(() => {
           // console.log('Cancel')
-        }).onDismiss(() => {
+        })
+            .onDismiss(() => {
           // console.log('I am triggered on both OK and Cancel')
+        })
+        return false;
+      }
+      if (this.detalle==''){
+        this.$q.dialog({
+          dark: true,
+          title: 'Error',
+          message: 'Debes colocar detalle',
+          icon:'error'
         })
         return false;
       }

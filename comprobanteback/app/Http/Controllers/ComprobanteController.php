@@ -54,7 +54,7 @@ class ComprobanteController extends Controller
             ->whereDate('fechaimpreso','<=',$request->fin)
 //            ->where('cajero',$request->user()->name)
             ->where('unid_id',$request->user()->unid_id)
-            ->where('estado','IMPRESO')
+            ->where('estado','PAGADO')
             ->get();
     }
 
