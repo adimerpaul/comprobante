@@ -176,7 +176,7 @@ export default {
     // this.loscomprobantes()
   },
   mounted() {
-
+    // console.log(this.$store.state.user.unid.nombre)
   },
   methods: {
     loscomprobantes(){
@@ -199,13 +199,13 @@ export default {
       })
     },
     imprimir(){
-      function header(fecha){
+      function header(unidad,fecha){
         var img = new Image()
         img.src = 'logo.jpg'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-        doc.text(5, 1.5, this.$store.state.user.unid.nombre+' DE '+fecha)
+        doc.text(5, 1.5, unidad +' DE '+fecha)
         doc.text(1, 3, 'Nº COMPROBANTE')
         doc.text(4, 3, 'Nº TRAMITE')
         doc.text(6.5, 3, 'CONTRIBUYENTE')
@@ -220,7 +220,7 @@ export default {
       doc.setFont("courier");
       doc.setFontSize(9);
       // var x=0,y=
-      header(this.fecha)
+      header(this.$store.state.user.unid.nombre.toString(),this.fecha)
       // let xx=x
       // let yy=y
       let y=0
@@ -270,7 +270,7 @@ export default {
     mispagos(){
       this.$q.loading.show()
       this.$axios.post(process.env.URL+'/mispagoscaja',{'fecha':this.fecha}).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
 
         this.$q.loading.hide()
         this.pagos=[]
