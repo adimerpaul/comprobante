@@ -205,7 +205,7 @@ export default {
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-        doc.text(5, 1.5, 'REGULACION URBANA DE '+fecha)
+        doc.text(5, 1.5, this.$store.state.user.unid.nombre+' DE '+fecha)
         doc.text(1, 3, 'Nº COMPROBANTE')
         doc.text(4, 3, 'Nº TRAMITE')
         doc.text(6.5, 3, 'CONTRIBUYENTE')
@@ -247,7 +247,9 @@ export default {
 
 
 
-      doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
+
     },
     // miscomprobante(){
     //   this.$axios.post(process.env.URL+'/buscarimpreso').then(res=>{
