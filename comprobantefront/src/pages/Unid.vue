@@ -40,7 +40,7 @@
               label="Inicio de Comp"
               hint="Numero de Comp I"
               lazy-rules
-              :rules="[(val) => (val && val > 0) || 'Por favor ingresa datos']"
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
 
             <q-input
@@ -50,7 +50,7 @@
               label="Fin de Comp"
               hint="Numero de Comp F"
               lazy-rules
-              :rules="[(val) => (val>this.dato.inicio && val > 0) || 'Por favor ingresa datos']"
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
 
 
@@ -133,7 +133,7 @@
               label="Numero Comp I"
               hint="Ingresar numero"
               lazy-rules
-              :rules="[(val) => (val && val > 0) || 'Por favor ingresa datos']"
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
             <q-input
               filled
@@ -142,7 +142,7 @@
               label="Numero Comp F"
               hint="Ingresar numero"
               lazy-rules
-              :rules="[(val) => (val> this.dato2.inicio && val > 0) || 'Por favor ingresa datos']"
+              :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle" />
