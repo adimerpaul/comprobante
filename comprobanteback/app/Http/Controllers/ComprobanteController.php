@@ -224,7 +224,7 @@ class ComprobanteController extends Controller
 //         return $comprobante;
         $comprobante->update([
             'fechapago'=>date('Y-m-d'),
-            'cajero'=>$request->user()->name,
+            'cajero'=>$request->user()->codigo,
             'cajero_id'=>$request->user()->id,
             'estado'=>'PAGADO',
 //            'nrocomprobante'=>$request->nrocomprobante,
@@ -238,7 +238,7 @@ class ComprobanteController extends Controller
 //        return 12;
         $comprobante->update([
             'fechapago'=>date('Y-m-d'),
-            'cajero'=>$request->user()->name,
+            'cajero'=>$request->user()->codigo,
             'cajero_id'=>$request->user()->id,
             'estado'=>'PAGADO',
             'porcaja'=>1

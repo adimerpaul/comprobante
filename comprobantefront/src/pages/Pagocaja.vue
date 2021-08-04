@@ -232,7 +232,7 @@ export default {
         doc.text(6.5, y+3, r.cliente)
         doc.text(11.5, y+3, r.ci)
         doc.text(13.5, y+3, r.unidad)
-        doc.text(17, y+3, r.total)
+        doc.text(18, y+3, r.total)
         doc.text(19, y+3, r.cajero )
         if (y+3>25){
           doc.addPage();
@@ -317,7 +317,7 @@ export default {
       this.$axios.put(process.env.URL+'/pagocaja/'+this.model.id)
         .then(res=>{
           this.loscomprobantes()
-        console.log(res.data)
+        // console.log(res.data)
         this.$q.loading.hide()
         this.model=''
         this.$q.dialog({
