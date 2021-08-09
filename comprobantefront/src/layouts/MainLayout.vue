@@ -281,6 +281,7 @@
               Registro de empresas
             </q-item-label>
           </q-item-section>
+
         </q-item>
         <q-item clickable to="/verificar" exact v-if="$store.state.boolverificar">
           <q-item-section avatar>
@@ -288,6 +289,17 @@
           </q-item-section>
           <q-item-section>
             <q-item-label>Verificar pagos</q-item-label>
+            <q-item-label caption>
+              Historial de pagos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable to="/verificarcaja" exact v-if="$store.state.boolverificar">
+          <q-item-section avatar>
+            <q-icon name="history" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Verificar caja</q-item-label>
             <q-item-label caption>
               Historial de pagos
             </q-item-label>

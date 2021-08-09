@@ -10,6 +10,7 @@ import Pago from "pages/Pago";
 import User from "pages/User";
 import Cancelar from "pages/Cancelar";
 import Verificar from "pages/Verificar";
+import Verificarcaja from "pages/Verificarcaja";
 import Pagocaja from "pages/Pagocaja";
 import Anular from "pages/Anular";
 import Resumen from "pages/Resumen";
@@ -29,6 +30,7 @@ const routes = [
       { path: '/user', component: User,meta: {requiresAuth: true} },
       { path: '/cancelar', component: Cancelar,meta: {requiresAuth: true} },
       { path: '/verificar', component: Verificar,meta: {requiresAuth: true} },
+      { path: '/verificarcaja', component: Verificarcaja,meta: {requiresAuth: true} },
       { path: '/pagocaja', component: Pagocaja,meta: {requiresAuth: true} },
       { path: '/anular', component: Anular,meta: {requiresAuth: true} },
       { path: '/resumen', component: Resumen,meta: {requiresAuth: true} },

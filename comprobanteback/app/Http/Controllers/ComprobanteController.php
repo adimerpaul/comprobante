@@ -246,6 +246,19 @@ class ComprobanteController extends Controller
         echo $comprobante;
     }
 
+    public function verificadocaja(Request $request)
+    {
+//        return 12;
+
+        $comprobante=Comprobante::find($request->id);
+        
+        $comprobante->fechacaja=date('Y-m-d');
+        $comprobante->verificadocaja=$request->verificadocaja;
+        $comprobante->verificadocaja_id=$request->user()->id;
+        $comprobante->save();
+        return true;
+    }
+
     /**
      * Remove the specified resource from storage.
      *
