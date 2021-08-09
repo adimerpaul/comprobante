@@ -382,17 +382,20 @@ export default {
         cantidad:this.cantidad,
         subtotal:this.subtotal
       })
+      // this.detalle=''
     },
     colocarprecio(val){
       // console.log(this.subitem)
       this.precio=this.subitem.monto;
+      this.detalle=''
     },
     buscarsubitems(){
       // console.log('a');
       // console.log(this.item);
       this.$q.loading.show()
-      this.subitems=[];
-      this.subitem='';
+      this.subitems=[]
+      this.subitem=''
+      this.detalle=''
       this.$axios.get(process.env.URL+'/subitem/'+this.item.id).then(res=>{
         // console.log(res.data);
         this.$q.loading.hide()

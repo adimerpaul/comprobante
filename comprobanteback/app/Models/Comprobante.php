@@ -65,4 +65,13 @@ class Comprobante extends Model
     public function detalles(){
         return $this->hasMany(Detalle::class);
     }
+
+    public function cajero(){
+        return $this->belongsTo(User::class);
+    }
+    public function impreso(){
+        return $this->belongsTo(User::class);
+    }
+
+
 }

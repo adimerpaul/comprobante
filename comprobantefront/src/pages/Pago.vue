@@ -264,12 +264,12 @@ export default {
 
 
       }).catch(err=>{
-        console.log(err);
-        // this.$q.dialog({
-        //   message:err.response.data.message,
-        //   icon:'error',
-        //   color:'red'
-        // })
+        console.log(err.response.data);
+        this.$q.notify({
+          message:err.response.data.res,
+          icon:'error',
+          color:'red'
+        })
         this.$q.loading.hide()
       })
     },

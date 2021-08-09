@@ -1,7 +1,7 @@
 <template>
   <div class="q-pa-md">
     <q-btn
-      label="Nuevo Item"
+      label="Nuevo Unidad"
       color="positive"
       @click="alert = true"
       icon="add_circle"
@@ -10,7 +10,7 @@
     <q-dialog v-model="alert">
       <q-card style="max-width: 80%; width: 50%">
         <q-card-section class="bg-green-14 text-white">
-          <div class="text-h6">Nuevo Unidad</div>
+          <div class="text-h6">Nueva Unidad</div>
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form @submit="onSubmit" @reset="onReset" class="q-gutter-md">

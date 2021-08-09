@@ -195,7 +195,8 @@ export default {
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
       doc.text(18, y+4, this.total+'Bs')
-      doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
     },
     miscomprobante(){
       this.$axios.post(process.env.URL+'/buscarimpreso').then(res=>{

@@ -207,6 +207,11 @@ class ComprobanteController extends Controller
 //        if ()
 
 
+        $numcomprobante=str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT);
+        $count=Comprobante::where('nrocomprobante',$numcomprobante)->where('unid_id',$request->user()->unid_id)->get()->count();
+        if ($count>0){
+            return response()->json(["res"=>'El numero de comprobante ya se encuentra en uso de esa unidad'],400);
+        }
         $comprobante->update([
 //            'fechapago'=>date('Y-m-d'),
             'usuarioimp'=>$request->user()->name,
@@ -215,6 +220,8 @@ class ComprobanteController extends Controller
             'estado'=>'IMPRESO',
             'nrocomprobante'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT),
             'controlinterno'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT).date('d/m/Y'),
+            'nrocomprobante'=>$numcomprobante,
+            'controlinterno'=>$numcomprobante.date('d/m/Y'),
         ]);
 //        echo $comprobante;
         return Comprobante::with('cliente')->where('id',$comprobante->id)->with('detalles')->get();
@@ -251,7 +258,7 @@ class ComprobanteController extends Controller
 //        return 12;
 
         $comprobante=Comprobante::find($request->id);
-        
+
         $comprobante->fechacaja=date('Y-m-d');
         $comprobante->verificadocaja=$request->verificadocaja;
         $comprobante->verificadocaja_id=$request->user()->id;

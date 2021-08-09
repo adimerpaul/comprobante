@@ -283,6 +283,29 @@
           </q-item-section>
 
         </q-item>
+        <q-item clickable to="/exportar" exact v-if="$store.state.boolverificar">
+          <q-item-section avatar>
+            <q-icon name="file_download" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Exportar pagos</q-item-label>
+            <q-item-label caption>
+              Exportar de pagos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable to="/importar" exact v-if="$store.state.boolverificar">
+          <q-item-section avatar>
+            <q-icon name="file_upload" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Importar pagos</q-item-label>
+            <q-item-label caption>
+              Importar de pagos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item clickable to="/verificar" exact v-if="$store.state.boolverificar">
           <q-item-section avatar>
             <q-icon name="history" />

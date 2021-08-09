@@ -430,7 +430,7 @@ export default {
         this.alert = false;
         this.misdatos();
       }).catch(err=>{
-        // console.log(err.response.data.message);
+        console.log(err.response.data);
         this.$q.notify({
           message:err.response.data.message,
           icon:'close',

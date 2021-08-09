@@ -14,6 +14,7 @@ import Verificarcaja from "pages/Verificarcaja";
 import Pagocaja from "pages/Pagocaja";
 import Anular from "pages/Anular";
 import Resumen from "pages/Resumen";
+import Exportar from "pages/Exportar";
 const routes = [
   {
     path: '/',
@@ -34,6 +35,7 @@ const routes = [
       { path: '/pagocaja', component: Pagocaja,meta: {requiresAuth: true} },
       { path: '/anular', component: Anular,meta: {requiresAuth: true} },
       { path: '/resumen', component: Resumen,meta: {requiresAuth: true} },
+      { path: '/exportar', component: Exportar,meta: {requiresAuth: true} },
     ]
   },
 
