@@ -35,7 +35,7 @@
           </q-td>
           <q-td key="verificadocaja" :props="props" >
               {{props.row.verificadocaja}}
-            <q-checkbox v-model="props.row.verificadocaja" v-on:click.native="validar(props.row)" />
+            <q-checkbox v-model="props.row.verificadocaja" />
           </q-td>
           </q-tr>
         </template>
@@ -107,7 +107,7 @@ export default {
       },
     historial(){
       this.$q.loading.show()
-      this.$axios.post(process.env.URL+'/historial',{fecha:this.fecha,unid_id:this.unidad.id}).then(res=>{
+      this.$axios.post(process.env.URL+'/historial2',{fecha:this.fecha,unid_id:this.unidad.id}).then(res=>{
         console.log(res.data)
         this.$q.loading.hide()
         this.pagos=[];
