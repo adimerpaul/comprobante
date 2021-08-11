@@ -142,7 +142,7 @@ class ExportController extends Controller
                         $c->save();
                         $user_id=$c->id;
                     }else{
-                        $c=Cliente::find($usuario[0]->id);
+                        $c=User::find($usuario[0]->id);
                         $user_id=$c->id;
                     }
 
@@ -157,7 +157,7 @@ class ExportController extends Controller
                         $c->save();
                         $cajero_id=$c->id;
                     }else{
-                        $c=Cliente::find($usuario[0]->id);
+                        $c=User::find($usuario[0]->id);
                         $cajero_id=$c->id;
                     }
 
@@ -172,7 +172,7 @@ class ExportController extends Controller
                         $c->save();
                         $impreso_id=$c->id;
                     }else{
-                        $c=Cliente::find($usuario[0]->id);
+                        $c=User::find($usuario[0]->id);
                         $impreso_id=$c->id;
                     }
 //                    return $user_id;
