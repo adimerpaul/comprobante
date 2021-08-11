@@ -59,5 +59,6 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
 
     Route::resource('/anulado',\App\Http\Controllers\AnuladoController::class);
     Route::resource('/exportar',\App\Http\Controllers\ExportController::class);
+    Route::post('/subir',[\App\Http\Controllers\ExportController::class,'subir']);
 
 });

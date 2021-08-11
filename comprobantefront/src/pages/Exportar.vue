@@ -125,6 +125,16 @@ export default {
         {name:'cnumcasa',label:'cnumcasa', align:'left',field:'cnumcasa'},
         {name:'ctelefono',label:'ctelefono', align:'left',field:'ctelefono'},
 
+        {name:'unid_id',label:'unid_id', align:'left',field:'unid_id'},
+        {name:'coditem',label:'coditem', align:'left',field:'coditem'},
+        {name:'nombreitem',label:'nombreitem', align:'left',field:'nombreitem'},
+        {name:'codsubitem',label:'codsubitem', align:'left',field:'codsubitem'},
+        {name:'nombresubitem',label:'nombresubitem', align:'left',field:'nombresubitem'},
+        {name:'detalle',label:'detalle', align:'left',field:'detalle'},
+        {name:'precio',label:'precio', align:'left',field:'precio'},
+        {name:'cantidad',label:'cantidad', align:'left',field:'cantidad'},
+        {name:'subtotal',label:'subtotal', align:'left',field:'subtotal'},
+
 
 
       //   {name:'unidad',label:'Unidad', align:'left',field:'unidad',sortable:true},
@@ -191,7 +201,7 @@ export default {
             literal:r.literal,
             controlinterno:r.controlinterno,
             estado:r.estado,
-            cajero:r.cajero,
+            cajero:r.cajero.codigo,
             usuarioimp:r.usuarioimp,
             porcaja:r.porcaja,
             uname:r.user.name,
@@ -215,6 +225,16 @@ export default {
             cdireccion:r.cliente.direccion,
             cnumcasa:r.cliente.numcasa,
             ctelefono:r.cliente.telefono,
+
+            unid_id:r.unid_id,
+            coditem:r.coditem,
+            nombreitem:r.nombreitem,
+            codsubitem:r.codsubitem,
+            nombresubitem:r.nombresubitem,
+            detalle:r.detalle,
+            precio:r.precio,
+            cantidad:r.cantidad,
+            subtotal:r.subtotal,
 
           })
         })

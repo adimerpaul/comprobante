@@ -18,7 +18,7 @@ Vue.use(Vuex)
 export default new Vuex.Store({
   state: {
     status: '',
-    token: localStorage.getItem('token') || '',
+    token: localStorage.getItem('tokencom') || '',
     user : {},
     boolcontribuyente:false,
     boolusuario:false,
@@ -85,14 +85,14 @@ export default new Vuex.Store({
             const token = resp.data.token
             const user = resp.data.user
             // console.log(user)
-            localStorage.setItem('token', token)
+            localStorage.setItem('tokencom', token)
             axios.defaults.headers.common['Authorization'] = 'Bearer '+token
             commit('auth_success', {token, user})
             resolve(resp)
           })
           .catch(err => {
             commit('auth_error')
-            localStorage.removeItem('token')
+            localStorage.removeItem('tokencom')
             reject(err)
           })
       })
@@ -101,12 +101,12 @@ export default new Vuex.Store({
       return new Promise((resolve, reject) => {
         axios.post(process.env.URL+'/logout').then(res=>{
           commit('logout')
-          localStorage.removeItem('token')
+          localStorage.removeItem('tokencom')
           delete axios.defaults.headers.common['Authorization']
           resolve()
         }).catch(err => {
           commit('auth_error')
-          localStorage.removeItem('token')
+          localStorage.removeItem('tokencom')
           reject(err)
         })
       })

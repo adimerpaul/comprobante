@@ -15,6 +15,7 @@ import Pagocaja from "pages/Pagocaja";
 import Anular from "pages/Anular";
 import Resumen from "pages/Resumen";
 import Exportar from "pages/Exportar";
+import Importar from "pages/Importar";
 const routes = [
   {
     path: '/',
@@ -36,6 +37,7 @@ const routes = [
       { path: '/anular', component: Anular,meta: {requiresAuth: true} },
       { path: '/resumen', component: Resumen,meta: {requiresAuth: true} },
       { path: '/exportar', component: Exportar,meta: {requiresAuth: true} },
+      { path: '/importar', component: Importar,meta: {requiresAuth: true} },
     ]
   },
 
