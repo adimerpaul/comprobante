@@ -138,6 +138,7 @@ class ExportController extends Controller
                         $c->codigo=$ucodigo;
                         $c->email=$uemail;
                         $c->unid_id=$unid_id;
+                        $c->password='';
                         $c->save();
                         $user_id=$c->id;
                     }else{
@@ -152,6 +153,7 @@ class ExportController extends Controller
                         $c->codigo=$ccodigo;
                         $c->email=$cemail;
                         $c->unid_id=$unid_id;
+                        $c->password='';
                         $c->save();
                         $cajero_id=$c->id;
                     }else{
@@ -166,6 +168,7 @@ class ExportController extends Controller
                         $c->codigo=$icodigo;
                         $c->email=$iemail;
                         $c->unid_id=$unid_id;
+                        $c->password='';
                         $c->save();
                         $impreso_id=$c->id;
                     }else{
