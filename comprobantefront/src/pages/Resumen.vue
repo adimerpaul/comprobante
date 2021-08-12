@@ -4,7 +4,7 @@
       <q-form
       @submit="imprimir">
       <div class="col-3 col-sm-12">
-        <q-input 
+        <q-input
         type="date"
         label="Fecha Inicial"
         v-model="fecha.inicio"
@@ -14,7 +14,7 @@
       </div>
       <div class="col-3 col-sm-12">
 
-                <q-input 
+                <q-input
         type="date"
         label="Fecha Final"
         v-model="fecha.fin"
@@ -71,8 +71,8 @@ export default {
     };
   },
   created() {
-    this.unidades();
-    this.mispagos();
+    // this.unidades();
+    // this.mispagos();
   },
   methods: {
     imprimir(){
@@ -154,7 +154,9 @@ export default {
       y+=4.5;
       doc.text(1, y+4,   '____________________                     _____________________________                    ________________________ ')
       doc.text(1, y+4.5, 'FIRMA Y SELLO CAJERO                     FIRMA Y SELLO CONTROL INTERNO                    FIRMA Y SELLO LIQUIDADOR')
-      doc.save("Impreso"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");   
+      // doc.save("Impreso"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+          window.open(doc.output('bloburl'), '_blank');
+
         })
 
 
@@ -166,15 +168,15 @@ export default {
           icon:'error'
         })
       })
-      
+
     },
-    
+
     unidades(){
       this.opunid=[];
       this.$axios.get(process.env.URL+'/unid').then(res=>{
           res.data.forEach(element => {
             this.opunid.push({label:element.nombre,value:element.id});
-            
+
           });
       })
 
@@ -182,14 +184,14 @@ export default {
 
 
     miscomprobante(){
-      
+
       this.$axios.post(process.env.URL+'/buscarimpreso2',{unid_id:this.un.value}).then(res=>{
         console.log(res.data);
         this.comprobantes=[]
         res.data.forEach(r=>{
           this.comprobantes.push({
             label:'padron:'+r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' nro:'+r.nrocomprobante,
-            id:r.id,    
+            id:r.id,
             detalles:r.detalles,
             nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
             padron:r.padron,
@@ -216,7 +218,7 @@ export default {
           })
         })
       }).catch(err=>{
-        // console.log(err.response)
+        console.log(err)
         this.$q.notify({
           message:err.response.data.message,
           color:'red',

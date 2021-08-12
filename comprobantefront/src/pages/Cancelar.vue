@@ -81,11 +81,15 @@
         :data="model.detalles"
         />
       </div>
-      <div class="col-8">
-        <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>
-      </div>
-      <div class="col-4">
-        <q-btn color="primary" icon="search" @click="mispagos" label="Buscar" class="full-width full-height" />
+      <div class="col-12">
+      <q-form class="row" @submit="mispagos">
+        <div class="col-8">
+          <q-input label="fecha de cobro" outlined type="date" v-model="fecha" required/>
+        </div>
+        <div class="col-4">
+          <q-btn color="primary" icon="search" type="submit"  label="Buscar" class="full-width full-height" />
+        </div>
+      </q-form>
       </div>
       <div class="col-12 q-pt-md">
 
@@ -150,21 +154,22 @@ export default {
     this.mispagos()
   },
   mounted() {
-
+    // this.$q.loading.hide()
   },
   methods: {
     imprimir(){
+      let cm=this;
       function header(fecha){
         var img = new Image()
         img.src = 'logo.jpg'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-        doc.text(5, 1.5, 'REGULACION DE '+fecha)
+        doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+fecha)
         doc.text(1, 3, 'Nº COMPROBANTE')
         doc.text(4, 3, 'Nº TRAMITE')
         doc.text(7, 3, 'CONTRIBUYENTE')
-        doc.text(12, 3, 'CI / RUN / RUC')
+        doc.text(13.5, 3, 'CI/RUN/RUC')
         doc.text(16, 3, 'MONTO BS.')
         doc.text(18, 3, 'CAJERO')
         doc.setFont(undefined,'normal')
@@ -184,7 +189,7 @@ export default {
         doc.text(1, y+3, r.nrocomprobante)
         doc.text(4, y+3, r.nrotramite)
         doc.text(7, y+3, r.cliente)
-        doc.text(12, y+3, r.ci)
+        doc.text(13.5, y+3, r.ci)
         doc.text(16, y+3, r.total)
         doc.text(18, y+3, r.cajero )
         if (y+3>25){
@@ -216,24 +221,65 @@ export default {
     },
     mispagos(){
       this.$q.loading.show()
+      this.pagos=[]
       this.$axios.post(process.env.URL+'/mispagos',{fecha:this.fecha}).then(res=>{
-        // console.log(res.data)
+        console.log(res.data)
+
         this.$q.loading.hide()
-        this.pagos=[]
+        // return false;
+        // this.pagos=[]
         res.data.forEach(r=>{
+
           this.pagos.push({
             nrotramite:r.nrotramite,
             nrocomprobante:r.nrocomprobante,
-            cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            cliente:r.paterno+' '+r.materno+' '+r.nombre,
+            //:'',
             cajero:r.cajero,
-            ci:r.cliente.ci,
+            // ci:r.ci,
+            ci:r.ci,
             total:r.total,
           })
+
+
+          // if (typeof r.cliente.paterno !== 'undefined') {
+          // if (r.hasOwnProperty('cliente')) {
+          //     console.log('si')
+          //   let paterno=r.cliente.paterno
+          //   let materno=r.cliente.materno
+          //   let nombre=r.cliente.nombre
+          //   let ci=r.cliente.ci
+          //   this.pagos.push({
+          //     nrotramite:r.nrotramite,
+          //     nrocomprobante:r.nrocomprobante,
+          //     cliente:paterno+' '+materno+' '+nombre,
+          //     // cliente:'',
+          //     cajero:r.cajero,
+          //     // ci:r.cliente.ci,
+          //     ci:ci,
+          //     total:r.total,
+          //   })
+          // }else{
+          //   console.log('no')
+          //   this.pagos.push({
+          //     nrotramite:'ANULADO',
+          //     nrocomprobante:r.nrocomprobante,
+          //     cliente:'ANULADO',
+          //     // cliente:'',
+          //     cajero:r.user.codigo,
+          //     // ci:r.cliente.ci,
+          //     ci:'ANULADO',
+          //     total:'0',
+          //   })
+          // }
+
         })
-      }).catch(err=>{
-        // console.log(err.response)
+      })
+        .catch(err=>{
+        console.error(err)
+          this.$q.loading.hide()
         this.$q.notify({
-          message:err.response.data.message,
+          message:err,
           color:'red',
           icon:'error'
         })

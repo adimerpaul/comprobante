@@ -21,7 +21,7 @@
           </template>
         </q-select>
       </div>
-      <div class="col-12 col-sm-6">
+      <div class="col-12 col-sm-5">
         <q-input
         outlined
         label="Nro Comprobante"
@@ -34,6 +34,9 @@
           val => val >= min && val <= max || 'Tiene que estar en el rango de '+min+'-'+max
           ]"
         />
+      </div>
+      <div class="col-12 col-sm-1 ">
+        <q-badge :color="color" class="full-width " text-color="white" :label="msg" />
       </div>
       <div class="col-12 col-sm-3">
         <q-input
@@ -112,7 +115,9 @@ export default {
         {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad',sortable:true},
         {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
       ],
-      comprobantes:[]
+      comprobantes:[],
+      color:'',
+      msg:''
     };
   },
   created() {
@@ -124,17 +129,35 @@ export default {
   },
   methods: {
     misrangos(){
-      this.$axios.get(process.env.URL+'/unid/1').then(res=>{
-        // console.log(res.data)
-        this.min=res.data.inicio
-        this.max=res.data.fin
-      }).catch(err=>{
-        this.$q.notify({
-          message:err.response.data.message,
-          icon:'error',
-          color:'red'
+      if (this.nrocomprobante!=''){
+        this.$axios.get(process.env.URL+'/unid/'+this.nrocomprobante).then(res=>{
+          if (res.data=='usado'){
+            this.max=0
+            this.min=0
+            this.msg='En uso'
+            this.color='negative'
+          }else if (res.data=='anulado'){
+            this.max=0
+            this.min=0
+            this.msg='Anulado'
+            this.color='negative'
+          }else{
+            console.log(res.data)
+            this.min=res.data.inicio
+            this.max=res.data.fin
+            this.msg='Disponible'
+            this.color='positive'
+          }
+          // console.log(res.data)
+
+        }).catch(err=>{
+          this.$q.notify({
+            message:err.response.data.message,
+            icon:'error',
+            color:'red'
+          })
         })
-      })
+      }
     },
     miscomprobante(){
       this.$q.loading.show()

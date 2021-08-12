@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anulado;
+use App\Models\Comprobante;
 use App\Models\Unid;
 use Illuminate\Http\Request;
 
@@ -37,6 +39,7 @@ class UnidController extends Controller
     public function store(Request $request)
     {
         //
+
         $input=$request->all();
         //        $input['imagen']=$ruta;
         $unid=Unid::create($input);
@@ -49,8 +52,18 @@ class UnidController extends Controller
      * @param  \App\Models\Unid  $unid
      * @return \Illuminate\Http\Response
      */
-    public function show(Request $request,Unid $unid)
+    public function show(Request $request,$comprobante)
     {
+//        return $comprobante;
+        $numcomprobante=str_pad($comprobante, 6, '0', STR_PAD_LEFT);
+//        return $numcomprobante;
+//        return Comprobante::where('nrocomprobante',$numcomprobante)->get();
+        if(Comprobante::where('unid_id',$request->user()->unid_id)->where('nrocomprobante',$numcomprobante)->get()->count()>0){
+            return "usado";
+        }
+        if(Anulado::where('unid_id',$request->user()->unid_id)->where('nrocomprobante',$numcomprobante)->get()->count()>0){
+            return "anulado";
+        }
         return Unid::where('id',$request->user()->unid_id)->firstOrFail();
     }
 

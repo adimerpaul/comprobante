@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Anulado;
 use App\Models\Cliente;
 use App\Models\Comprobante;
 use App\Models\Detalle;
@@ -32,17 +33,85 @@ class ComprobanteController extends Controller
             ->get();
     }
 
-    public function mispagos(Request $request)
-    {
-//        return Comprobante::all();
-        return Comprobante::with('cliente')
-            ->with('detalles')
-            ->whereDate('fechapago',$request->fecha)
-//            ->where('cajero',$request->user()->name)
-            ->where('porcaja',false)
-            ->where('unid_id',$request->user()->unid_id)
-            ->where('estado','PAGADO')
+    public function mispagos(Request $request){
+        $comprobantes=DB::table('comprobantes')
+//            ->join('users as u', 'u.id', '=', 'comprobantes.user_id')
+            ->join('users as c', 'c.id', '=', 'comprobantes.cajero_id')
+            ->join('clientes as cl', 'cl.id', '=', 'comprobantes.cliente_id')
+//            ->join('users c', 'c.id', '=', 'comprobantes.cajero_id')
+//            ->join('orders', 'users.id', '=', 'orders.user_id')
+            ->whereDate('comprobantes.fechapago',$request->fecha)
+            ->where('comprobantes.porcaja',false)
+            ->where('comprobantes.unid_id',$request->user()->unid_id)
+            ->where('comprobantes.estado','PAGADO')
+            ->select('comprobantes.nrocomprobante',
+                'comprobantes.nrotramite',
+                'comprobantes.total',
+                'cl.nombre',
+                'cl.paterno',
+                'cl.materno',
+                'cl.ci' ,
+                'c.codigo as cajero');
+//            ->get();
+
+//        $comprobantes=Comprobante::select(DB::raw(" nrocomprobante,user.codigo"))
+////            ->with('cliente')
+//            ->join('user', 'users.id', '=', 'comprobantes.user_id')
+//
+//            //            ->with('detalles')
+////            ->whereDate('fechapago',$request->fecha)
+////            ->where('porcaja',false)
+////            ->where('unid_id',$request->user()->unid_id)
+//            ->where('estado','PAGADO')
+////            ->orderBy('nrocomprobante')
+//            ->get();
+
+        $anulados=Anulado::select(DB::raw(" nrocomprobante,'ANULADO' as nrotramite,'0' as total,'ANULADO' as paterno,'ANULADO' as materno,'ANULADO' as nombre,'ANULADO' as ci,u.codigo as cajero"))
+//        $anulados=DB::table('anulados')
+//            ->with('user')
+            ->join('users as u','u.id','=','anulados.user_id')
+            ->where('anulados.unid_id',$request->user()->unid_id)
+            ->whereDate('anulados.fecha',$request->fecha)
+            ->union($comprobantes)
+            ->orderBy('nrocomprobante')
             ->get();
+
+        return $anulados;
+//        $comprobantes=Comprobante::with('cliente')
+//            ->with('detalles')
+//            ->whereDate('fechapago',$request->fecha)
+//            ->where('porcaja',false)
+//            ->where('unid_id',$request->user()->unid_id)
+//            ->where('estado','PAGADO')
+//            ->orderBy('nrocomprobante')
+//            ->get();
+//        foreach ($comprobantes as $comprobante){
+//            $com[]=$comprobante;
+//        }
+//
+//        $anulados=Anulado::with('user')->where('unid_id',$request->user()->unid_id)->whereDate('fecha',$request->fecha)->get();
+//        foreach ($anulados as $comprobante){
+////            $comprobante['cliente']->paterno='ANULADO';
+////            $comprobante['cliente']->materno='ANULADO';
+////            $comprobante['cliente']->nombre='ANULADO';
+////            $comprobante['cliente']->ci='ANULADO';
+////            array_push($comprobante,'a');
+////            $com[]=[,'user'=>['codigo'=>$comprobante->user->codigo]];
+//            $com[]=[
+//                'nrocomprobante'=>$comprobante->nrocomprobante,
+//                'nrotramite'=>'ANULADO',
+//                'total'=>'0',
+//                'cajero'=>$comprobante->user->codigo,
+//                'cliente'=>['paterno'=>'ANULADO','materno'=>'ANULADO','nombre'=>'ANULADO','ci'=>'ANULADO'],
+//                ];
+//        }
+//        foreach ($com as $co){
+//
+//            $c[]=$co;
+//
+//        }
+//
+//        return $c;
     }
 
     public function misimpreso(Request $request)
