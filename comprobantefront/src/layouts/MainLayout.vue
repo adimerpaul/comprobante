@@ -175,7 +175,7 @@
           clickable
           to="/pago"
           exact
-          v-if="$store.state.boolpagocomprobante"
+          v-if="$store.state.boolimprimir"
         >
           <q-item-section
             avatar
@@ -215,7 +215,7 @@
           clickable
           to="/cancelar"
           exact
-          v-if="$store.state.boolcancelarcomprobante"
+          v-if="$store.state.boolpagounidad"
         >
           <q-item-section
             avatar
@@ -255,7 +255,7 @@
           clickable
           to="/resumen"
           exact
-          v-if="$store.state.boolresumen"
+          v-if="$store.state.boolresumencaja"
         >
           <q-item-section
             avatar
@@ -283,7 +283,7 @@
           </q-item-section>
 
         </q-item>
-        <q-item clickable to="/exportar" exact v-if="$store.state.boolverificar">
+        <q-item clickable to="/exportar" exact v-if="$store.state.boolexportar">
           <q-item-section avatar>
             <q-icon name="file_download" />
           </q-item-section>
@@ -294,7 +294,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable to="/importar" exact v-if="$store.state.boolverificar">
+        <q-item clickable to="/importar" exact v-if="$store.state.boolimportar">
           <q-item-section avatar>
             <q-icon name="file_upload" />
           </q-item-section>
@@ -317,7 +317,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable to="/verificarcaja" exact v-if="$store.state.boolverificar">
+        <q-item clickable to="/verificarcaja" exact v-if="$store.state.boolverificarcaja">
           <q-item-section avatar>
             <q-icon name="history" />
           </q-item-section>

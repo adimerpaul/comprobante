@@ -25,13 +25,17 @@ export default new Vuex.Store({
     boolitem:false,
     boolunidad:false,
     boolcomprobante:false,
-    boolpagocomprobante:false,
-    boolcancelarcomprobante:false,
-    boolempresa:false,
-    boolverificar:false,
-    boolpagocaja:false,
+    boolimprimir:false,
     boolanular:false,
-    boolresumen:false,
+    boolpagounidad:false,
+    boolpagocaja:false,
+    boolresumencaja:false,
+    boolempresa:false,
+    boolexportar:false,
+    boolimportar:false,
+    boolverificar:false,
+    boolverificarcaja:false,
+    boolverificarsistema:false,
   },
   mutations: {
     auth_request(state){
@@ -42,18 +46,36 @@ export default new Vuex.Store({
       state.token = data.token
       state.user = data.user
       // console.log(data.user)
-      state.boolcontribuyente=data.user.permisos.find( permiso => permiso.id === 1)!=undefined
-      state.boolusuario=data.user.permisos.find( permiso => permiso.id === 2)!=undefined
-      state.boolitem=data.user.permisos.find( permiso => permiso.id === 3)!=undefined
-      state.boolunidad=data.user.permisos.find( permiso => permiso.id === 4)!=undefined
-      state.boolcomprobante=data.user.permisos.find( permiso => permiso.id === 5)!=undefined
-      state.boolpagocomprobante=data.user.permisos.find( permiso => permiso.id === 6)!=undefined
-      state.boolcancelarcomprobante=data.user.permisos.find( permiso => permiso.id === 7)!=undefined
-      state.boolempresa=data.user.permisos.find( permiso => permiso.id === 8)!=undefined
-      state.boolverificar=data.user.permisos.find( permiso => permiso.id === 9)!=undefined
-      state.boolpagocaja=data.user.permisos.find( permiso => permiso.id === 10)!=undefined
-      state.boolanular=data.user.permisos.find( permiso => permiso.id === 11)!=undefined
-      state.boolresumen=data.user.permisos.find( permiso => permiso.id === 12)!=undefined
+      // state.boolcontribuyente=data.user.permisos.find( permiso => permiso.id === 1)!=undefined
+      // state.boolusuario=data.user.permisos.find( permiso => permiso.id === 2)!=undefined
+      // state.boolitem=data.user.permisos.find( permiso => permiso.id === 3)!=undefined
+      // state.boolunidad=data.user.permisos.find( permiso => permiso.id === 4)!=undefined
+      // state.boolcomprobante=data.user.permisos.find( permiso => permiso.id === 5)!=undefined
+      // state.boolpagocomprobante=data.user.permisos.find( permiso => permiso.id === 6)!=undefined
+      // state.boolcancelarcomprobante=data.user.permisos.find( permiso => permiso.id === 7)!=undefined
+      // state.boolempresa=data.user.permisos.find( permiso => permiso.id === 8)!=undefined
+      // state.boolverificar=data.user.permisos.find( permiso => permiso.id === 9)!=undefined
+      // state.boolpagocaja=data.user.permisos.find( permiso => permiso.id === 10)!=undefined
+      // state.boolanular=data.user.permisos.find( permiso => permiso.id === 11)!=undefined
+      // state.boolresumen=data.user.permisos.find( permiso => permiso.id === 12)!=undefined
+
+
+        state.boolcontribuyente=data.user.permisos.find(permiso=>permiso.id===1)!=undefined
+        state.boolusuario=data.user.permisos.find(permiso=>permiso.id===2)!=undefined
+        state.boolitem=data.user.permisos.find(permiso=>permiso.id===3)!=undefined
+        state.boolunidad=data.user.permisos.find(permiso=>permiso.id===4)!=undefined
+        state.boolcomprobante=data.user.permisos.find(permiso=>permiso.id===5)!=undefined
+        state.boolimprimir=data.user.permisos.find(permiso=>permiso.id===6)!=undefined
+        state.boolanular=data.user.permisos.find(permiso=>permiso.id===7)!=undefined
+        state.boolpagounidad=data.user.permisos.find(permiso=>permiso.id===8)!=undefined
+        state.boolpagocaja=data.user.permisos.find(permiso=>permiso.id===9)!=undefined
+        state.boolresumencaja=data.user.permisos.find(permiso=>permiso.id===10)!=undefined
+        state.boolempresa=data.user.permisos.find(permiso=>permiso.id===11)!=undefined
+        state.boolexportar=data.user.permisos.find(permiso=>permiso.id===12)!=undefined
+        state.boolimportar=data.user.permisos.find(permiso=>permiso.id===13)!=undefined
+        state.boolverificar=data.user.permisos.find(permiso=>permiso.id===14)!=undefined
+        state.boolverificarcaja=data.user.permisos.find(permiso=>permiso.id===15)!=undefined
+        state.boolverificarsistema=data.user.permisos.find(permiso=>permiso.id===16)!=undefined
     },
     auth_error(state){
       state.status = 'error'

@@ -223,7 +223,7 @@ export default {
       this.$q.loading.show()
       this.pagos=[]
       this.$axios.post(process.env.URL+'/mispagos',{fecha:this.fecha}).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
 
         this.$q.loading.hide()
         // return false;
@@ -233,11 +233,11 @@ export default {
           this.pagos.push({
             nrotramite:r.nrotramite,
             nrocomprobante:r.nrocomprobante,
-            cliente:r.paterno+' '+r.materno+' '+r.nombre,
+            cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
             //:'',
             cajero:r.cajero,
             // ci:r.ci,
-            ci:r.ci,
+            ci:r.cliente.ci,
             total:r.total,
           })
 

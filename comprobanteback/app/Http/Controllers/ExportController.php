@@ -95,7 +95,7 @@ class ExportController extends Controller
                     $cantidad=$row[42];
                     $subtotal=$row[43];
 
-                    $vcomprobante=Comprobante::where('nrotramite',$nrotramite)->get();
+                    $vcomprobante=Comprobante::where('nrotramite',$nrotramite)->where('unid_id',$unid_id)->get();
                     if ($vcomprobante->count()>0 && $boolduplicado==false){
                         return response()->json(['res'=>'Los archivos ya fueron importados'],400);
 
@@ -184,7 +184,7 @@ class ExportController extends Controller
                         $com->nrocomprobante=$nrocomprobante;
                         $com->fecha=$fecha;
                         $com->fechalimite=$fechalimite;
-                        $com->fechapago=$fechapago;
+                        $com->fechapago=$fechapago==''?NULL:$fechapago;
                         $com->fechaimpreso=$fechaimpreso;
                         $com->tipo=$tipo;
                         $com->item=$item;
@@ -301,6 +301,7 @@ class ExportController extends Controller
             ->where('unid_id',$request->user()->unid_id)
             ->with('unid')
             ->where('estado','PAGADO')
+            ->orWhere('estado','ANULADO')
             ->get();
 
     }

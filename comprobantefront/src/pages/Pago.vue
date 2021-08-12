@@ -1,6 +1,10 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row">
+      <div class="col-12">
+        <q-badge color="info">Ultimos 5 Nro comprobantes usados</q-badge>
+        <span v-for="(ultimo,index) in ultimos" :key="index">-{{ultimo.nrocomprobante}}-</span>
+      </div>
       <div class="col-12 col-sm-6">
         <q-select
           outlined
@@ -117,17 +121,25 @@ export default {
       ],
       comprobantes:[],
       color:'',
-      msg:''
+      msg:'',
+      ultimos:[]
     };
   },
   created() {
     this.miscomprobante()
+    this.ultimoscomprobante()
     this.misrangos()
   },
   mounted() {
 
   },
   methods: {
+    ultimoscomprobante(){
+      this.$axios.post(process.env.URL+'/ultimoscomprobante').then(res=>{
+        // console.log(res.data)
+        this.ultimos=res.data
+      });
+    },
     misrangos(){
       if (this.nrocomprobante!=''){
         this.$axios.get(process.env.URL+'/unid/'+this.nrocomprobante).then(res=>{
@@ -142,7 +154,7 @@ export default {
             this.msg='Anulado'
             this.color='negative'
           }else{
-            console.log(res.data)
+            // console.log(res.data)
             this.min=res.data.inicio
             this.max=res.data.fin
             this.msg='Disponible'
@@ -211,6 +223,7 @@ export default {
           title:'Creado exitoso'
         })
         this.miscomprobante()
+        this.ultimoscomprobante()
         let dat=res.data[0];
         var doc = new jsPDF('p','cm','letter')
         // console.log(dat);
@@ -278,7 +291,7 @@ export default {
           // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
           // console.log("¡Sí! " + successMessage);
           let base64Image = $('#qr_code img').attr('src');
-          console.log(base64Image);
+          // console.log(base64Image);
 
           doc.addImage(base64Image, 'png', x+8.7, y+20.5, 1.5, 1.5);
 

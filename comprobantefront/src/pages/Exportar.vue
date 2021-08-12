@@ -182,7 +182,7 @@ export default {
     historial(){
       this.$q.loading.show()
       this.$axios.post(process.env.URL+'/exportar',{fecha:this.fecha}).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.$q.loading.hide()
         this.pagos=[]
         res.data.forEach(r=>{
@@ -239,12 +239,12 @@ export default {
           })
         })
       }).catch(err=>{
-        // console.log(err.response)
-        this.$q.notify({
-          message:err.response.data.message,
-          color:'red',
-          icon:'error'
-        })
+        console.log(err)
+        // this.$q.notify({
+        //   message:err.response.data.message,
+        //   color:'red',
+        //   icon:'error'
+        // })
       })
     },
     imprimir(){

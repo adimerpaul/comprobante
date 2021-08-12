@@ -29,6 +29,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::get('/cambio/{item}',[\App\Http\Controllers\ItemController::class,'cambio']);
     Route::apiResource('/empresa',\App\Http\Controllers\EmpresaController::class);
     Route::apiResource('/comprobante',\App\Http\Controllers\ComprobanteController::class);
+    Route::post('/ultimoscomprobante',[\App\Http\Controllers\ComprobanteController::class,'ultimoscomprobante']);
     Route::post('/buscarimpreso',[\App\Http\Controllers\ComprobanteController::class,'buscarimpreso']);
     Route::post('/mispagos',[\App\Http\Controllers\ComprobanteController::class,'mispagos']);
     Route::post('/misimpreso',[\App\Http\Controllers\ComprobanteController::class,'misimpreso']);
