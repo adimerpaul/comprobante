@@ -299,6 +299,8 @@ export default {
           // console.log(res.data)
           this.$refs.myForm.resetValidation()
           this.numcomprobante()
+          this.item=''
+          this.subitem=''
           this.$q.loading.hide()
           this.mireset()
           this.detalle=''

@@ -170,6 +170,7 @@ class ComprobanteController extends Controller
             ->where('unid_id',$request->unid_id)
             ->with('unid')
             ->where('estado','PAGADO')
+            ->orWhere('estado','ANULADO')
             ->get();
     }
 
@@ -204,7 +205,7 @@ class ComprobanteController extends Controller
 //        return $request->user();
         if (Cliente::where('ci',$request->ci)->get()->count()==0 && $request->ci!=''){
             $cliente=Cliente::create([
-                'paterno'=>$request->paterno==null?'':$request->paterno,
+                'paterno'=>strtoupper($request->paterno==null?'':$request->paterno),
                 'ci'=>$request->ci==null?'':$request->ci,
                 'materno'=> strtoupper($request->materno==null?'':$request->materno),
                 'nombre'=>strtoupper($request->nombre==null?'':$request->nombre),
