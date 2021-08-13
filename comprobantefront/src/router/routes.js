@@ -16,6 +16,7 @@ import Anular from "pages/Anular";
 import Resumen from "pages/Resumen";
 import Exportar from "pages/Exportar";
 import Importar from "pages/Importar";
+import Verificarsistema from "pages/Verificarsistema";
 const routes = [
   {
     path: '/',
@@ -33,6 +34,7 @@ const routes = [
       { path: '/cancelar', component: Cancelar,meta: {requiresAuth: true} },
       { path: '/verificar', component: Verificar,meta: {requiresAuth: true} },
       { path: '/verificarcaja', component: Verificarcaja,meta: {requiresAuth: true} },
+      { path: '/verificarsistema', component: Verificarsistema,meta: {requiresAuth: true} },
       { path: '/pagocaja', component: Pagocaja,meta: {requiresAuth: true} },
       { path: '/anular', component: Anular,meta: {requiresAuth: true} },
       { path: '/resumen', component: Resumen,meta: {requiresAuth: true} },

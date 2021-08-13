@@ -84,18 +84,22 @@ export default new Vuex.Store({
       state.status = ''
       state.token = ''
       state.user = {}
-      state.boolcontribuyente=false
-      state.boolusuario=false
-      state.boolitem=false
-      state.boolunidad=false
-      state.boolcomprobante=false
-      state.boolpagocomprobante=false
-      state.boolcancelarcomprobante=false
-      state.boolempresa=false
-      state.boolverificar=false
-      state.boolpagocaja=false
-      state.boolanular=false
-      state.boolresumen=false
+      state.boolcontribuyente=false;
+      state.boolusuario=false;
+      state.boolitem=false;
+      state.boolunidad=false;
+      state.boolcomprobante=false;
+      state.boolimprimir=false;
+      state.boolanular=false;
+      state.boolpagounidad=false;
+      state.boolpagocaja=false;
+      state.boolresumencaja=false;
+      state.boolempresa=false;
+      state.boolexportar=false;
+      state.boolimportar=false;
+      state.boolverificar=false;
+      state.boolverificarcaja=false;
+      state.boolverificarsistema=false;
     },
   },
   actions: {

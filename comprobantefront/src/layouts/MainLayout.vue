@@ -328,6 +328,17 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/verificarsistema" exact v-if="$store.state.boolverificarcaja">
+          <q-item-section avatar>
+            <q-icon name="history" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Verificar sistemas</q-item-label>
+            <q-item-label caption>
+              Historial de pagos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 
         <q-item
           v-if="$store.getters.isLoggedIn"

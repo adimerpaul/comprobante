@@ -332,6 +332,10 @@ export default {
     };
   },
   created() {
+
+    if (!this.$store.state.boolusuario){
+      // this.router.push('/')
+    }
     this.misdatos();
     this.$axios.get(process.env.URL+'/unid').then(res=>{
       // console.log(res.data)
