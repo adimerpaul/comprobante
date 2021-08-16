@@ -33,9 +33,9 @@
           <q-td key="total" :props="props">
             {{props.row.total}}
           </q-td>
-          <q-td key="verificadocaja" :props="props" >
-              {{props.row.verificadocaja}}
-            <q-checkbox v-model="props.row.verificadocaja" />
+          <q-td key="verificadosistema" :props="props" >
+              {{props.row.verificadosistema}}
+            <q-checkbox v-model="props.row.verificadosistema" />
           </q-td>
           </q-tr>
         </template>
@@ -72,7 +72,7 @@ export default {
       pcolumns:[
         {name:'nrocomprobante',label:'N comprobante', align:'left',field:'nrocomprobante',sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
-        {name:'verificadocaja',label:'Verificar', align:'left',field:'verificadocaja'},
+        {name:'verificadosistema',label:'Verificar', align:'left',field:'verificadosistema'},
       ],
       comprobantes:[],
       pagos:[],
@@ -91,13 +91,13 @@ export default {
   methods: {
       seleccionar(){
           this.pagos.forEach(element => {
-              element.verificadocaja=this.selectodos;
+              element.verificadosistema=this.selectodos;
           });
 
       },
       verificar(){
         this.pagos.forEach(elemt=>{
-                 this.$axios.post(process.env.URL+'/verificadocaja',elemt);
+                 this.$axios.post(process.env.URL+'/verificadosistema',elemt);
         // console.log(res.data)
 
         });
@@ -112,10 +112,10 @@ export default {
         this.$q.loading.hide()
         this.pagos=[];
         res.data.forEach(element => {
-            if(element.verificadocaja==1)
+            if(element.verificadosistema==1)
             element.verificadocaja=true;
             else
-            element.verificadocaja=false;
+            element.verificadosistema=false;
             this.pagos.push(element);
 
         });
@@ -219,11 +219,6 @@ export default {
       })
     },
     cancelar(){
-      // if (this.nrocomprobante==''){
-      //   this.$q.dialog({
-      //     title:'Falta numero comprobante'
-      //   })
-      //   return false;
       // }
       if (this.model==''){
         this.$q.dialog({

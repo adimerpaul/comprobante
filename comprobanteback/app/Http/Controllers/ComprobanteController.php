@@ -370,6 +370,19 @@ class ComprobanteController extends Controller
         return true;
     }
 
+    public function verificadosistema(Request $request)
+    {
+//        return 12;
+
+        $comprobante=Comprobante::find($request->id);
+
+        $comprobante->fechasistema=date('Y-m-d');
+        $comprobante->verificadosistema=$request->verificadosistema;
+        $comprobante->verificadosistema_id=$request->user()->id;
+        $comprobante->save();
+        return true;
+    }
+
     /**
      * Remove the specified resource from storage.
      *

@@ -49,12 +49,16 @@ class CreateComprobantesTable extends Migration
             $table->boolean('porcaja')->default(false);
             $table->boolean('verificadocaja')->default(false);
             $table->date('fechacaja')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+
+            $table->foreign('verificadocaja_id')->references('id')->on('users');
             $table->unsignedBigInteger('verificadocaja_id')->nullable()->default(NULL);
+            
             $table->boolean('verificadosistema')->default(false);
             $table->date('fechasistema')->nullable();
-            $table->foreign('user_id')->references('id')->on('users');
+
+            $table->foreign('verificadosistema_id')->references('id')->on('users');
             $table->unsignedBigInteger('verificadosistema_id')->nullable()->default(NULL);
+
             $table->unsignedBigInteger('user_id');
             $table->foreign('user_id')->references('id')->on('users');
             $table->unsignedBigInteger('cajero_id')->nullable()->default(NULL);
