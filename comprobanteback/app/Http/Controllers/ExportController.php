@@ -297,11 +297,13 @@ class ExportController extends Controller
             ->with('cajero')
             ->with('impreso')
             ->whereDate('fechapago',$request->fecha)
-//            ->where('cajero',$request->user()->name)
+//            ->whereRaw('(  date(fechapago) = date("'.$request->fecha.'") OR fechapago = null")')
+            //            ->where('cajero',$request->user()->name)
             ->where('unid_id',$request->user()->unid_id)
             ->with('unid')
-            ->where('estado','PAGADO')
-            ->orWhere('estado','ANULADO')
+//            ->where('estado','PAGADO')
+//            ->orWhere('estado','ANULADO')
+            ->whereRaw('(estado = "ANULADO" OR estado = "PAGADO" OR fechapago = null )')
             ->get();
 
     }
