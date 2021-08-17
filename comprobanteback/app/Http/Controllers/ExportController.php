@@ -304,6 +304,7 @@ class ExportController extends Controller
 //            ->where('estado','PAGADO')
 //            ->orWhere('estado','ANULADO')
             ->whereRaw('(estado = "ANULADO" OR estado = "PAGADO")')
+            ->orderBy('nrocomprobante')
             ->get();
 
     }
