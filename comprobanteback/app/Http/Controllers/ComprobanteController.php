@@ -195,11 +195,13 @@ class ComprobanteController extends Controller
         //        return $request;
                 return Comprobante::with('cliente')
                     ->with('detalles')
-                    ->whereDate('fechapago',$request->fecha)
+                    ->whereDate('fechaimpreso',$request->fecha)
         //            ->where('cajero',$request->user()->name)
                     ->where('unid_id',$request->unid_id)
                     ->with('unid')
                     ->where('estado','PAGADO')
+                    ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
+
                     ->whereNull('fechacaja')
                     ->get();
             }
