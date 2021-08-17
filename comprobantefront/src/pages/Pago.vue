@@ -127,8 +127,9 @@ export default {
   },
   created() {
     this.miscomprobante()
-    this.ultimoscomprobante()
+    // this.ultimoscomprobante()
     this.misrangos()
+    setInterval(this.ultimoscomprobante,2000);
   },
   mounted() {
 
@@ -190,7 +191,6 @@ export default {
         })
       })
     },
-
     cancelar(){
       if (this.nrocomprobante==''){
         this.$q.dialog({
@@ -223,7 +223,7 @@ export default {
           title:'Creado exitoso'
         })
         this.miscomprobante()
-        this.ultimoscomprobante()
+        // this.ultimoscomprobante()
         let dat=res.data[0];
         var doc = new jsPDF('p','cm','letter')
         // console.log(dat);
