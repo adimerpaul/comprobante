@@ -2,7 +2,8 @@
   <q-page class="q-pa-md">
     <div class="row">
       <div class="col-12">
-        <q-badge color="info">Ultimos 5 Nro comprobantes usados</q-badge>
+        <q-badge color="info">Ultimos 5 Nro comprobantes usados </q-badge>
+        <q-btn label="Actualizar" @click="ultimoscomprobante"  icon="send" color="info" size="xs" class="q-ma-xs" />
         <span v-for="(ultimo,index) in ultimos" :key="index">-{{ultimo.nrocomprobante}}-</span>
       </div>
       <div class="col-12 col-sm-6">
@@ -127,9 +128,8 @@ export default {
   },
   created() {
     this.miscomprobante()
-    // this.ultimoscomprobante()
+    this.ultimoscomprobante()
     this.misrangos()
-    setInterval(this.ultimoscomprobante,2000);
   },
   mounted() {
 
@@ -191,6 +191,7 @@ export default {
         })
       })
     },
+
     cancelar(){
       if (this.nrocomprobante==''){
         this.$q.dialog({
@@ -223,7 +224,7 @@ export default {
           title:'Creado exitoso'
         })
         this.miscomprobante()
-        // this.ultimoscomprobante()
+        this.ultimoscomprobante()
         let dat=res.data[0];
         var doc = new jsPDF('p','cm','letter')
         // console.log(dat);
