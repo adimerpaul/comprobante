@@ -127,14 +127,28 @@ class ComprobanteController extends Controller
             ->whereDate('fechapago',$request->fecha)
             ->where('porcaja',false)
             ->where('unid_id',$request->user()->unid_id)
-            ->where('estado','PAGADO')
-            ->orWhere('estado','ANULADO')
+//            ->where('estado','PAGADO')
+//            ->orWhere('estado','ANULADO')
+            ->whereRaw('(estado = "ANULADO" OR estado = "PAGADO")')
             ->orderBy('nrocomprobante')
             ->get();
 
 
     }
-
+    public function impresosunidad(Request $request){
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->whereDate('fechaimpreso','>=',$request->inicio)
+            ->whereDate('fechaimpreso','<=',$request->fin)
+            ->where('unid_id',$request->user()->unid_id)
+//            ->where_in
+            ->whereRaw('(estado = "PAGADO" OR estado = "IMPRESO" OR estado = "ANULADO")')
+            ->orderBy('nrocomprobante')
+            //            ->where('estado','PAGADO')
+//            ->orWhere('estado','IMPRESO')
+//            ->orWhere('estado','ANULADO')
+            ->get();
+    }
     public function misimpreso(Request $request)
     {
 //        return Comprobante::all();
@@ -145,6 +159,8 @@ class ComprobanteController extends Controller
 //            ->where('cajero',$request->user()->name)
             ->where('unid_id',$request->user()->unid_id)
             ->where('estado','PAGADO')
+            ->orderBy('nrocomprobante')
+
             ->get();
     }
 
@@ -169,8 +185,9 @@ class ComprobanteController extends Controller
 //            ->where('cajero',$request->user()->name)
             ->where('unid_id',$request->unid_id)
             ->with('unid')
-            ->where('estado','PAGADO')
-            ->orWhere('estado','ANULADO')
+//            ->where('estado','PAGADO')
+//            ->orWhere('estado','ANULADO')
+            ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
             ->get();
     }
 
@@ -318,7 +335,7 @@ class ComprobanteController extends Controller
         }
         $comprobante->update([
 //            'fechapago'=>date('Y-m-d'),
-            'usuarioimp'=>$request->user()->name,
+            'usuarioimp'=>$request->user()->codigo,
             'impreso_id'=>$request->user()->id,
             'fechaimpreso'=>date('Y-m-d'),
             'estado'=>'IMPRESO',

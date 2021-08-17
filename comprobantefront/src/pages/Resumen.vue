@@ -1,33 +1,71 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row">
-      <q-form
-      @submit="imprimir">
-      <div class="col-3 col-sm-12">
-        <q-input
-        type="date"
-        label="Fecha Inicial"
-        v-model="fecha.inicio"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 && val<=this.fecha.fin || 'Ingrese la fecha correcta']"
-        />
+      <div class="col-12">
+        <div class="text-h5 bg-amber-14 text-center text-white" >Reporte por unidad cobros</div>
       </div>
-      <div class="col-3 col-sm-12">
-
-                <q-input
-        type="date"
-        label="Fecha Final"
-        v-model="fecha.fin"
-        lazy-rules
-        :rules="[ val => val && val.length > 0 && val>=this.fecha.inicio || 'Ingrese la fecha correcta']"
-        />
+      <div class="col-12">
+        <q-form @submit="imprimir">
+          <div class="row">
+            <div class="col-12 col-sm-4 q-pa-xs">
+              <q-input
+                outlined
+                type="date"
+                label="Fecha Inicial"
+                v-model="fecha.inicio"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 && val<=this.fecha.fin || 'Ingrese la fecha correcta']"
+              />
+            </div>
+            <div class="col-12 col-sm-4 q-pa-xs">
+              <q-input
+                outlined
+                type="date"
+                label="Fecha Final"
+                v-model="fecha.fin"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 && val>=this.fecha.inicio || 'Ingrese la fecha correcta']"
+              />
+            </div>
+            <div class="col-12 col-sm-4 flex flex-center">
+              <q-btn class="" type="submit" color="secondary"  icon="print" label="Imprimir"/>
+            </div>
+          </div>
+        </q-form>
+      </div>
+      <div class="col-12">
+        <div class="text-h5 bg-blue-14 text-center text-white" >Reporte por unidad de impresos</div>
+      </div>
+      <div class="col-12">
+        <q-form @submit="impresosunidad">
+          <div class="row">
+            <div class="col-12 col-sm-4 q-pa-xs">
+              <q-input
+                outlined
+                type="date"
+                label="Fecha Inicial"
+                v-model="fecha.inicio"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 && val<=this.fecha.fin || 'Ingrese la fecha correcta']"
+              />
+            </div>
+            <div class="col-12 col-sm-4 q-pa-xs">
+              <q-input
+                outlined
+                type="date"
+                label="Fecha Final"
+                v-model="fecha.fin"
+                lazy-rules
+                :rules="[ val => val && val.length > 0 && val>=this.fecha.inicio || 'Ingrese la fecha correcta']"
+              />
+            </div>
+            <div class="col-12 col-sm-4 flex flex-center">
+              <q-btn class="" type="submit" color="secondary"  icon="print" label="Imprimir"/>
+            </div>
+          </div>
+        </q-form>
       </div>
 
-
-      <div class="col-12 q-pt-md">
-        <q-btn class="full-width" type="submit" color="secondary"  icon="print" label="Imprimir"/>
-      </div>
-    </q-form>
     </div>
   </q-page>
 </template>
@@ -76,6 +114,7 @@ export default {
   },
   methods: {
     imprimir(){
+      this.$q.loading.show()
       function header(un,fec1,fec2,fec3){
         var img = new Image()
         img.src = 'logo.jpg'
@@ -84,14 +123,14 @@ export default {
         doc.text(3, 1, 'H. GOBIERNO MUNICIPAL DE ORURO')
         doc.text(3, 1.5, '  JEFATURA DE RECAUDACIONES')
         doc.text(15, 1.5, 'Fecha de Proceso '+fec1)
-        doc.text(8, 2.5, 'RESUMEN DIARIO DE INGRESOS DE LA UNIDAD DE')
+        doc.text(8, 2.5, 'RESUMEN DIARIO DE INGRESOS CAJA DE LA UNIDAD DE')
         doc.text(8, 3, un + ' DEL ' + fec2 +' AL '+ fec3)
         doc.setFontSize(6);
         doc.text(.5, 4, 'FECHA DE PAGO')
         doc.text(3, 4, 'Nº COMPROBANTE')
         doc.text(5, 4, 'Nº TRAMITE')
         doc.text(7, 4, 'CONTRIBUYENTE')
-        doc.text(16, 4, 'CI / RUN / RUC')
+        doc.text(16, 4, 'CI/RUN/RUC')
         doc.text(18, 4, 'MONTO BS.')
         doc.text(20, 4, 'USUARIO')
         doc.setFont(undefined,'normal')
@@ -105,9 +144,9 @@ export default {
       header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
       // let xx=x
       // let yy=y
-
         this.$axios.post(process.env.URL+'/misimpreso',this.fecha).then(res=>{
-        console.log(res.data)
+
+        // console.log(res.data)
         this.pagos=[];
         res.data.forEach(r=>{
           this.pagos.push({
@@ -156,7 +195,106 @@ export default {
       doc.text(1, y+4.5, 'FIRMA Y SELLO CAJERO                     FIRMA Y SELLO CONTROL INTERNO                    FIRMA Y SELLO LIQUIDADOR')
       // doc.save("Impreso"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
           window.open(doc.output('bloburl'), '_blank');
+          this.$q.loading.hide()
+        })
 
+
+      }).catch(err=>{
+        // console.log(err.response)
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
+        })
+      })
+
+    },
+    impresosunidad(){
+      this.$q.loading.show()
+      function header(un,fec1,fec2,fec3){
+        var img = new Image()
+        img.src = 'logo.jpg'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(3, 1, 'H. GOBIERNO MUNICIPAL DE ORURO')
+        doc.text(3, 1.5, '  JEFATURA DE RECAUDACIONES')
+        doc.text(15, 1.5, 'Fecha de Proceso '+fec1)
+        doc.text(8, 2.5, 'RESUMEN DIARIO DE INGRESOS IMPRESOS DE LA UNIDAD DE')
+        doc.text(8, 3, un + ' DEL ' + fec2 +' AL '+ fec3)
+        doc.setFontSize(6);
+        doc.text(.5, 4, 'FECHA DE PAGO')
+        doc.text(3, 4, 'Nº COMPROBANTE')
+        doc.text(5, 4, 'Nº TRAMITE')
+        doc.text(7, 4, 'CONTRIBUYENTE')
+        doc.text(15, 4, 'CI/RUN/RUC')
+        doc.text(17, 4, 'MONTO BS.')
+        doc.text(19, 4, 'USUARIO')
+        doc.text(20, 4, 'ESTADO')
+        doc.setFont(undefined,'normal')
+        doc.setFontSize(9);
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
+      // let xx=x
+      // let yy=y
+      this.$axios.post(process.env.URL+'/impresosunidad',this.fecha).then(res=>{
+
+        // console.log(res.data)
+        this.pagos=[];
+        res.data.forEach(r=>{
+          this.pagos.push({
+            fechaimpreso:r.fechaimpreso,
+            nrotramite:r.nrotramite,
+            nrocomprobante:r.nrocomprobante,
+            cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            usuarioimp:r.usuarioimp,
+            ci:r.cliente.ci,
+            total:r.total,
+            estado:r.estado,
+          });
+        })
+
+        doc.setFontSize(6);
+        let y=0;
+        this.pagos.forEach(r=>{
+          // xx+=0.5
+          y+=0.5
+          doc.text(1, y+4, r.fechaimpreso)
+          doc.text(3, y+4, r.nrocomprobante)
+          doc.text(5, y+4, r.nrotramite)
+          doc.text(7, y+4, r.cliente)
+          doc.text(15, y+4, r.ci)
+          doc.text(17, y+4, r.total)
+          doc.text(19, y+4, r.usuarioimp )
+          doc.text(20, y+4, r.estado )
+          if (y+4>25){
+            doc.addPage();
+            header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
+            y=0
+          }
+
+        })
+        var c = this.total.toString().split(".")
+        this.$axios.post(process.env.URL+'/convertirletra/'+c[0]).then(res=>{
+          console.log(res.data);
+          this.literal=res.data;
+          doc.setFontSize(9);
+          if(c[1] == null || c[1]=='')
+            c[1]=0;
+          doc.text(1, y+4.5, 'SON: '+this.literal+' '+c[1]+'/100 Bs')
+          doc.text(12, y+4.5, 'TOTAL RECAUDADCION: ')
+          doc.text(18, y+4.5, this.total+'Bs')
+          doc.setFontSize(6);
+          y+=4.5;
+          doc.text(1, y+4,   '____________________                     _____________________________                    ________________________ ')
+          doc.text(1, y+4.5, 'FIRMA Y SELLO CAJERO                     FIRMA Y SELLO CONTROL INTERNO                    FIRMA Y SELLO LIQUIDADOR')
+          // doc.save("Impreso"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+          window.open(doc.output('bloburl'), '_blank');
+          this.$q.loading.hide()
         })
 
 

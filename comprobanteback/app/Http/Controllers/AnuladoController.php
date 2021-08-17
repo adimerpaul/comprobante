@@ -53,8 +53,6 @@ class AnuladoController extends Controller
     public function store(Request $request)
     {
         $comprobante=Comprobante::find($request->comprobante_id);
-
-
 //        $comprobante=Comprobante::create([
 //            'unid_id'=>$comprobante->unid_id,
 //            'nrotramite'=>$comprobante->nrotramite,
@@ -118,7 +116,7 @@ class AnuladoController extends Controller
         $com->item=$comprobante->item;
         $com->save();
 
-        $detalles=Detalle::where('comprobante_id',$comprobante->id)->get();
+        $detalles=Detalle::where('comprobante_id',$request->comprobante_id)->get();
         foreach ($detalles as $detalle){
             $d= new Detalle();
             $d->coditem=$detalle->coditem;
@@ -130,6 +128,7 @@ class AnuladoController extends Controller
             $d->cantidad=$detalle->cantidad;
             $d->subtotal=$detalle->subtotal;
             $d->comprobante_id=$com->id;
+            $d->save();
         }
 
         $nroprobante=$comprobante->nrocomprobante;
