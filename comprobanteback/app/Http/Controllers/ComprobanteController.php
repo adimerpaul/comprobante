@@ -199,9 +199,8 @@ class ComprobanteController extends Controller
         //            ->where('cajero',$request->user()->name)
                     ->where('unid_id',$request->unid_id)
                     ->with('unid')
-                    ->where('estado','PAGADO')
+//                    ->where('estado','PAGADO')
                     ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
-
                     ->whereNull('fechacaja')
                     ->get();
             }
