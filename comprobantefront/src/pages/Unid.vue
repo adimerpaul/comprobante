@@ -138,7 +138,7 @@
               v-model="dato2.fin"
               type="number"
               label="Numero Comp F"
-              hint="Ingresar numero"+
+              hint="Ingresar numero"
             />
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle" />
