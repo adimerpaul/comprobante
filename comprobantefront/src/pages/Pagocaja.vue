@@ -1,18 +1,10 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row">
+      <div class="col-12 col-sm-12 q-pa-xs flex flex-center">
+        <q-btn icon="search" label="Actualizar" color="primary" @click="loscomprobantes"/>
+      </div>
       <div class="col-12 col-sm-12 q-pa-xs">
-<!--        <q-select-->
-<!--        filled-->
-<!--        v-model="unid"-->
-<!--        label="Selecionar unidad"-->
-<!--        :options="unidades"-->
-<!--        option-value="id"-->
-<!--        option-label="nombre"-->
-<!--        @input="loscomprobantes"-->
-<!--        />-->
-<!--      </div>-->
-      <div class="col-12 col-sm-6 q-pa-xs">
         <q-select
           outlined
           filled
