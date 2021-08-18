@@ -386,13 +386,13 @@ class ComprobanteController extends Controller
 
     public function verificadocaja(Request $request)
     {
-//        return 12;
-
         $comprobante=Comprobante::find($request->id);
-
         $comprobante->fechacaja=date('Y-m-d');
         $comprobante->verificadocaja=$request->verificadocaja;
         $comprobante->verificadocaja_id=$request->user()->id;
+        $comprobante->porcaja=true;
+        $comprobante->cajero=$request->user()->codigo;
+        $comprobante->cajero_id=$request->user()->id;
         $comprobante->save();
         return true;
     }
