@@ -3,7 +3,7 @@
     <div class="row">
       <div class="col-12">
         <q-badge color="info">Ultimos 5 Nro comprobantes usados </q-badge>
-        <q-btn label="Actualizar" @click="ultimoscomprobante"  icon="send" color="info" size="xs" class="q-ma-xs" />
+        <q-btn label="Actualizar" @click="actualizar"  icon="send" color="info" size="xs" class="q-ma-xs" />
         <span v-for="(ultimo,index) in ultimos" :key="index">-{{ultimo.nrocomprobante}}-</span>
       </div>
       <div class="col-12 col-sm-6">
@@ -135,6 +135,11 @@ export default {
 
   },
   methods: {
+    actualizar(){
+      this.ultimoscomprobante()
+      this.miscomprobante()
+      this.misrangos()
+    },
     ultimoscomprobante(){
       this.$axios.post(process.env.URL+'/ultimoscomprobante').then(res=>{
         // console.log(res.data)
