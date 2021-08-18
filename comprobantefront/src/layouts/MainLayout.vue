@@ -328,7 +328,7 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable to="/verificarsistema" exact v-if="$store.state.boolverificarcaja">
+        <q-item clickable to="/verificarsistema" exact v-if="$store.state.boolverificarsistema">
           <q-item-section avatar>
             <q-icon name="history" />
           </q-item-section>
