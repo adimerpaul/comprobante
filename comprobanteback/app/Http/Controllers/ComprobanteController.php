@@ -138,6 +138,7 @@ class ComprobanteController extends Controller
     public function impresosunidad(Request $request){
         return Comprobante::with('cliente')
             ->with('detalles')
+            ->with('cajero')
             ->whereDate('fechaimpreso','>=',$request->inicio)
             ->whereDate('fechaimpreso','<=',$request->fin)
             ->where('unid_id',$request->user()->unid_id)

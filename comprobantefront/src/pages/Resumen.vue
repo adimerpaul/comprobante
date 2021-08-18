@@ -251,7 +251,7 @@ export default {
             nrotramite:r.nrotramite,
             nrocomprobante:r.nrocomprobante,
             cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
-            usuarioimp:r.usuarioimp,
+            usuarioimp:r.cajero.codigo,
             ci:r.cliente.ci,
             total:r.total,
             estado:r.estado,
