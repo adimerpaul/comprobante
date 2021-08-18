@@ -142,7 +142,7 @@ class ComprobanteController extends Controller
             ->whereDate('fechaimpreso','<=',$request->fin)
             ->where('unid_id',$request->user()->unid_id)
 //            ->where_in
-            ->whereRaw('(estado = "PAGADO" OR estado = "IMPRESO" OR estado = "ANULADO")')
+            ->whereRaw('(estado = "PAGADO"  OR estado = "ANULADO")')
             ->orderBy('nrocomprobante')
             //            ->where('estado','PAGADO')
 //            ->orWhere('estado','IMPRESO')
@@ -159,6 +159,7 @@ class ComprobanteController extends Controller
             ->whereDate('fechaimpreso','<=',$request->fin)
 //            ->where('cajero',$request->user()->name)
             ->where('unid_id',$request->user()->unid_id)
+            ->where('cajero_id',$request->user()->id)
             ->where('estado','PAGADO')
             ->orderBy('nrocomprobante')
 
