@@ -212,6 +212,19 @@ class ComprobanteController extends Controller
                     ->whereNull('fechacaja')
                     ->get();
             }
+            public function historial3(Request $request){
+                //        return $request;
+                        return Comprobante::with('cliente')
+                            ->with('detalles')
+                            ->whereDate('fechaimpreso',$request->fecha)
+                //            ->where('cajero',$request->user()->name)
+                            ->where('unid_id',$request->unid_id)
+                            ->with('unid')
+        //                    ->where('estado','PAGADO')
+                            ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
+                            ->whereNull('fechasistema')
+                            ->get();
+                    }
 
     /**
      * Store a newly created resource in storage.
