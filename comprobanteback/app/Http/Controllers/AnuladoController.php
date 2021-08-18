@@ -40,6 +40,7 @@ class AnuladoController extends Controller
             ->with('unid')
             ->whereDate('fechalimite','>=',now())
             ->where('unid_id',$request->user()->unid_id)
+            ->where('impreso_id',$request->user()->id)
             ->where('estado','IMPRESO')
             ->get();
     }
