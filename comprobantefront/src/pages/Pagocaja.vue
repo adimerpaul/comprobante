@@ -1,17 +1,17 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row">
-      <div class="col-12 col-sm-6 q-pa-xs">
-        <q-select
-        filled
-        v-model="unid"
-        label="Selecionar unidad"
-        :options="unidades"
-        option-value="id"
-        option-label="nombre"
-        @input="loscomprobantes"
-        />
-      </div>
+      <div class="col-12 col-sm-12 q-pa-xs">
+<!--        <q-select-->
+<!--        filled-->
+<!--        v-model="unid"-->
+<!--        label="Selecionar unidad"-->
+<!--        :options="unidades"-->
+<!--        option-value="id"-->
+<!--        option-label="nombre"-->
+<!--        @input="loscomprobantes"-->
+<!--        />-->
+<!--      </div>-->
       <div class="col-12 col-sm-6 q-pa-xs">
         <q-select
           outlined
@@ -177,6 +177,7 @@ export default {
   },
   mounted() {
     // console.log(this.$store.state.user.unid.nombre)
+    this.loscomprobantes();
   },
   methods: {
     loscomprobantes(){
@@ -187,7 +188,7 @@ export default {
         this.$q.loading.hide()
         res.data.forEach(r=>{
           this.comprobantes.push({
-            label:'padron:'+r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' nro:'+r.nrocomprobante,
+            label:'padron:'+r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' compro:'+r.nrocomprobante+' unid:'+r.unid.nombre,
             id:r.id,
             detalles:r.detalles,
             nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,

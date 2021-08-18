@@ -319,8 +319,9 @@ class ComprobanteController extends Controller
     public function loscomprobantes(Request $request){
         return Comprobante::with('cliente')
             ->with('detalles')
+            ->with('unid')
             ->whereDate('fechalimite','>=',now())
-            ->where('unid_id',$request->unid_id)
+//            ->where('unid_id',$request->unid_id)
             ->where('estado','IMPRESO')
             ->get();
     }
