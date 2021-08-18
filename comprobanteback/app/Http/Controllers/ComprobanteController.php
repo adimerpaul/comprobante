@@ -154,6 +154,7 @@ class ComprobanteController extends Controller
 //        return Comprobante::all();
         return Comprobante::with('cliente')
             ->with('detalles')
+            ->with('cajero')
             ->whereDate('fechaimpreso','>=',$request->inicio)
             ->whereDate('fechaimpreso','<=',$request->fin)
 //            ->where('cajero',$request->user()->name)

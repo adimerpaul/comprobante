@@ -146,7 +146,7 @@ export default {
       // let yy=y
         this.$axios.post(process.env.URL+'/misimpreso',this.fecha).then(res=>{
 
-        // console.log(res.data)
+        console.log(res.data)
         this.pagos=[];
         res.data.forEach(r=>{
           this.pagos.push({
@@ -154,7 +154,7 @@ export default {
             nrotramite:r.nrotramite,
             nrocomprobante:r.nrocomprobante,
             cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
-            usuarioimp:r.usuarioimp,
+            usuarioimp:r.cajero.codigo,
             ci:r.cliente.ci,
             total:r.total,
           });
