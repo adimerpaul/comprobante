@@ -19,7 +19,12 @@ class ComprobanteController extends Controller
      */
     public function index(Request $request)
     {
-        return Comprobante::with('cliente')->with('detalles')->whereDate('fechalimite','>=',now())->where('unid_id',$request->user()->unid_id)->where('estado','CREADO')->get();
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->whereDate('fechalimite','>=',now())
+            ->where('unid_id',$request->user()->unid_id)
+            ->where('estado','CREADO')
+            ->get();
 //        return Comprobante::with('cliente')->with('detalles')->get();
     }
     public function ultimoscomprobante(Request $request){

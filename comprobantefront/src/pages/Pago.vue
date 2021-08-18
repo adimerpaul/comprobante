@@ -180,7 +180,7 @@ export default {
         this.comprobantes=[]
         res.data.forEach(r=>{
           this.comprobantes.push({
-            label:r.padron+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            label:r.padron+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' tram:'+r.nrotramite,
             id:r.id,
             detalles:r.detalles,
             nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
