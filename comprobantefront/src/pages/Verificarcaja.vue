@@ -104,6 +104,8 @@ export default {
         this.$q.dialog({
           title:'Verificado Exitoso'
         })
+        this.historial();
+        
       },
     historial(){
       this.$q.loading.show()
