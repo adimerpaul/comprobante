@@ -454,10 +454,10 @@ class ComprobanteController extends Controller
     }
 
     public function reportitem(Request $request){
-        return 'SELECT d.codsubitem,d.nombresubitem, count(d.codsubitem) as cantidad, sum(d.subtotal) as monto from comprobantes c INNER JOIN detalles d on d.comprobante_id=c.id
-        where c.fechapago<= "2021-07-01" and c.fechapago >= "2021-07-30"
+        return 'SELECT c.fechapago,d.codsubitem,d.nombresubitem, count(d.codsubitem) as cantidad, sum(d.subtotal) as monto from comprobantes c INNER JOIN detalles d on d.comprobante_id=c.id
+        where c.fechapago>= "2021-07-01" and c.fechapago <= "2021-07-30"
         and c.verificadosistema != null
-        GROUP by d.codsubitem,d.nombresubitem;';
+        GROUP by c.fechapago,d.codsubitem,d.nombresubitem;';
     }
 
     public function reportecomp(Request $request){
