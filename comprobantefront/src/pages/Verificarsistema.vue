@@ -80,8 +80,8 @@ export default {
       // fecha2:date.formatDate(Date.now(),'YYYY-MM-DD'),
       //
       // fecha:date.formatDate( addToDate(Date.now(),{days:-1}) ,'YYYY-MM-DD'),
-      fecha2:'2021-08-31',
-      fecha:'2021-08-01',
+      fecha2:date.formatDate(Date.now(),'YYYY-MM-DD'),
+      fecha:date.formatDate(Date.now(),'YYYY-MM-DD'),
       buscar:{inicio:date.formatDate(Date.now(),'YYYY-MM-DD'),fin:date.formatDate(Date.now(),'YYYY-MM-DD')},
       options: [
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
@@ -279,6 +279,7 @@ export default {
       },
       verificar(){
         this.pagos.forEach(elemt=>{
+                if(elemt.verificadosistema)
                  this.$axios.post(process.env.URL+'/verificadosistema',elemt);
         // console.log(res.data)
 

@@ -97,6 +97,7 @@ export default {
       },
       verificar(){
         this.pagos.forEach(elemt=>{
+              if(elemt.verificadocaja)
                  this.$axios.post(process.env.URL+'/verificadocaja',elemt);
         // console.log(res.data)
 
