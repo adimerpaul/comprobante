@@ -179,7 +179,7 @@ export default {
             x=0.5
             cont=0
             doc.addPage();
-            header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
+            header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
           }
 
           if (a==0){
