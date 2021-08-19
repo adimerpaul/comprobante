@@ -454,15 +454,15 @@ class ComprobanteController extends Controller
     }
 
     public function reportitem(Request $request){
-        return 'SELECT c.fechasistema,d.codsubitem,d.nombresubitem,
-COUNT(d.codsubitem) as cantidad,
-SUM(d.subtotal) as monto
-from comprobantes c
-INNER JOIN detalles d on d.comprobante_id=c.id
-WHERE c.fechasistema>= "2021-08-01" and c.fechasistema <= "2021-08-30"
-AND c.verificadosistema=1
-AND c.estado!="ANULADO"
-GROUP by c.fechasistema,d.codsubitem,d.nombresubitem';
+        $ini=$request->inicio;
+        $fin=$request->fin;
+        $datos= DB::select('SELECT c.fechasistema as fecha,d.codsubitem as cod ,d.nombresubitem as nombre,COUNT(d.codsubitem) as cantidad,d.precio as precio,SUM(d.subtotal) as monto from comprobantes c
+        INNER JOIN detalles d on d.comprobante_id=c.id
+        WHERE c.fechasistema>= "'.$ini.'" and c.fechasistema <= "'.$fin.'"
+        AND c.verificadosistema=1
+        AND c.estado!="ANULADO"
+        GROUP by c.fechasistema,d.codsubitem,d.nombresubitem, d.precio');
+        return $datos;
     }
 
     public function reportecomp(Request $request){

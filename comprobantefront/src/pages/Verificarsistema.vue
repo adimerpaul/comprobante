@@ -55,6 +55,15 @@
           </div>
         </q-form>
       </div>
+      <div class="col-12">
+        <q-form @submit.prevent="generarsubitem">
+          <div class="row">
+            <div class="col-4 q-pa-md"><q-input label="Fecha Inicio" type="date" outlined v-model="buscar.inicio" /></div>
+            <div class="col-4 q-pa-md"><q-input label="Fecha Fin" type="date" outlined v-model="buscar.fin" /></div>
+            <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="Generar item" color="warning" icon="search"/></div>
+          </div>
+        </q-form>
+      </div>
     </div>
   </q-page>
 </template>
@@ -73,6 +82,7 @@ export default {
       // fecha:date.formatDate( addToDate(Date.now(),{days:-1}) ,'YYYY-MM-DD'),
       fecha2:'2021-08-31',
       fecha:'2021-08-01',
+      buscar:{inicio:date.formatDate(Date.now(),'YYYY-MM-DD'),fin:date.formatDate(Date.now(),'YYYY-MM-DD')},
       options: [
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ],
@@ -92,7 +102,8 @@ export default {
       comprobantes:[],
       pagos:[],
       unidades:[],
-      selectodos:false
+      selectodos:false,
+      item:[]
     };
   },
   created() {
@@ -104,6 +115,65 @@ export default {
     })
   },
   methods: {
+          generarsubitem(){
+        if(this.buscar.inicio<=this.buscar.fin){
+         this.$axios.post(process.env.URL+'/reportitem',this.buscar)
+         .then(res=>{
+           this.item=res.data;
+            console.log(res.data);
+            this.imprimiritem();
+         }) 
+        }
+      },
+        imprimiritem(){
+      function header(fecha1,fecha2,hoy){
+        var img = new Image()
+        img.src = 'logo.jpg'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.setFontSize(5);
+
+        doc.text(2,1,'GOBIERNO AUTONOMO MUNICIPAL DE ORURO')
+        doc.text(2.5,1.2,'DIRECCION DE INGRESOS')
+        doc.setFontSize(7);
+        doc.text(15,1,'Fecha de Consulta:'+hoy);
+        doc.setFontSize(9);
+        doc.text(6, 2, 'RESUMEN DE INGRESOS POR COMPROBANTE DE CAJA')
+        doc.text(6.5, 2.5, 'DEL: '+fecha1+' AL '+fecha2)
+        doc.text(1, 3.5, 'ITEM')
+        doc.text(4, 3.5, 'DESCRIPCION')
+        doc.text(15, 3.5, 'NRO TRAMITES')
+        doc.text(18, 3.5, 'MONTO BS')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header(this.buscar.inicio,this.buscar.fin,this.fechoy)
+      // let xx=x
+      // let yy=y
+      let y=0;
+      this.item.forEach(item=>{
+               y+=0.5
+        doc.text(1, y+4, item.cod);
+        doc.text(4, y+4, item.nombre);
+        doc.text(15, y+4, ''+item.cantidad);
+        doc.text(18, y+4, ''+item.monto);
+        if (y+4>25){
+          doc.addPage();
+           header(this.buscar.inicio,this.buscar.fin,this.fechoy);
+          y=0;
+        }});
+      doc.text(4, y+4, '____________________________________________________________________________')
+      doc.text(4, y+4.5, 'TOTAL RECAUDADCION: ')
+      doc.text(15, y+4.5, ''+this.tramite)
+      doc.text(18, y+4.5, ''+this.total)
+
+
+      window.open(doc.output('bloburl'), '_blank');
+    },
     reportecomp(){
       this.$q.loading.show()
       function header(un,fec1,fec2,fec3){
@@ -420,10 +490,17 @@ export default {
   computed:{
     total() {
       let total=0
-      this.pagos.forEach(r=>{
-        total+=parseFloat(r.total);
+      this.item.forEach(r=>{
+        total+=parseFloat(r.monto);
       })
       return total;
+    },
+          tramite() {
+      let tramite=0
+      this.item.forEach(r=>{
+        tramite+=parseInt(r.cantidad);
+      })
+      return tramite;
     }
   }
 };
