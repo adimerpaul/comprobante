@@ -257,7 +257,6 @@ export default {
             estado:r.estado,
           });
         })
-
         doc.setFontSize(6);
         let y=0;
         this.pagos.forEach(r=>{
@@ -276,7 +275,6 @@ export default {
             header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
             y=0
           }
-
         })
         var c = this.total.toString().split(".")
         this.$axios.post(process.env.URL+'/convertirletra/'+c[0]).then(res=>{
@@ -300,6 +298,7 @@ export default {
 
       }).catch(err=>{
         // console.log(err.response)
+        this.$q.loading.hide()
         this.$q.notify({
           message:err.response.data.message,
           color:'red',

@@ -466,12 +466,14 @@ GROUP by c.fechasistema,d.codsubitem,d.nombresubitem';
     }
 
     public function reportecomp(Request $request){
-        return 'SELECT c.fechasistema ,u.nombre,
+        return DB::select('
+SELECT c.fechasistema ,u.nombre,
 MIN(c.nrocomprobante) as menor,
 MAX(c.nrocomprobante) as mayor
 FROM comprobantes c INNER JOIN unids u on c.unid_id=u.id
-WHERE c.fechasistema >= "2021-08-01" and c.fechasistema<="2021-08-30"
+WHERE c.fechasistema >= "'.$request->inicio.'" and c.fechasistema<="'.$request->fin.'"
 AND c.verificadosistema =1
-GROUP by c.fechasistema,u.nombre;';
+GROUP by c.fechasistema,u.nombre;
+');
     }
 }

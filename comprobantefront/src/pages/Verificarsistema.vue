@@ -46,18 +46,33 @@
         <q-btn color="green" label="Registrar Verificados" class="full-width text-black text-bold" @click="verificar"/>
 <!--        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>-->
       </div>
+      <div class="col-12">
+        <q-form @submit.prevent="reportecomp">
+          <div class="row">
+            <div class="col-4 q-pa-md"><q-input label="Fecha 1" type="date" outlined v-model="fecha" /></div>
+            <div class="col-4 q-pa-md"><q-input label="Fecha 1" type="date" outlined v-model="fecha2" /></div>
+            <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="consulta" color="accent" icon="search"/></div>
+          </div>
+        </q-form>
+      </div>
     </div>
   </q-page>
 </template>
 <script>
 import { jsPDF } from "jspdf";
 import {date} from 'quasar'
+const { addToDate } = date
+
 export default {
   data() {
     return {
       model:'',
       unidad:'',
-      fecha:date.formatDate(Date.now(),'YYYY-MM-DD'),
+      // fecha2:date.formatDate(Date.now(),'YYYY-MM-DD'),
+      //
+      // fecha:date.formatDate( addToDate(Date.now(),{days:-1}) ,'YYYY-MM-DD'),
+      fecha2:'2021-08-31',
+      fecha:'2021-08-01',
       options: [
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ],
@@ -89,6 +104,103 @@ export default {
     })
   },
   methods: {
+    reportecomp(){
+      this.$q.loading.show()
+      function header(un,fec1,fec2,fec3){
+        doc.setFont("courier");
+        doc.setFontSize(9);
+
+        var img = new Image()
+        img.src = 'logo.jpg'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(3, 1, 'H. GOBIERNO MUNICIPAL DE ORURO')
+        // doc.text(3, 1.5, '  JEFATURA DE RECAUDACIONES')
+        doc.text(15, 1.5, 'Fecha de Proceso '+fec1)
+        doc.text(8, 2.5, 'REGISTRO DE COMPROBANTES DE CAJA ')
+        doc.text(5, 3, 'RESUMEN MENSUAL DE COMPROBANTES DEL ' + fec2 +' AL '+ fec3)
+        // doc.setFontSize(6);
+        // doc.text(.5, 4, 'FECHA DE PAGO')
+        // doc.text(3, 4, 'Nº COMPROBANTE')
+        // doc.text(5, 4, 'Nº TRAMITE')
+        // doc.text(7, 4, 'CONTRIBUYENTE')
+        // doc.text(15, 4, 'CI/RUN/RUC')
+        // doc.text(17, 4, 'MONTO BS.')
+        // doc.text(19, 4, 'USUARIO')
+        // doc.text(20, 4, 'ESTADO')
+        doc.setFont(undefined,'normal')
+        doc.setFontSize(6);
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+
+      // var x=0,y=
+      header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
+
+      this.$axios.post(process.env.URL+'/reportecomp',{inicio:this.fecha,fin:this.fecha2,}).then(res=>{
+        console.log(res.data)
+        doc.setFontSize(6)
+        let y=0
+        let x=0
+        let f='*'
+        let a=0.5
+        let cont=0;
+        res.data.forEach(r=>{
+          // xx+=0.5
+          cont++
+          a=0
+          if (f!=r.fechasistema){
+
+            doc.setFont(undefined,'bold')
+            f=r.fechasistema
+            doc.text(x+1, y+3.5, r.fechasistema)
+            doc.text(x+4.5, y+3.5, 'TALONARIO' )
+            a=0.28
+            doc.setFont(undefined,'normal')
+            cont++
+          }
+          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,30))
+          doc.text(x+4.5, y+a+3.5, r.menor)
+          doc.text(x+5.5, y+a+3.5, r.mayor )
+
+          if (cont==80){
+            // doc.addPage();
+            // cont=0
+            // header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
+            y=0
+            x+=7
+          }
+          if (cont==160){
+            y=0
+            x+=7
+          }
+          if (cont==240){
+            y=0
+            x=0.5
+            cont=0
+            doc.addPage();
+            header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
+          }
+
+          if (a==0){
+            y+=0.28
+          }else{
+            y=y+0.28+a
+          }
+
+        })
+
+        window.open(doc.output('bloburl'), '_blank');
+        this.$q.loading.hide()
+      }).catch(err=>{
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
+        })
+        this.$q.loading.hide()
+      })
+    },
       seleccionar(){
           this.pagos.forEach(element => {
               element.verificadosistema=this.selectodos;
@@ -121,7 +233,7 @@ export default {
 
         });
         this.pagos=res.data;
-       
+
 
       }).catch(err=>{
         // console.log(err.response)
