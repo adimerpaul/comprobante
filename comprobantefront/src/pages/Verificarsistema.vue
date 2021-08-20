@@ -122,7 +122,7 @@ export default {
            this.item=res.data;
             console.log(res.data);
             this.imprimiritem();
-         }) 
+         })
         }
       },
         imprimiritem(){
@@ -151,7 +151,7 @@ export default {
       doc.setFont("courier");
       doc.setFontSize(9);
       // var x=0,y=
-      header(this.buscar.inicio,this.buscar.fin,this.fechoy)
+      header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'))
       // let xx=x
       // let yy=y
       let y=0;
@@ -160,10 +160,12 @@ export default {
         doc.text(1, y+4, item.cod);
         doc.text(4, y+4, item.nombre);
         doc.text(15, y+4, ''+item.cantidad);
-        doc.text(18, y+4, ''+item.monto);
+        doc.text(19, y+4, ''+item.monto,{align: 'right',});
+        // doc.text(19, y+4, item.monto ,{align: 'right',});
+
         if (y+4>25){
           doc.addPage();
-           header(this.buscar.inicio,this.buscar.fin,this.fechoy);
+           header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'));
           y=0;
         }});
       doc.text(4, y+4, '____________________________________________________________________________')
