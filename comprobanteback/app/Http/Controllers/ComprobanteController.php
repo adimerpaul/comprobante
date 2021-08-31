@@ -6,6 +6,7 @@ use App\Models\Anulado;
 use App\Models\Cliente;
 use App\Models\Comprobante;
 use App\Models\Detalle;
+use App\Models\User;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Luecano\NumeroALetras\NumeroALetras;
