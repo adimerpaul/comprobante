@@ -445,7 +445,7 @@ class ComprobanteController extends Controller
             'fecha'=>$comprobante->fechapago.' 00:00:00',
             'observa'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
             'flag'=>'T',
-            'caja'=>'F'
+            'caja'=>'T'
         ]);
 
         return true;
