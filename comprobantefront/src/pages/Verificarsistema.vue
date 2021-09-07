@@ -140,8 +140,9 @@ export default {
         doc.setFontSize(9);
         doc.text(6, 2, 'RESUMEN DE INGRESOS POR COMPROBANTE DE CAJA')
         doc.text(6.5, 2.5, 'DEL: '+fecha1+' AL '+fecha2)
-        doc.text(1, 3.5, 'ITEM')
-        doc.text(4, 3.5, 'DESCRIPCION')
+
+        doc.text(0.5, 3.5, 'ITEM')
+        doc.text(3, 3.5, 'DESCRIPCION')
         doc.text(15, 3.5, 'NRO TRAMITES')
         doc.text(18, 3.5, 'MONTO BS')
         doc.setFont(undefined,'normal')
@@ -157,8 +158,8 @@ export default {
       let y=0;
       this.item.forEach(item=>{
                y+=0.5
-        doc.text(1, y+4, item.cod);
-        doc.text(4, y+4, item.nombre);
+        doc.text(0.5, y+4, item.cod);
+        doc.text(3, y+4, item.nombre.substring(0,70));
         doc.text(15, y+4, ''+item.cantidad);
         doc.text(19, y+4, ''+item.monto,{align: 'right',});
         // doc.text(19, y+4, item.monto ,{align: 'right',});
