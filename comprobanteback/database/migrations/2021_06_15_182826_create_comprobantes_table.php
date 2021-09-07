@@ -19,8 +19,8 @@ class CreateComprobantesTable extends Migration
             $table->string('nrocomprobante')->default('')->nullable();
             $table->date('fecha')->nullable();
             $table->date('fechalimite')->nullable();
-            $table->date('fechapago')->nullable();
-            $table->date('fechaimpreso')->nullable();
+            $table->dateTime('fechapago')->nullable();
+            $table->dateTime('fechaimpreso')->nullable();
             $table->string('tipo')->default('')->nullable();
             $table->string('item')->default('')->nullable();
             $table->string('codigo')->default('')->nullable();
@@ -48,7 +48,7 @@ class CreateComprobantesTable extends Migration
             $table->string('anulado')->default('')->nullable();
             $table->boolean('porcaja')->default(false);
             $table->boolean('verificadocaja')->default(false);
-            $table->date('fechacaja')->nullable();
+            $table->dateTime('fechacaja')->nullable();
 
             $table->foreign('verificadocaja_id')->references('id')->on('users');
             $table->unsignedBigInteger('verificadocaja_id')->nullable()->default(NULL);

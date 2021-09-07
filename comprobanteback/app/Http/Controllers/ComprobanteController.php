@@ -361,7 +361,7 @@ class ComprobanteController extends Controller
 //            'fechapago'=>date('Y-m-d'),
             'usuarioimp'=>$request->user()->codigo,
             'impreso_id'=>$request->user()->id,
-            'fechaimpreso'=>date('Y-m-d'),
+            'fechaimpreso'=>date('Y-m-d H:i:s'),
             'estado'=>'IMPRESO',
             'nrocomprobante'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT),
             'controlinterno'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT).date('d/m/Y'),
@@ -375,7 +375,7 @@ class ComprobanteController extends Controller
     {
 //         return $comprobante;
         $comprobante->update([
-            'fechapago'=>date('Y-m-d'),
+            'fechapago'=>date('Y-m-d H:i:s'),
             'cajero'=>$request->user()->codigo,
             'cajero_id'=>$request->user()->id,
             'estado'=>'PAGADO',
@@ -389,7 +389,7 @@ class ComprobanteController extends Controller
     {
 //        return 12;
         $comprobante->update([
-            'fechapago'=>date('Y-m-d'),
+            'fechapago'=>date('Y-m-d H:i:s'),
             'cajero'=>$request->user()->codigo,
             'cajero_id'=>$request->user()->id,
             'estado'=>'PAGADO',
@@ -401,7 +401,7 @@ class ComprobanteController extends Controller
     public function verificadocaja(Request $request)
     {
         $comprobante=Comprobante::find($request->id);
-        $comprobante->fechacaja=date('Y-m-d');
+        $comprobante->fechacaja=date('Y-m-d H:i:s');
         $comprobante->verificadocaja=$request->verificadocaja;
         $comprobante->verificadocaja_id=$request->user()->id;
         $comprobante->porcaja=true;
@@ -417,7 +417,7 @@ class ComprobanteController extends Controller
 
         $comprobante=Comprobante::find($request->id);
 
-        $comprobante->fechasistema=date('Y-m-d');
+        $comprobante->fechasistema=date('Y-m-d H:i:s');
         $comprobante->verificadosistema=$request->verificadosistema;
         $comprobante->verificadosistema_id=$request->user()->id;
         $comprobante->save();
@@ -432,7 +432,7 @@ class ComprobanteController extends Controller
         
         DB::connection('ingres')->table('diario')->insert([
             'nro_comp'=>$comprobante->nrocomprobante,
-            'fecha'=>$comprobante->fechapago.' 00:00:00',
+            'fecha'=>$comprobante->fechapago,
             'efectivo'=>floatval($comprobante->total),
             'cheque'=>0,
             'observ'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
@@ -442,7 +442,7 @@ class ComprobanteController extends Controller
         DB::connection('ingres')->table('compro')->insert([
             'nro'=>$comprobante->nrocomprobante,
             'unidad'=>$comprobante->unid_id,
-            'fecha'=>$comprobante->fechapago.' 00:00:00',
+            'fecha'=>$comprobante->fechapago,
             'observa'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
             'flag'=>'T',
             'caja'=>'T'
