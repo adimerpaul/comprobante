@@ -26,6 +26,10 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/logout',[\App\Http\Controllers\UserController::class,'logout']);
     Route::post('/me',[\App\Http\Controllers\UserController::class,'me']);
     Route::apiResource('/item',\App\Http\Controllers\ItemController::class);
+    Route::post('/misitems',[\App\Http\Controllers\ItemController::class,'misitems']);
+
+    Route::post('/misitemcrear',[\App\Http\Controllers\ItemController::class,'misitemcrear']);
+
     Route::get('/cambio/{item}',[\App\Http\Controllers\ItemController::class,'cambio']);
     Route::apiResource('/empresa',\App\Http\Controllers\EmpresaController::class);
     Route::apiResource('/comprobante',\App\Http\Controllers\ComprobanteController::class);

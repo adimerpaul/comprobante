@@ -36,6 +36,8 @@ export default new Vuex.Store({
     boolverificar:false,
     boolverificarcaja:false,
     boolverificarsistema:false,
+    boolmisitems:false,
+    boolactualizarcomprobante:false
   },
   mutations: {
     auth_request(state){
@@ -76,6 +78,8 @@ export default new Vuex.Store({
         state.boolverificar=data.user.permisos.find(permiso=>permiso.id===14)!=undefined
         state.boolverificarcaja=data.user.permisos.find(permiso=>permiso.id===15)!=undefined
         state.boolverificarsistema=data.user.permisos.find(permiso=>permiso.id===16)!=undefined
+        state.boolmisitems=data.user.permisos.find(permiso=>permiso.id===17)!=undefined
+        state.boolactualizarcomprobante=data.user.permisos.find(permiso=>permiso.id===18)!=undefined
     },
     auth_error(state){
       state.status = 'error'
@@ -84,22 +88,24 @@ export default new Vuex.Store({
       state.status = ''
       state.token = ''
       state.user = {}
-      state.boolcontribuyente=false;
-      state.boolusuario=false;
-      state.boolitem=false;
-      state.boolunidad=false;
-      state.boolcomprobante=false;
-      state.boolimprimir=false;
-      state.boolanular=false;
-      state.boolpagounidad=false;
-      state.boolpagocaja=false;
-      state.boolresumencaja=false;
-      state.boolempresa=false;
-      state.boolexportar=false;
-      state.boolimportar=false;
-      state.boolverificar=false;
-      state.boolverificarcaja=false;
-      state.boolverificarsistema=false;
+      state.boolcontribuyente=false
+      state.boolusuario=false
+      state.boolitem=false
+      state.boolunidad=false
+      state.boolcomprobante=false
+      state.boolimprimir=false
+      state.boolanular=false
+      state.boolpagounidad=false
+      state.boolpagocaja=false
+      state.boolresumencaja=false
+      state.boolempresa=false
+      state.boolexportar=false
+      state.boolimportar=false
+      state.boolverificar=false
+      state.boolverificarcaja=false
+      state.boolverificarsistema=false
+      state.boolmisitems=false
+      state.boolactualizarcomprobante=false
     },
   },
   actions: {

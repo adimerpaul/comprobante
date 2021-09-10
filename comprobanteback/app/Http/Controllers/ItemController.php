@@ -12,6 +12,10 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function misitems(Request $request){
+        return Item::with('unid')->with('subitems')->where('unid_id',$request->user()->unid_id)->where('estado','ACTIVO')->orderBy('nombre')->get();
+
+    }
     public function index(Request $request)
     {
 //        return $request->user()->unid_id;
@@ -31,6 +35,13 @@ class ItemController extends Controller
         //        $input['imagen']=$ruta;
         $item=Item::create($input);
         return $item;
+    }
+    public function misitemcrear(Request $request){
+        $item= new Item();
+        $item->codigo=$request->codigo;
+        $item->nombre=$request->nombre;
+        $item->unid_id=$request->user()->unid_id;
+        $item->save();
     }
 
     /**

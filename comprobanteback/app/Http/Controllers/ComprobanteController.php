@@ -18,8 +18,7 @@ class ComprobanteController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
-    {
+    public function index(Request $request){
         return Comprobante::with('cliente')
             ->with('detalles')
             ->whereDate('fechalimite','>=',now())
@@ -429,7 +428,7 @@ class ComprobanteController extends Controller
         ]);
 
         $user1=User::find($comprobante->cajero_id);
-        
+
         DB::connection('ingres')->table('diario')->insert([
             'nro_comp'=>$comprobante->nrocomprobante,
             'fecha'=>$comprobante->fechapago,

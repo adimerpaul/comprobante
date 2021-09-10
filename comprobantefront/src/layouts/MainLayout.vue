@@ -339,6 +339,31 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/misitems" exact v-if="$store.state.boolmisitems">
+          <q-item-section avatar>
+            <q-icon name="code" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Mis items</q-item-label>
+            <q-item-label caption>
+              Historial de pagos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
+
+        <q-item clickable to="/actualizarcomprobante" exact v-if="$store.state.boolactualizarcomprobante">
+          <q-item-section avatar>
+            <q-icon name="map" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Actualizar comprobante</q-item-label>
+            <q-item-label caption>
+              Actualizar comprobante
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
 
         <q-item
           v-if="$store.getters.isLoggedIn"

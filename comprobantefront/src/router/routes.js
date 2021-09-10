@@ -17,6 +17,8 @@ import Resumen from "pages/Resumen";
 import Exportar from "pages/Exportar";
 import Importar from "pages/Importar";
 import Verificarsistema from "pages/Verificarsistema";
+import Misitems from "pages/Misitems";
+import Actualizarcomprobante from "pages/Actualizarcomprobante";
 const routes = [
   {
     path: '/',
@@ -40,6 +42,8 @@ const routes = [
       { path: '/resumen', component: Resumen,meta: {requiresAuth: true} },
       { path: '/exportar', component: Exportar,meta: {requiresAuth: true} },
       { path: '/importar', component: Importar,meta: {requiresAuth: true} },
+      { path: '/misitems', component: Misitems,meta: {requiresAuth: true} },
+      { path: '/actualizarcomprobante', component: Actualizarcomprobante,meta: {requiresAuth: true} },
     ]
   },
 

@@ -12,7 +12,6 @@
                        :rules="[
                          val => val && val.length > 0 || 'Porfavor llenar este campo',
                          ]"
-                       disable
               />
             </div>
 <!--            <div class="col-6">-->
@@ -236,6 +235,7 @@ export default {
   },
   created() {
     this.numcomprobante()
+    this.mistramites()
     this.$axios.get(process.env.URL+'/item').then(res=>{
       // console.log(res.data);
       this.items=[];
@@ -246,6 +246,15 @@ export default {
     })
   },
   methods: {
+    mistramites(){
+      this.$axios.post(process.env.URL+'/mistramites').then(res=>{
+        console.log(res.data)
+        // this.items=[];
+        // res.data.forEach(r=>{
+        //   this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
+        // });
+      })
+    },
     filter(val, update){
       if (val === '') {
         update(() => {
