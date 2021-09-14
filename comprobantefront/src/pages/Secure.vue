@@ -237,11 +237,13 @@ export default {
   created() {
     this.numcomprobante()
     this.$axios.get(process.env.URL+'/item').then(res=>{
-      // console.log(res.data);
-      this.items=[];
+      console.log(res.data)
+      // return false
+      // return false
+      this.items=[]
       res.data.forEach(r=>{
         this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
-      });
+      })
       // this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
     })
   },

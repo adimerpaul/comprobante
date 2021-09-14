@@ -18,4 +18,7 @@ class Unid extends Model
         'created_at',
         'updated_at',
     ];
+    public function items(){
+        return $this->belongsToMany(Item::class);
+    }
 }

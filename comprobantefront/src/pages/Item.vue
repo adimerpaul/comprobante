@@ -71,7 +71,7 @@
           <q-td key="unid" :props="props">
 <!--            {{  props.row.unids }}-->
             <ul>
-              <li v-for="(u,i) in props.row.unids" :key="i">{{ u.nombre }}</li>
+              <li v-for="(u,i) in props.row.unids" :key="i">{{ u.nombre }} <q-badge color="negative" @click="eliminaritemunid(u)"><q-icon name="delete"/></q-badge>  </li>
             </ul>
           </q-td>
           <q-td key="estado" :props="props">
@@ -384,19 +384,20 @@
         <q-card-section class="row ">
 <!--          <q-avatar icon="clear" color="red" text-color="white" />-->
 <!--          <span class="q-ml-sm">Seguro de eliminar Registro.</span>-->
-          <q-form class="col-12">
+          <q-form class="col-12" @submit.prevent="onaddunid">
 <!--            <div class="row">-->
               <div >
-                <q-select v-model="uni3"  :options="unidades" label="Selecionar unidad" />
+                <q-select v-model="uni3"  :options="unidades" label="Selecionar unidad" required />
               </div>
 <!--            </div>-->
 <!--            <q-select v-model="uni2" :options="unidades" label="Standard" />-->
+            <q-card-actions align="right">
+              <q-btn icon="send" label="Agregar" color="deep-orange" type="submit" />
+              <q-btn icon="delete"  label="Cancelar" color="negative" v-close-popup />
+            </q-card-actions>
           </q-form>
         </q-card-section>
-        <q-card-actions align="right">
-          <q-btn icon="send" label="Agregar" color="deep-orange" @click="onaddunid" />
-          <q-btn icon="delete"  label="Cancelar" color="negative" v-close-popup />
-        </q-card-actions>
+
       </q-card>
     </q-dialog>
 
@@ -525,6 +526,21 @@ export default {
         this.$q.loading.hide();
       });
     },
+    eliminaritemunid(i){
+      // console.log(i)
+      this.$q.loading.show();
+      this.$axios.post(process.env.URL + "/eliminaritemunid" ,i.pivot).then((res) => {
+        console.log(res.data)
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Agregado",
+        });
+        this.dialog_unidad = false;
+        this.misdatos();
+      });
+    },
     misdatos() {
       this.$q.loading.show();
       this.$axios.get(process.env.URL + "/item/1").then((res) => {
@@ -645,7 +661,23 @@ export default {
         });
     },
     onaddunid(){
-
+      // console.log(this.uni3)
+      // return false
+      this.$q.loading.show();
+      this.$axios.post(process.env.URL + "/itemunidad" ,{
+        item_id:this.dato2.id,
+        unid_id:this.uni3.value
+      }).then((res) => {
+        console.log(res.data)
+        this.$q.notify({
+          color: "green-4",
+          textColor: "white",
+          icon: "cloud_done",
+          message: "Agregado",
+        });
+        this.dialog_unidad = false;
+        this.misdatos();
+      });
     },
     onDel() {
 
