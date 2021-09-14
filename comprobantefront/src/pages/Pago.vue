@@ -251,7 +251,12 @@ export default {
           doc.text(xx+2.5, yy, r.nombreitem.toString());
           // doc.text(xx, yy, r.codsubitem.toString());
           doc.text(xx+14.5, yy, r.subtotal.toString());
+
           doc.text(xx+2.5, yy+0.5, r.detalle.toString());
+
+          if (r.detalle.toString().length>50){
+            
+          }
           yy++
           // console.log(r)
         })

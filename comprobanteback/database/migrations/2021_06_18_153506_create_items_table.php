@@ -20,8 +20,8 @@ class CreateItemsTable extends Migration
             $table->string('detalle')->nullable();
             $table->double('monto',11,2)->nullable();
             $table->string('estado')->nullable()->default('ACTIVO');
-            $table->unsignedBigInteger('unid_id')->nullable()->default(16);
-            $table->foreign('unid_id')->references('id')->on('unids');
+            $table->unsignedBigInteger('itempadre_id')->nullable()->default(1);
+            $table->foreign('itempadre_id')->references('id')->on('itempadres');
             $table->timestamps();
         });
     }

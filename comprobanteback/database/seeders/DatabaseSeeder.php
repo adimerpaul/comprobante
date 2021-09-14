@@ -18,7 +18,7 @@ class DatabaseSeeder extends Seeder
             UnidSeeder::class,
             UserSeeder::class,
             ClienteSeeder::class,
-//            ComprobanteSeeder::class,
+            ItempadreSeeder::class,
 //            DetalleSeeder::class,
             ItemSeeder::class,
             EmpresaSeeder::class,
@@ -26,6 +26,7 @@ class DatabaseSeeder extends Seeder
             SubitemSeeder::class,
             PermisoSeeder::class,
             PermisoUser::class,
+            ItemUnidSeeder::class
         ]);
     }
 }

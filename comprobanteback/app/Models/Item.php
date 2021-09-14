@@ -18,8 +18,8 @@ class Item extends Model
         'created_at',
         'updated_at',
     ];
-    public function Unid(){
-        return $this->belongsTo(Unid::class);
+    public function unids(){
+        return $this->belongsToMany(Unid::class);
     }
     public function subitems(){
         return $this->hasMany(Subitem::class);

@@ -32,6 +32,8 @@ class PermisoSeeder extends Seeder
             ["id"=>14,"nombre"=>"Verificar"],
             ["id"=>15,"nombre"=>"Verificar en Caja"],
             ["id"=>16,"nombre"=>"Verificar en Sistema"],
+            ["id"=>17,"nombre"=>"Mis items"],
+            ["id"=>18,"nombre"=>"ACtualizar comprobante"],
 //            ["nombre"=>"Contributente"],
 //            ["nombre"=>"Contributente"],
 //            ["nombre"=>"Contributente"],

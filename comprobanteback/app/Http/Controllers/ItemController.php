@@ -13,7 +13,7 @@ class ItemController extends Controller
      * @return \Illuminate\Http\Response
      */
     public function misitems(Request $request){
-        return Item::with('unid')->with('subitems')->where('unid_id',$request->user()->unid_id)->where('estado','ACTIVO')->orderBy('nombre')->get();
+        return Item::with('unids')->with('subitems')->where('unid_id',$request->user()->unid_id)->where('estado','ACTIVO')->orderBy('nombre')->get();
 
     }
     public function index(Request $request)
@@ -52,7 +52,7 @@ class ItemController extends Controller
      */
     public function show(Item $item)
     {
-        return Item::with('unid')->with('subitems')->orderBy('nombre')->get();
+        return Item::with('unids')->with('subitems')->get();
     }
     public function cambio(Item $item)
     {
@@ -63,7 +63,7 @@ class ItemController extends Controller
         }
         $item->save();
         echo 1;
-//        return Item::with('unid')->with('subitems')->orderBy('nombre')->get();
+//        return Item::with('unids')->with('subitems')->orderBy('nombre')->get();
     }
 
     /**

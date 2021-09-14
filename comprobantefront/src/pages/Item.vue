@@ -69,7 +69,10 @@
             {{ props.row.nombre }}
           </q-td>
           <q-td key="unid" :props="props">
-            {{ props.row.unid.nombre }}
+<!--            {{  props.row.unids }}-->
+            <ul>
+              <li v-for="(u,i) in props.row.unids" :key="i">{{ u.nombre }}</li>
+            </ul>
           </q-td>
           <q-td key="estado" :props="props">
             <q-badge @click="cambio(props.row)" v-if="props.row.estado=='ACTIVO'" color="positive">
@@ -123,6 +126,14 @@
                         @click="editRow(props)"
                         icon="edit"
                       ></q-btn>
+                    <q-btn
+                      dense
+                      round
+                      flat
+                      color="info"
+                      @click="agregarunidad(props)"
+                      icon="home"
+                    />
                       <q-btn
                         dense
                         round
@@ -203,15 +214,14 @@
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
-            <q-select
-            v-model="uni2"
-            :options="unidades"
-            label="unidad"
-            hint="Seleccionar"
-            lazy-rules
-              :rules="[(val) => val!='' && val!=null || 'Por favor ingresa datos']"
-            />
-
+<!--            <q-select-->
+<!--            v-model="uni2"-->
+<!--            :options="unidades"-->
+<!--            label="unidad"-->
+<!--            hint="Seleccionar"-->
+<!--            lazy-rules-->
+<!--              :rules="[(val) => val!='' && val!=null || 'Por favor ingresa datos']"-->
+<!--            />-->
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle" />
               <q-btn label="Cancelar" icon="delete" color="negative" v-close-popup />
@@ -228,8 +238,6 @@
         </q-card-section>
         <q-card-section class="q-pt-xs">
           <q-form @submit="onModsub" class="q-gutter-md">
-
-
             <q-input
               filled
               v-model="dato3.nombre"
@@ -371,6 +379,21 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog v-model="dialog_unidad">
+      <q-card>
+        <q-card-section class="row items-center">
+<!--          <q-avatar icon="clear" color="red" text-color="white" />-->
+<!--          <span class="q-ml-sm">Seguro de eliminar Registro.</span>-->
+          <q-form>
+            <q-select/>
+          </q-form>
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Agregar" color="deep-orange" @click="onaddunid" />
+          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 
     <q-dialog v-model="dialog_delsub">
       <q-card>
@@ -410,7 +433,7 @@ export default {
       uni:{},
       uni2:{},
       unidad2:{},
-
+      dialog_unidad:false,
       columns: [
         {
           name: "codigo",
@@ -499,7 +522,7 @@ export default {
     misdatos() {
       this.$q.loading.show();
       this.$axios.get(process.env.URL + "/item/1").then((res) => {
-        // console.log(res.data)
+        console.log(res.data)
         this.data = res.data;
         this.$q.loading.hide();
       });
@@ -533,8 +556,12 @@ export default {
     },
     editRow(item) {
       this.dato2 = item.row;
-      this.uni2={value:item.row.unid.id,label:item.row.unid.nombre}
+      // this.uni2={value:item.row.unid.id,label:item.row.unid.nombre}
       this.dialog_mod = true;
+    },
+    agregarunidad(item){
+      this.dato2 = item.row;
+      this.dialog_unidad = true;
     },
     editsub(item) {
       this.dato3 = item.row;
@@ -611,8 +638,11 @@ export default {
           this.misdatos();
         });
     },
+    onaddunid(){
 
+    },
     onDel() {
+
       this.$q.loading.show();
       this.$axios.delete(process.env.URL + "/item/" + this.dato2.id).then((res) => {
         this.$q.notify({
