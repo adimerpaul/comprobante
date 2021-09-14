@@ -3,7 +3,9 @@
 namespace App\Http\Controllers;
 
 use App\Models\Item;
+use App\Models\Unid;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 
 class ItemController extends Controller
 {
@@ -12,14 +14,45 @@ class ItemController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+    public function itemunidad(Request $request){
+//        return $request;
+        $item=Item::find($request->item_id);
+        $item->unids()->attach([$request->unid_id]);
+
+
+    }
+    public function eliminaritemunid(Request $request){
+//        return $request;
+        DB::select("DELETE FROM item_unid WHERE item_id='$request->item_id' AND unid_id='$request->unid_id'");
+    }
     public function misitems(Request $request){
-        return Item::with('unids')->with('subitems')->where('unid_id',$request->user()->unid_id)->where('estado','ACTIVO')->orderBy('nombre')->get();
+        $unid= Unid::where('id',$request->user()->unid_id)->with('items')->get()[0];
+        $i= array();
+        foreach ($unid->items as $item){
+//            echo 's';
+            $i[]=$item['id'];
+//            var_dump($item);
+        }
+//        return  $i;
+//        exit;
+//        return $unid->items;
+        return Item::with('unids')
+            ->with('subitems')
+//            ->where('unid_id',$request->user()->unid_id)
+                ->whereIn('id',$i)
+            ->where('estado','ACTIVO')
+            ->orderBy('nombre')
+            ->get();
 
     }
     public function index(Request $request)
     {
-//        return $request->user()->unid_id;
-        return Item::where('unid_id',$request->user()->unid_id)->where('estado','ACTIVO')->orderBy('nombre')->get();
+//        return $request->user();
+//        $unid=Unid::where('id',$request->user()->unid_id)->with('items')->get();
+//        return $unid;
+
+//        return Item::where('unid_id',$request->user()->unid_id)->where('estado','ACTIVO')->orderBy('nombre')->get();
+        return DB::select("SELECT * FROM items i INNER JOIN item_unid iu ON i.id=iu.item_id WHERE iu.unid_id='".$request->user()->unid_id."'");
     }
 
     /**

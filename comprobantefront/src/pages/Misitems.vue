@@ -67,9 +67,9 @@
           <q-td key="nombre" :props="props">
             {{ props.row.nombre }}
           </q-td>
-          <q-td key="unid" :props="props">
-            {{ props.row.unid.nombre }}
-          </q-td>
+<!--          <q-td key="unid" :props="props">-->
+<!--            {{ props.row.unid.nombre }}-->
+<!--          </q-td>-->
           <q-td key="estado" :props="props">
             <q-badge @click="cambio(props.row)" v-if="props.row.estado=='ACTIVO'" color="positive">
               {{ props.row.estado }}
@@ -122,14 +122,14 @@
                         @click="editRow(props)"
                         icon="edit"
                       ></q-btn>
-                      <q-btn
-                        dense
-                        round
-                        flat
-                        color="red"
-                        @click="deleteRow(props)"
-                        icon="delete"
-                      ></q-btn>
+<!--                      <q-btn-->
+<!--                        dense-->
+<!--                        round-->
+<!--                        flat-->
+<!--                        color="red"-->
+<!--                        @click="deleteRow(props)"-->
+<!--                        icon="delete"-->
+<!--                      ></q-btn>-->
           </q-td>
         </q-tr>
       </template>
@@ -202,14 +202,14 @@
               lazy-rules
               :rules="[(val) => (val && val.length > 0) || 'Por favor ingresa datos']"
             />
-            <q-select
-            v-model="uni2"
-            :options="unidades"
-            label="unidad"
-            hint="Seleccionar"
-            lazy-rules
-              :rules="[(val) => val!='' && val!=null || 'Por favor ingresa datos']"
-            />
+<!--            <q-select-->
+<!--            v-model="uni2"-->
+<!--            :options="unidades"-->
+<!--            label="unidad"-->
+<!--            hint="Seleccionar"-->
+<!--            lazy-rules-->
+<!--              :rules="[(val) => val!='' && val!=null || 'Por favor ingresa datos']"-->
+<!--            />-->
 
             <div>
               <q-btn label="Modificar" type="submit" color="positive" icon="add_circle" />
@@ -498,9 +498,12 @@ export default {
     misdatos() {
       this.$q.loading.show();
       this.$axios.post(process.env.URL + "/misitems").then((res) => {
-        // console.log(res.data)
-        this.data = res.data
+        console.log(res.data)
         this.$q.loading.hide()
+        // return false
+        // return false
+        this.data = res.data
+
       });
     },
     unid(){
@@ -532,7 +535,7 @@ export default {
     },
     editRow(item) {
       this.dato2 = item.row;
-      this.uni2={value:item.row.unid.id,label:item.row.unid.nombre}
+      // this.uni2={value:item.row.unid.id,label:item.row.unid.nombre}
       this.dialog_mod = true;
     },
     editsub(item) {
