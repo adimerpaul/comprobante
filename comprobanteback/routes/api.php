@@ -47,6 +47,9 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::put('/pagocaja/{comprobante}',[\App\Http\Controllers\ComprobanteController::class,'pagocaja']);
     Route::post('/verificadocaja',[\App\Http\Controllers\ComprobanteController::class,'verificadocaja']);
     Route::post('/verificadosistema',[\App\Http\Controllers\ComprobanteController::class,'verificadosistema']);
+    Route::post('/mistramites',[\App\Http\Controllers\ComprobanteController::class,'listramite']);
+    Route::post('/modcomp/{id}',[\App\Http\Controllers\ComprobanteController::class,'modcomp']);
+    Route::post('/modcomprobante',[\App\Http\Controllers\ComprobanteController::class,'modcomprobante']);
 
     Route::post('/mispagoscaja',[\App\Http\Controllers\ComprobanteController::class,'mispagoscaja']);
     Route::post('/convertirletra/{total}',[\App\Http\Controllers\ComprobanteController::class,'convertirletra']);

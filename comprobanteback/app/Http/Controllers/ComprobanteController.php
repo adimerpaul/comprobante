@@ -503,4 +503,57 @@ AND c.verificadosistema =1
 GROUP by c.fechasistema,u.nombre;
 ');
     }
+    public function listramite(){
+        return DB::table('comprobantes')->whereNull('fechaimpreso')->
+        whereNull('nrocomprobante')->orwhere('nrocomprobante','')
+        ->where('user_id',auth()->user()->id)->get();
+    }
+
+    public function modcomp($id){
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->with('unid')
+            ->where('id',$id)
+            ->get();
+    }
+
+    public function modcomprobante(Request $request)
+    {
+
+        //return  $request->data;
+        DB::table('detalles')->where('comprobante_id',$request->id)->delete();
+        if (count($request->data)==1){
+            $item=$request->data[0]['coditem'];
+        }else{
+            $item=$request->data[1]['coditem'];
+        }
+//        return $request->user();
+            $cliente=Cliente::where('ci',$request->ci)->firstOrFail();
+//        return $cliente;
+        $formatter = new NumeroALetras();
+        $literal= $formatter->toWords($request->total);
+//        return $request->user()->unid_id;
+
+        $comprobante=Comprobante::find($request->id);
+        $comprobante->total=$request->total;
+        $comprobante->literal=$literal;
+        $comprobante->item=$item;
+        $comprobante->save();
+
+        foreach ($request->data as $row){
+//            echo $row['subtotal'].' -';
+            Detalle::create([
+                'coditem'=>$row['coditem'],
+                'nombreitem'=>$row['nombreitem'],
+                'codsubitem'=>$row['codsubitem'],
+                'nombresubitem'=>$row['nombresubitem'],
+                'detalle'=>$row['detalle'],
+                'precio'=>$row['precio'],
+                'cantidad'=>$row['cantidad'],
+                'subtotal'=>$row['subtotal'],
+                'comprobante_id'=>$comprobante->id,
+            ]);
+        }
+//        return $request->data[1]['coditem'];
+    }
 }

@@ -5,14 +5,7 @@
         <q-form ref="myForm">
           <div class="row">
             <div class="col-12">
-              <q-input label="No Tramite:"
-                       outlined
-                       v-model="nrotramite"
-                       lazy-rules
-                       :rules="[
-                         val => val && val.length > 0 || 'Porfavor llenar este campo',
-                         ]"
-              />
+              <q-select :options="tramites" v-model="nrotramite" @update:model-value="cargar()"  label="Nro Tramites" />
             </div>
 <!--            <div class="col-6">-->
 <!--              <q-input label="No Comprobante:"-->
@@ -180,6 +173,12 @@
           :data="data"
           row-key="nombre"
         >
+            <template v-slot:body-cell-opcion="props" >
+                <q-td key="opcion" :props="props" >
+                <q-btn dense round flat color="red" @click="delRow(props)" icon="delete"></q-btn>
+                </q-td>
+            </template>
+
         </q-table>
         <div class="bg-info q-ma-xs text-center text-red-7 text-h5 text-weight-bold">Total: {{total}} Bs </div>
         <q-btn @click="crear" icon="add_circle" label="Crear comprobante" color="positive" class="full-width"></q-btn>
@@ -193,12 +192,14 @@ export default {
   data () {
     return {
       formulario:true,
+      tramites:[],
       columns:[
         {name:'coditem',label:'Codigo', align:'left',field:'coditem',sortable:true},
         {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
         {name:'precio',label:'Precio', align:'left',field:'precio',    format: val => `${val} Bs`,sortable:true},
         {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad', sortable:true},
         {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
+        {name:'opcion',label:'opcion', align:'left',field:'opcion'},
       ],
       data:[
         {
@@ -212,7 +213,7 @@ export default {
           subtotal:2
         }
       ],
-      nrotramite: '',
+      nrotramite: {label:''},
       nrocomprobante:'',
       ci:'',
       detalle:'',
@@ -234,8 +235,9 @@ export default {
     }
   },
   created() {
-    this.numcomprobante()
+    //this.numcomprobante()
     this.mistramites()
+    
     this.$axios.get(process.env.URL+'/item').then(res=>{
       // console.log(res.data);
       this.items=[];
@@ -246,9 +248,48 @@ export default {
     })
   },
   methods: {
+    delRow(props){
+      console.log(props);
+      this.data.splice(props.rowIndex,1)
+    },
+    cargar(){
+      console.log(this.nrotramite)
+      //return false;
+      this.$axios.post(process.env.URL+'/modcomp/'+this.nrotramite.value).then(res=>{
+        console.log(res.data);
+          this.padron=res.data[0].padron;
+          //this.total=res.data[0].total;
+          this.ci=res.data[0].cliente.ci;
+          this.paterno=res.data[0].cliente.paterno;
+          this.materno=res.data[0].cliente.materno;
+          this.nombre=res.data[0].cliente.nombre;
+          this.expedido=res.data[0].cliente.expedido;
+          this.direccion=res.data[0].cliente.direccion;
+          this.numcasa=res.data[0].cliente.numcasa;
+          this.data=[];
+          res.data[0].detalles.forEach(element => {
+              this.data.push({
+                coditem:element.coditem,
+                nombreitem:element.nombreitem,
+                codsubitem:element.codsubitem,
+                nombresubitem:element.nombresubitem,
+                detalle:element.detalle,
+                precio:element.precio,
+                cantidad:element.cantidad,
+                subtotal:element.subtotal
+              });
+          });
+      })  
+      },
     mistramites(){
+      this.tramites=[];
       this.$axios.post(process.env.URL+'/mistramites').then(res=>{
         console.log(res.data)
+        res.data.forEach(element => {
+          this.tramites.push({label:element.nrotramite,value:element.id});
+        });
+        if(res.data.length>0) this.nrotramite=this.tramites[0];
+        this.cargar();
         // this.items=[];
         // res.data.forEach(r=>{
         //   this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
@@ -279,14 +320,7 @@ export default {
         this.data=[]
       }
     },
-    numcomprobante(){
-      this.$q.loading.show()
-      this.$axios.get(process.env.URL+'/comprobante/1').then(res=>{
-        // console.log(res.data);
-        this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
-        this.$q.loading.hide()
-      })
-    },
+
     crear(){
       if (this.ci==''){
         this.$q.dialog({
@@ -300,7 +334,7 @@ export default {
         })
         return false
       }
-      if (this.nrotramite==''){
+      if (this.nrotramite.value==''){
         this.$q.dialog({
           title:'Falta numero de tramite'
         })
@@ -313,8 +347,9 @@ export default {
       }).onOk(()=>{
         // console.log('ok')
         this.$q.loading.show()
-        this.$axios.post(process.env.URL+'/comprobante',{
-          nrotramite:this.nrotramite,
+        this.$axios.post(process.env.URL+'/modcomprobante',{
+          id:this.nrotramite.value,
+          nrotramite:this.nrotramite.label,
           padron:this.padron,
           total:this.total,
           ci:this.ci,
@@ -326,9 +361,10 @@ export default {
           numcasa:this.numcasa,
           data:this.data,
         }).then((res)=>{
-          // console.log(res.data)
+          console.log(res.data)
+
           this.$refs.myForm.resetValidation()
-          this.numcomprobante()
+          //this.numcomprobante()
           this.item=''
           this.subitem=''
           this.$q.loading.hide()
@@ -344,7 +380,7 @@ export default {
           this.numcasa='';
           this.$q.dialog({
             title:'Correctamente ',
-            message:'Creado!!!'
+            message:'Modificado!!!'
           });
         }).catch(err=>{
           // console.log(err.response);
