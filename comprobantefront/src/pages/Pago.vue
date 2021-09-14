@@ -255,7 +255,7 @@ export default {
           doc.text(xx+2.5, yy+0.5, r.detalle.toString());
 
           if (r.detalle.toString().length>50){
-            
+
           }
           yy++
           // console.log(r)

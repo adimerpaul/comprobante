@@ -381,16 +381,21 @@
     </q-dialog>
     <q-dialog v-model="dialog_unidad">
       <q-card>
-        <q-card-section class="row items-center">
+        <q-card-section class="row ">
 <!--          <q-avatar icon="clear" color="red" text-color="white" />-->
 <!--          <span class="q-ml-sm">Seguro de eliminar Registro.</span>-->
-          <q-form>
-            <q-select/>
+          <q-form class="col-12">
+<!--            <div class="row">-->
+              <div >
+                <q-select v-model="uni3"  :options="unidades" label="Selecionar unidad" />
+              </div>
+<!--            </div>-->
+<!--            <q-select v-model="uni2" :options="unidades" label="Standard" />-->
           </q-form>
         </q-card-section>
         <q-card-actions align="right">
-          <q-btn flat label="Agregar" color="deep-orange" @click="onaddunid" />
-          <q-btn flat label="Cancelar" color="primary" v-close-popup />
+          <q-btn icon="send" label="Agregar" color="deep-orange" @click="onaddunid" />
+          <q-btn icon="delete"  label="Cancelar" color="negative" v-close-popup />
         </q-card-actions>
       </q-card>
     </q-dialog>
@@ -432,6 +437,7 @@ export default {
       unidades:[],
       uni:{},
       uni2:{},
+      uni3:'',
       unidad2:{},
       dialog_unidad:false,
       columns: [

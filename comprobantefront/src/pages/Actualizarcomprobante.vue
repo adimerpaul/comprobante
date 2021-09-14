@@ -5,7 +5,8 @@
         <q-form ref="myForm">
           <div class="row">
             <div class="col-12">
-              <q-select :options="tramites" v-model="nrotramite" @update:model-value="cargar()"  label="Nro Tramites" />
+              <q-select :options="tramites" v-model="nrotramite" label="Nro Tramites" />
+<!--              {{nrotramite}}-->
             </div>
 <!--            <div class="col-6">-->
 <!--              <q-input label="No Comprobante:"-->
@@ -23,9 +24,10 @@
             <div class="col-4">
               <q-input label="CI NIT RUC:"
                        outlined
-                       v-model="ci"
+                       v-model="nrotramite.cliente.ci"
                        @input="buscarcliente"
                        lazy-rules
+                       disable
                        :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
               />
               <i v-if="spinner" class="fa fa-spinner"></i>
@@ -237,7 +239,7 @@ export default {
   created() {
     //this.numcomprobante()
     this.mistramites()
-    
+
     this.$axios.get(process.env.URL+'/item').then(res=>{
       // console.log(res.data);
       this.items=[];
@@ -249,14 +251,14 @@ export default {
   },
   methods: {
     delRow(props){
-      console.log(props);
+      // console.log(props);
       this.data.splice(props.rowIndex,1)
     },
     cargar(){
-      console.log(this.nrotramite)
+      // console.log(this.nrotramite)
       //return false;
       this.$axios.post(process.env.URL+'/modcomp/'+this.nrotramite.value).then(res=>{
-        console.log(res.data);
+        // console.log(res.data);
           this.padron=res.data[0].padron;
           //this.total=res.data[0].total;
           this.ci=res.data[0].cliente.ci;
@@ -279,17 +281,22 @@ export default {
                 subtotal:element.subtotal
               });
           });
-      })  
+      })
       },
     mistramites(){
       this.tramites=[];
       this.$axios.post(process.env.URL+'/mistramites').then(res=>{
         console.log(res.data)
-        res.data.forEach(element => {
-          this.tramites.push({label:element.nrotramite,value:element.id});
+        this.tramites=[]
+        res.data.forEach(e => {
+          // console.log(e)
+          let j=e
+          j.label=e.nrotramite+' '+e.cliente.paterno+' '+e.cliente.materno+' '+e.cliente.nombre
+          // this.tramites.push({label:e.nrotramite,value:e.id});
+          this.tramites.push(j)
         });
-        if(res.data.length>0) this.nrotramite=this.tramites[0];
-        this.cargar();
+        // if(res.data.length>0) this.nrotramite=this.tramites[0];
+        // this.cargar();
         // this.items=[];
         // res.data.forEach(r=>{
         //   this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
@@ -361,7 +368,7 @@ export default {
           numcasa:this.numcasa,
           data:this.data,
         }).then((res)=>{
-          console.log(res.data)
+          // console.log(res.data)
 
           this.$refs.myForm.resetValidation()
           //this.numcomprobante()

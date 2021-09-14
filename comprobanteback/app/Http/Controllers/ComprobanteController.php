@@ -504,9 +504,20 @@ GROUP by c.fechasistema,u.nombre;
 ');
     }
     public function listramite(){
-        return DB::table('comprobantes')->whereNull('fechaimpreso')->
-        whereNull('nrocomprobante')->orwhere('nrocomprobante','')
-        ->where('user_id',auth()->user()->id)->get();
+//        return DB::table('comprobantes')
+//            ->whereNull('fechaimpreso')
+//            ->whereNull('nrocomprobante')
+//            ->orwhere('nrocomprobante','')
+//            ->where('user_id',auth()->user()->id)
+//            ->get();
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->with('unid')
+            ->whereNull('fechaimpreso')
+            ->whereNull('nrocomprobante')
+            ->orwhere('nrocomprobante','')
+            ->where('user_id',auth()->user()->id)
+            ->get();
     }
 
     public function modcomp($id){
