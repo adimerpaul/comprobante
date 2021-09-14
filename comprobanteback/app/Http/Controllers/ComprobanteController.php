@@ -533,14 +533,11 @@ GROUP by c.fechasistema,u.nombre;
 
         //return  $request->data;
         DB::table('detalles')->where('comprobante_id',$request->id)->delete();
-        if (count($request->data)==1){
-            $item=$request->data[0]['coditem'];
+        if (count($request->detalles)==1){
+            $item=$request->detalles[0]['coditem'];
         }else{
-            $item=$request->data[1]['coditem'];
+            $item=$request->detalles[1]['coditem'];
         }
-//        return $request->user();
-            $cliente=Cliente::where('ci',$request->ci)->firstOrFail();
-//        return $cliente;
         $formatter = new NumeroALetras();
         $literal= $formatter->toWords($request->total);
 //        return $request->user()->unid_id;
@@ -551,7 +548,7 @@ GROUP by c.fechasistema,u.nombre;
         $comprobante->item=$item;
         $comprobante->save();
 
-        foreach ($request->data as $row){
+        foreach ($request->detalles as $row){
 //            echo $row['subtotal'].' -';
             Detalle::create([
                 'coditem'=>$row['coditem'],

@@ -25,19 +25,17 @@
               <q-input label="CI NIT RUC:"
                        outlined
                        v-model="nrotramite.cliente.ci"
-                       @input="buscarcliente"
                        lazy-rules
                        disable
                        :rules="[ val => val && val.length > 0 || 'Porfavor llenar este campo']"
               />
-              <i v-if="spinner" class="fa fa-spinner"></i>
             </div>
             <div class="col-4">
               <q-select
                 :options="['CH','LP','CB','OR','PT','TJ','SC','BE','PD','OTROS']"
                 outlined
                 label="Expedido"
-                v-model="expedido"
+                v-model="nrotramite.cliente.expedido"
                 lazy-rules
                 style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
@@ -47,7 +45,7 @@
               <q-input
                 outlined
                 label="Paterno o razon"
-                v-model="paterno"
+                v-model="nrotramite.cliente.paterno"
                 lazy-rules
                 style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
@@ -57,7 +55,7 @@
               <q-input
                 outlined
                 label="Materno"
-                v-model="materno"
+                v-model="nrotramite.cliente.materno"
                 lazy-rules
                 style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
@@ -67,7 +65,7 @@
               <q-input
                 outlined
                 label="Nombres"
-                v-model="nombre"
+                v-model="nrotramite.cliente.nombre"
                 lazy-rules
                 style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
@@ -77,7 +75,7 @@
               <q-input
                 outlined
                 label="Padron"
-                v-model="padron"
+                v-model="nrotramite.cliente.padron"
                 lazy-rules
                 style="text-transform: uppercase"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
@@ -88,7 +86,7 @@
               <q-input
                 outlined
                 label="Direccion"
-                v-model="direccion"
+                v-model="nrotramite.cliente.direccion"
                 lazy-rules
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
               />
@@ -98,7 +96,7 @@
               <q-input
                 outlined
                 label="Numero casa"
-                v-model="numcasa"
+                v-model="nrotramite.cliente.numcasa"
                 lazy-rules
                 type="number"
                 :rules="[val=>val && val.length>0||'Porfavor llenar este campo']"
@@ -172,7 +170,7 @@
         <q-table
           dense
           :columns="columns"
-          :data="data"
+          :data="nrotramite.detalles"
           row-key="nombre"
         >
             <template v-slot:body-cell-opcion="props" >
@@ -183,7 +181,7 @@
 
         </q-table>
         <div class="bg-info q-ma-xs text-center text-red-7 text-h5 text-weight-bold">Total: {{total}} Bs </div>
-        <q-btn @click="crear" icon="add_circle" label="Crear comprobante" color="positive" class="full-width"></q-btn>
+        <q-btn @click="crear" icon="add_circle" label="Modificar comprobante" color="positive" class="full-width"></q-btn>
       </div>
     </div>
   </q-page>
@@ -252,7 +250,7 @@ export default {
   methods: {
     delRow(props){
       // console.log(props);
-      this.data.splice(props.rowIndex,1)
+      this.nrotramite.detalles.splice(props.rowIndex,1)
     },
     cargar(){
       // console.log(this.nrotramite)
@@ -295,9 +293,9 @@ export default {
           // this.tramites.push({label:e.nrotramite,value:e.id});
           this.tramites.push(j)
         });
-        // if(res.data.length>0) this.nrotramite=this.tramites[0];
+        if(res.data.length>0) this.nrotramite=this.tramites[0];
         // this.cargar();
-        // this.items=[];
+         //this.items=[];
         // res.data.forEach(r=>{
         //   this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
         // });
@@ -329,13 +327,13 @@ export default {
     },
 
     crear(){
-      if (this.ci==''){
+      if (this.nrotramite.cliente.ci==''){
         this.$q.dialog({
           title:'Falta colocar carnet de identidad'
         })
         return false
       }
-      if (this.detalle==''){
+      if (this.nrotramite.detalles==''){
         this.$q.dialog({
           title:'Falta colocar detalle'
         })
@@ -348,43 +346,18 @@ export default {
         return false
       }
       this.$q.dialog({
-        message:'Seguro de crear?',
+        message:'Seguro de Modificar?',
         title:'Confirmar?',
         cancel:true,
       }).onOk(()=>{
         // console.log('ok')
         this.$q.loading.show()
-        this.$axios.post(process.env.URL+'/modcomprobante',{
-          id:this.nrotramite.value,
-          nrotramite:this.nrotramite.label,
-          padron:this.padron,
-          total:this.total,
-          ci:this.ci,
-          paterno:this.paterno,
-          materno:this.materno,
-          nombre:this.nombre,
-          expedido:this.expedido,
-          direccion:this.direccion,
-          numcasa:this.numcasa,
-          data:this.data,
-        }).then((res)=>{
+        this.nrotramite.total=this.total;
+        this.$axios.post(process.env.URL+'/modcomprobante',this.nrotramite).then((res)=>{
           // console.log(res.data)
 
-          this.$refs.myForm.resetValidation()
           //this.numcomprobante()
-          this.item=''
-          this.subitem=''
-          this.$q.loading.hide()
-          this.mireset()
-          this.detalle=''
-          this.ci='';
-          this.paterno='';
-          this.materno='';
-          this.nombre='';
-          this.padron='';
-          this.expedido='';
-          this.direccion='';
-          this.numcasa='';
+          this.$q.loading.hide();
           this.$q.dialog({
             title:'Correctamente ',
             message:'Modificado!!!'
@@ -438,7 +411,7 @@ export default {
         })
         return false;
       }
-      if (this.detalle==''){
+      if (this.nrotramite.detalles==''){
         this.$q.dialog({
           dark: true,
           title: 'Error',
@@ -447,7 +420,7 @@ export default {
         })
         return false;
       }
-      this.data.push({
+      this.nrotramite.detalles.push({
         coditem:this.item.codigo,
         nombreitem:this.item.nombre2,
         codsubitem:this.subitem.codigo,
@@ -481,33 +454,6 @@ export default {
         });
       })
     },
-    buscarcliente(){
-      // console.log(this.ci)
-      this.paterno=''
-      this.materno=''
-      this.nombre=''
-      this.paterno=''
-      this.padron=''
-      this.expedido=''
-      this.direccion=''
-      this.numcasa=''
-      this.spinner=true
-      if (this.ci!='')
-      this.$axios.get(process.env.URL+'/cliente/'+this.ci).then(res=>{
-        // console.log(res.data);
-        this.spinner=false;
-        if (res.data.length>0){
-          this.paterno=res.data[0].paterno
-          this.materno=res.data[0].materno
-          this.nombre=res.data[0].nombre
-          this.padron=res.data[0].padron
-          this.expedido=res.data[0].expedido
-          this.direccion=res.data[0].direccion
-          this.numcasa=res.data[0].numcasa
-          this.spinner=false;
-        }
-      })
-    },
     zfill(number, width){
       // return 'a';
       var numberOutput = Math.abs(number); /* Valor absoluto del número */
@@ -535,7 +481,7 @@ export default {
     },
     total(){
       let total=0
-      this.data.forEach(r=>{
+      this.nrotramite.detalles.forEach(r=>{
         total+=r.subtotal;
       })
       return total
