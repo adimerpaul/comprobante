@@ -52,7 +52,14 @@ class ItemController extends Controller
 //        return $unid;
 
 //        return Item::where('unid_id',$request->user()->unid_id)->where('estado','ACTIVO')->orderBy('nombre')->get();
-        return DB::select("SELECT * FROM items i INNER JOIN item_unid iu ON i.id=iu.item_id WHERE iu.unid_id='".$request->user()->unid_id."'");
+
+        return DB::select("
+    SELECT i.id,i.nombre,i.codigo,i.nombre as nombre2
+FROM items i
+INNER JOIN item_unid iu ON i.id=iu.item_id
+WHERE iu.unid_id='".$request->user()->unid_id."'
+AND i.id IN (SELECT item_id FROM subitems GROUP BY item_id)
+");
     }
 
     /**
