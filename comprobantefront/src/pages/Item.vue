@@ -55,10 +55,11 @@
       title="Items "
       :data="data"
       :columns="columns"
-      :rows-per-page-options="[50,30,50,0 ]"
+
     :filter="filter"
     :grid="$q.screen.xs"
     row-key="name">
+<!--      :rows-per-page-options="[50,30,50,0 ]"-->
       <template v-slot:body="props">
         <q-tr :props="props">
           <q-td key="codigo" :props="props">
