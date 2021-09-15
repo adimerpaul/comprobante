@@ -246,17 +246,26 @@ export default {
         doc.text(x+9.5, y+9, 'OR '+ dat.fecha.toString());
         let xx=x+1.2
         let yy=x+9.7
+        let lin=yy
+        let cont=0
+        let fin=50
         dat.detalles.forEach(r=>{
           doc.text(xx, yy, r.codsubitem.toString());
           doc.text(xx+2.5, yy, r.nombreitem.toString());
           // doc.text(xx, yy, r.codsubitem.toString());
           doc.text(xx+14.5, yy, r.subtotal.toString());
-
-          doc.text(xx+2.5, yy+0.5, r.detalle.toString());
-
-          if (r.detalle.toString().length>50){
-
-          }
+          //count=r.detalle.toString().length
+          if(r.detalle.toString().length<50)
+            doc.text(xx+2.5, yy+0.5, r.detalle.toString());
+          else{
+          while (r.detalle.toString().length>=cont){
+            doc.text(xx+2.5, yy+0.5, r.detalle.substring(cont,fin));
+            //console.log(r.detalle.substring(cont,fin));
+            //console.log(cont+ ' '+ fin)
+            cont+=50;
+            fin+=50
+            yy+=0.5;
+          }}
           yy++
           // console.log(r)
         })
@@ -311,12 +320,12 @@ export default {
 
 
       }).catch(err=>{
-        console.log(err.response.data);
-        this.$q.notify({
-          message:err.response.data.res,
-          icon:'error',
-          color:'red'
-        })
+        console.error(err);
+        //this.$q.notify({
+        //  message:err.response.data.res,
+       //   icon:'error',
+       //   color:'red'
+       // })
         this.$q.loading.hide()
       })
     },

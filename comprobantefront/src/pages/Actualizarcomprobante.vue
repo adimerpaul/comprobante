@@ -379,7 +379,7 @@ export default {
       this.mireset();
     },
     mireset(){
-      this.data=[
+      this.nrotramite.detalles=[
         {
           coditem:'1210000',
           nombreitem:'VENTA Y REPOSICIÓN                              ',
