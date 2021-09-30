@@ -256,15 +256,15 @@ export default {
           doc.text(xx+14.5, yy, r.subtotal.toString());
           //count=r.detalle.toString().length
           if(r.detalle.toString().length<50)
-            doc.text(xx+2.5, yy+0.5, r.detalle.toString());
+            doc.text(xx+2.5, yy+0.4, r.detalle.toString());
           else{
           while (r.detalle.toString().length>=cont){
-            doc.text(xx+2.5, yy+0.5, r.detalle.substring(cont,fin));
+            doc.text(xx+2.5, yy+0.4, r.detalle.substring(cont,fin));
             //console.log(r.detalle.substring(cont,fin));
             //console.log(cont+ ' '+ fin)
             cont+=50;
             fin+=50
-            yy+=0.5;
+            yy+=0.4;
           }}
           yy++
           // console.log(r)
@@ -389,7 +389,7 @@ export default {
       filterFn (val, update) {
         if (val === '') {
           update(() => {
-            this.options = this.comprobantes
+              ons = this.comprobantes
 
             // with Quasar v1.7.4+
             // here you have access to "ref" which
