@@ -36,6 +36,9 @@
           <q-td key="estado" :props="props">
             <q-badge :color="props.row.estado=='ANULADO'?'teal':'positive'" :label="props.row.estado"/>
           </q-td>
+          <q-td key="cajero" :props="props">
+            {{props.row.cajero}}
+          </q-td>
           <q-td key="verificadosistema" :props="props" >
               {{props.row.verificadosistema}}
             <q-checkbox v-model="props.row.verificadosistema" />
@@ -101,8 +104,8 @@ export default {
         {name:'nrocomprobante',label:'N comprobante', align:'left',field:'nrocomprobante',sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
         {name:'estado',label:'Estado', align:'left',field:'estado'},
+        {name:'cajero',label:'Cajero', align:'left',field:'cajero'},
         {name:'verificadosistema',label:'Verificar', align:'left',field:'verificadosistema'},
-
       ],
       comprobantes:[],
       pagos:[],

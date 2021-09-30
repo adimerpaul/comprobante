@@ -222,6 +222,7 @@ class ComprobanteController extends Controller
                             ->with('unid')
         //                    ->where('estado','PAGADO')
                             ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
+                            ->orderBy('nrocomprobante')
                             ->whereNull('fechasistema')
                             ->get();
                     }
