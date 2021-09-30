@@ -432,7 +432,7 @@ class ComprobanteController extends Controller
 
         DB::connection('ingres')->table('diario')->insert([
             'nro_comp'=>$comprobante->nrocomprobante,
-            'fecha'=>$comprobante->fechapago,
+            'fecha'=>date('Y-m-d H:i:s'),
             'efectivo'=>floatval($comprobante->total),
             'cheque'=>0,
             'observ'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
@@ -442,7 +442,7 @@ class ComprobanteController extends Controller
         DB::connection('ingres')->table('compro')->insert([
             'nro'=>$comprobante->nrocomprobante,
             'unidad'=>$comprobante->unid_id,
-            'fecha'=>$comprobante->fechapago,
+            'fecha'=>date('Y-m-d H:i:s'),
             'observa'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
             'flag'=>'T',
             'caja'=>'T'
