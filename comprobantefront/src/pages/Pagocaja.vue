@@ -173,6 +173,7 @@ export default {
   },
   methods: {
     loscomprobantes(){
+      this.model=''
       this.$q.loading.show()
       this.$axios.post(process.env.URL+'/loscomprobantes',{unid_id:this.unid.id}).then(res=>{
         // console.log(res.data)
