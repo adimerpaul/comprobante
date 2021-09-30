@@ -236,7 +236,7 @@ export default {
   },
   created() {
     //this.numcomprobante()
-    this.mistramites()
+    // this.mistramites()
 
     this.$axios.get(process.env.URL+'/item').then(res=>{
       // console.log(res.data);
@@ -284,8 +284,9 @@ export default {
     mistramites(){
       this.tramites=[];
       this.$axios.post(process.env.URL+'/mistramites').then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.tramites=[]
+        if (res.data.length>0)
         res.data.forEach(e => {
           // console.log(e)
           let j=e
@@ -293,7 +294,12 @@ export default {
           // this.tramites.push({label:e.nrotramite,value:e.id});
           this.tramites.push(j)
         });
-        if(res.data.length>0) this.nrotramite=this.tramites[0];
+        if(res.data.length>0){
+          this.nrotramite=this.tramites[0];
+        }else{
+
+        }
+
         // this.cargar();
          //this.items=[];
         // res.data.forEach(r=>{

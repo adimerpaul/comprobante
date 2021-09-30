@@ -484,12 +484,24 @@ class ComprobanteController extends Controller
     public function reportitem(Request $request){
         $ini=$request->inicio;
         $fin=$request->fin;
-        $datos= DB::select('SELECT c.fechasistema as fecha,d.codsubitem as cod ,d.nombresubitem as nombre,COUNT(d.codsubitem) as cantidad,d.precio as precio,SUM(d.subtotal) as monto from comprobantes c
+//        $datos= DB::select('SELECT c.fechasistema as fecha,d.codsubitem as cod ,d.nombresubitem as nombre,COUNT(d.codsubitem) as cantidad,d.precio as precio,SUM(d.subtotal) as monto
+//        from comprobantes c
+//        INNER JOIN detalles d on d.comprobante_id=c.id
+//        WHERE c.fechasistema>= "'.$ini.'" and c.fechasistema <= "'.$fin.'"
+//        AND c.verificadosistema=1
+//        AND c.estado!="ANULADO"
+//        GROUP by c.fechasistema,d.codsubitem,d.nombresubitem, d.precio');
+        $datos=DB::select("SELECT c.fechasistema as fecha,
+d.codsubitem as cod ,
+d.nombresubitem as nombre,
+COUNT(d.codsubitem) as cantidad,
+SUM(d.subtotal) as monto
+        from comprobantes c
         INNER JOIN detalles d on d.comprobante_id=c.id
-        WHERE c.fechasistema>= "'.$ini.'" and c.fechasistema <= "'.$fin.'"
+        WHERE c.fechasistema>= '$ini' and c.fechasistema <= '$fin'
         AND c.verificadosistema=1
-        AND c.estado!="ANULADO"
-        GROUP by c.fechasistema,d.codsubitem,d.nombresubitem, d.precio');
+        AND c.estado!='ANULADO'
+        GROUP by c.fechasistema,d.codsubitem,d.nombresubitem,cantidad;");
         return $datos;
     }
 
