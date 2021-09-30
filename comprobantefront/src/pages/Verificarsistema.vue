@@ -33,6 +33,9 @@
           <q-td key="total" :props="props">
             {{props.row.total}}
           </q-td>
+          <q-td key="estado" :props="props">
+            <q-badge :color="props.row.estado=='ANULADO'?'teal':'positive'" :label="props.row.estado"/>
+          </q-td>
           <q-td key="verificadosistema" :props="props" >
               {{props.row.verificadosistema}}
             <q-checkbox v-model="props.row.verificadosistema" />
@@ -97,7 +100,9 @@ export default {
       pcolumns:[
         {name:'nrocomprobante',label:'N comprobante', align:'left',field:'nrocomprobante',sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
+        {name:'estado',label:'Estado', align:'left',field:'estado'},
         {name:'verificadosistema',label:'Verificar', align:'left',field:'verificadosistema'},
+
       ],
       comprobantes:[],
       pagos:[],
@@ -120,7 +125,7 @@ export default {
          this.$axios.post(process.env.URL+'/reportitem',this.buscar)
          .then(res=>{
            this.item=res.data;
-            console.log(res.data);
+            // console.log(res.data);
             this.imprimiritem();
          })
         }
