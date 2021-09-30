@@ -389,7 +389,7 @@ export default {
       filterFn (val, update) {
         if (val === '') {
           update(() => {
-              ons = this.comprobantes
+            this.options = this.comprobantes
 
             // with Quasar v1.7.4+
             // here you have access to "ref" which
