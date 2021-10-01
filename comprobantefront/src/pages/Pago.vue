@@ -256,17 +256,17 @@ export default {
           doc.text(xx+14.5, yy, r.subtotal.toString());
           //count=r.detalle.toString().length
           if(r.detalle.toString().length<50)
-            doc.text(xx+2.5, yy+0.3, r.detalle.toString());
+            doc.text(xx+2.5, yy+0.2, r.detalle.toString());
           else{
           while (r.detalle.toString().length>=cont){
-            doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
+            doc.text(xx+2.5, yy+0.2, r.detalle.substring(cont,fin));
             //console.log(r.detalle.substring(cont,fin));
             //console.log(cont+ ' '+ fin)
             cont+=50;
             fin+=50
-            yy+=0.3;
+            yy+=0.2;
           }}
-          yy+=0.6
+          yy+=0.4
           // console.log(r)
         })
 
