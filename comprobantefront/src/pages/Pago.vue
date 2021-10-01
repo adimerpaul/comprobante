@@ -235,7 +235,7 @@ export default {
         // console.log(dat);
         doc.setFont("courier");
         doc.setFontSize(9);
-        var x=0,y=0;
+        var x=0,y=-2;
         doc.text(x+14.5, y+3.7, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+9.5, y+6, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
         doc.text(x+9.5, y+7.5, dat.cliente.direccion.toString());
