@@ -236,14 +236,14 @@ export default {
         doc.setFont("courier");
         doc.setFontSize(9);
         var x=0,y=0;
-        doc.text(x+14.5, y+3.7, 'TRAMITE N '+dat.nrotramite.toString());
-        doc.text(x+9.5, y+6, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
-        doc.text(x+9.5, y+7.5, dat.cliente.direccion.toString());
-        doc.text(x+14, y+7.5, dat.cliente.numcasa.toString());
-        doc.text(x+15.6, y+7.5, dat.cliente.ci.toString()+' '+dat.cliente.expedido.toString());
-        doc.text(x+18, y+7.5, dat.cliente.telefono.toString());
-        doc.text(x+3, y+9, dat.varios.toString());
-        doc.text(x+9.5, y+9, 'OR '+ dat.fecha.toString());
+        doc.text(x+14.5, y+3.5, 'TRAMITE N '+dat.nrotramite.toString());
+        doc.text(x+9.5, y+5.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
+        doc.text(x+9.5, y+7, dat.cliente.direccion.toString());
+        doc.text(x+14, y+7, dat.cliente.numcasa.toString());
+        doc.text(x+15.6, y+7, dat.cliente.ci.toString()+' '+dat.cliente.expedido.toString());
+        doc.text(x+18, y+7, dat.cliente.telefono.toString());
+        doc.text(x+3, y+8.5, dat.varios.toString());
+        doc.text(x+9.5, y+8.5, 'OR '+ dat.fecha.toString());
         let xx=x+1.2
         let yy=x+9.7
         let lin=yy
@@ -270,8 +270,8 @@ export default {
           // console.log(r)
         })
 
-        doc.text(x+15.5, y+18, dat.total.toString()+' Bs');
-        doc.text(x+2, y+16, dat.literal.toString()+' 00/100Bs');
+        doc.text(x+15.5, y+17.5, dat.total.toString()+' Bs');
+        doc.text(x+2, y+15.5, dat.literal.toString()+' 00/100Bs');
         // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
         // doc.save("Comprobante.pdf");
 
@@ -313,7 +313,7 @@ export default {
           let base64Image = $('#qr_code img').attr('src');
           // console.log(base64Image);
 
-          doc.addImage(base64Image, 'png', x+8.7, y+20.5, 1.5, 1.5);
+          doc.addImage(base64Image, 'png', x+9, y+18.5, 1.5, 1.5);
 
           window.open(doc.output('bloburl'), '_blank');
         });
