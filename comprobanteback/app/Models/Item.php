@@ -11,7 +11,7 @@ class Item extends Model
     protected $fillable=[
         'codigo',
         'nombre',
-        'unid_id',
+//        'unid_id',
         'estado'
     ];
     protected $hidden = [

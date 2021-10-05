@@ -18,6 +18,7 @@ use Illuminate\Support\Facades\Route;
 //    return $request->user();
 //});
 Route::post('/login',[\App\Http\Controllers\UserController::class,'login']);
+Route::get('/prueba',[\App\Http\Controllers\DbfController::class,'prueba']);
 
 Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::get('/contrib/{comun}',[\App\Http\Controllers\ComprobanteController::class,'contribuyente']);

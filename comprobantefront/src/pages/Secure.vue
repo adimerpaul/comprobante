@@ -203,10 +203,10 @@ export default {
       ],
       data:[
         {
-          coditem:'1210000',
-          nombreitem:'VENTA Y REPOSICIÓN                              ',
-          codsubitem:'122000001',
-          nombresubitem:'Venta y reposicion de formulario                              ',
+          coditem:'1220007',
+          nombreitem:'VENTA DE REPOSICION DE FORMULARIOS Y COMPROBANTES',
+          codsubitem:'122000701',
+          nombresubitem:'Venta y reposición de formulario',
           detalle:'Venta y reposicion de formulario',
           precio:2,
           cantidad:1,
