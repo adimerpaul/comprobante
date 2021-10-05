@@ -155,6 +155,19 @@ class ComprobanteController extends Controller
 //            ->orWhere('estado','ANULADO')
             ->get();
     }
+
+    public function reporteunidad(Request $request){
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->with('user')
+            ->whereDate('fechaimpreso','>=',$request->inicio)
+            ->whereDate('fechaimpreso','<=',$request->fin)
+            ->where('unid_id',$request->user()->unid_id)
+            ->whereRaw('(estado = "PAGADO"  OR estado = "IMPRESO")')
+            ->orderBy('nrocomprobante')
+            ->get();
+    }
+
     public function misimpreso(Request $request)
     {
 //        return Comprobante::all();
