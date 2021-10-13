@@ -412,7 +412,7 @@ export default {
     colocarprecio(val){
       // console.log(this.subitem)
       this.precio=this.subitem.monto;
-      this.detalle=''
+      this.detalle=this.subitem.nombre;
     },
     buscarsubitems(){
       // console.log(this.item);
