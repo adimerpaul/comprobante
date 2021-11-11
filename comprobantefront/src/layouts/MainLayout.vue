@@ -12,6 +12,7 @@
         />
 
         <q-toolbar-title>
+          <div style="text-align:center"><b style="font-size:16px; ;">SIRCU</b> <span style="font-size:14px"> Sistema de Informacion de Registro de Comprobantes de Unidades</span></div>
           {{$store.state.user.name}}
         </q-toolbar-title>
 
