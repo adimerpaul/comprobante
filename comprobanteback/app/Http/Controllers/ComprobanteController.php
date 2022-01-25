@@ -298,7 +298,7 @@ class ComprobanteController extends Controller
             'modelo'=>'',
             'padron'=>$cliente->padron,
             'capital'=>'',
-            'varios'=>'PMC '.$cliente->padron,
+            'varios'=>"",
             'tipopago'=>'EFECTIVO',
             'banco'=>'',
             'banconro'=>'',

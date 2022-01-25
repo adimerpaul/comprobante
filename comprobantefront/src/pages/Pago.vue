@@ -250,7 +250,7 @@ export default {
         let cont=0
         let fin=50
         dat.detalles.forEach(r=>{
-          doc.text(xx, yy, r.codsubitem.toString());
+          doc.text(xx, yy, r.coditem.toString());
           doc.text(xx+2.5, yy, r.nombreitem.toString());
           // doc.text(xx, yy, r.codsubitem.toString());
           doc.text(xx+14.5, yy, r.subtotal.toString());
