@@ -30,6 +30,9 @@
             <q-td key="nrocomprobante" :props="props">
             {{props.row.nrocomprobante}}
           </q-td>
+                      <q-td key="unidad" :props="props">
+            {{props.row.unid.codigo}}
+          </q-td>
           <q-td key="total" :props="props">
             {{props.row.total}}
           </q-td>
@@ -40,7 +43,6 @@
             {{props.row.cajero}}
           </q-td>
           <q-td key="verificadosistema" :props="props" >
-              {{props.row.verificadosistema}}
             <q-checkbox v-model="props.row.verificadosistema" />
           </q-td>
           </q-tr>
@@ -102,6 +104,7 @@ export default {
       ],
       pcolumns:[
         {name:'nrocomprobante',label:'N comprobante', align:'left',field:'nrocomprobante',sortable:true},
+        {name:'unidad',label:'Unidad', align:'left',field:row=>row.unidad.codigo,sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
         {name:'estado',label:'Estado', align:'left',field:'estado'},
         {name:'cajero',label:'Cajero', align:'left',field:'cajero'},
@@ -127,6 +130,8 @@ export default {
         if(this.buscar.inicio<=this.buscar.fin){
          this.$axios.post(process.env.URL+'/reportitem',this.buscar)
          .then(res=>{
+           //console.log(res.data)
+           //return false
            this.item=res.data;
             // console.log(res.data);
             this.imprimiritem();
@@ -178,7 +183,7 @@ export default {
           y=0;
         }});
       doc.text(4, y+4, '____________________________________________________________________________')
-      doc.text(4, y+4.5, 'TOTAL RECAUDADCION: ')
+      doc.text(4, y+4.5, 'TOTAL RECAUDACION: ')
       doc.text(15, y+4.5, ''+this.tramite)
       doc.text(18, y+4.5, ''+this.total)
 

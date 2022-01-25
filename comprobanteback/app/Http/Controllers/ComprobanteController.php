@@ -229,14 +229,15 @@ class ComprobanteController extends Controller
                 //        return $request;
                         return Comprobante::with('cliente')
                             ->with('detalles')
+                            ->with('unid')
                             ->whereDate('fechaimpreso',$request->fecha)
                 //            ->where('cajero',$request->user()->name)
-                            ->where('unid_id',$request->unid_id)
-                            ->with('unid')
+                            //->where('unid_id',$request->unid_id)
         //                    ->where('estado','PAGADO')
                             ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
-                            ->orderBy('nrocomprobante')
                             ->whereNull('fechasistema')
+                            ->orderBy('unid_id','ASC')
+                            ->orderBy('nrocomprobante','ASC')
                             ->get();
                     }
 
@@ -504,17 +505,17 @@ class ComprobanteController extends Controller
 //        AND c.verificadosistema=1
 //        AND c.estado!="ANULADO"
 //        GROUP by c.fechasistema,d.codsubitem,d.nombresubitem, d.precio');
-        $datos=DB::select("SELECT c.fechasistema as fecha,
-d.codsubitem as cod ,
-d.nombresubitem as nombre,
-COUNT(d.codsubitem) as cantidad,
+        $datos=DB::SELECT( "SELECT date(c.fechapago) as fecha,
+d.coditem as cod ,
+d.nombreitem as nombre,
+COUNT(d.coditem) as cantidad,
 SUM(d.subtotal) as monto
         from comprobantes c
         INNER JOIN detalles d on d.comprobante_id=c.id
-        WHERE c.fechasistema>= '$ini' and c.fechasistema <= '$fin'
+        WHERE date(c.fechapago)>= '$ini' and date(c.fechapago) <= '$fin'
         AND c.verificadosistema=1
-        AND c.estado!='ANULADO'
-        GROUP by c.fechasistema,d.codsubitem,d.nombresubitem,cantidad;");
+
+        GROUP by date(c.fechapago),d.coditem,d.nombreitem;");
         return $datos;
     }
 
