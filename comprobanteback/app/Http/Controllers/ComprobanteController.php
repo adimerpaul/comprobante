@@ -234,8 +234,8 @@ class ComprobanteController extends Controller
                 //            ->where('cajero',$request->user()->name)
                             //->where('unid_id',$request->unid_id)
         //                    ->where('estado','PAGADO')
-                            ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
-                            ->whereNull('fechasistema')
+                            ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO" OR estado = "IMPRESO")')
+//                            ->whereNull('fechasistema')
                             ->orderBy('unid_id','ASC')
                             ->orderBy('nrocomprobante','ASC')
                             ->get();
@@ -436,31 +436,31 @@ class ComprobanteController extends Controller
         $comprobante->verificadosistema_id=$request->user()->id;
         $comprobante->save();
 
-        DB::connection('ingres')->table('entradas')->insert([
-            'nro_comp'=>$comprobante->nrocomprobante,
-            'nro_item'=>$comprobante->item,
-            'monto'=>$comprobante->total
-        ]);
-
-        $user1=User::find($comprobante->cajero_id);
-
-        DB::connection('ingres')->table('diario')->insert([
-            'nro_comp'=>$comprobante->nrocomprobante,
-            'fecha'=>date('Y-m-d H:i:s'),
-            'efectivo'=>floatval($comprobante->total),
-            'cheque'=>0,
-            'observ'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
-            'oper'=>$user1->codigo
-        ]);
-
-        DB::connection('ingres')->table('compro')->insert([
-            'nro'=>$comprobante->nrocomprobante,
-            'unidad'=>$comprobante->unid_id,
-            'fecha'=>date('Y-m-d H:i:s'),
-            'observa'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
-            'flag'=>'T',
-            'caja'=>'T'
-        ]);
+//        DB::connection('ingres')->table('entradas')->insert([
+//            'nro_comp'=>$comprobante->nrocomprobante,
+//            'nro_item'=>$comprobante->item,
+//            'monto'=>$comprobante->total
+//        ]);
+//
+//        $user1=User::find($comprobante->cajero_id);
+//
+//        DB::connection('ingres')->table('diario')->insert([
+//            'nro_comp'=>$comprobante->nrocomprobante,
+//            'fecha'=>date('Y-m-d H:i:s'),
+//            'efectivo'=>floatval($comprobante->total),
+//            'cheque'=>0,
+//            'observ'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
+//            'oper'=>$user1->codigo
+//        ]);
+//
+//        DB::connection('ingres')->table('compro')->insert([
+//            'nro'=>$comprobante->nrocomprobante,
+//            'unidad'=>$comprobante->unid_id,
+//            'fecha'=>date('Y-m-d H:i:s'),
+//            'observa'=>($comprobante->estado=='ANULADO'?$comprobante->estado:''),
+//            'flag'=>'T',
+//            'caja'=>'T'
+//        ]);
 
         return true;
     }

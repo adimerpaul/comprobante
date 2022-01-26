@@ -15,7 +15,7 @@
           {{$store.state.user.name}}
         </q-toolbar-title>
         <div v-if="Object.keys($store.state.user).length>0">Uni: {{$store.state.user.unid.nombre}} </div>
-        <q-btn @click="logout" v-if="$store.getters.isLoggedIn" label="salir" color="black" />
+        <q-btn size="xs" icon="logout" @click="logout" v-if="$store.getters.isLoggedIn" label="salir" color="black" />
       </q-toolbar>
     </q-header>
 

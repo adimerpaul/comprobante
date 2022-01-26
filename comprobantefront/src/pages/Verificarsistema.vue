@@ -24,29 +24,44 @@
           dense
         title="Historial de cobros"
         :columns="pcolumns"
-        :data="pagos">
+        :data="pagos"
+          :filter="filter"
+          :rows-per-page-options="[15,50,100,0]"
+        >
         <template v-slot:body="props">
         <q-tr :props="props">
             <q-td key="nrocomprobante" :props="props">
             {{props.row.nrocomprobante}}
           </q-td>
-                      <q-td key="unidad" :props="props">
-            {{props.row.unid.codigo}}
+          <q-td key="unidad" :props="props">
+            {{props.row.unid.codigo}} {{props.row.unid.nombre}}
           </q-td>
           <q-td key="total" :props="props">
-            {{props.row.total}}
+            {{props.row.total}} Bs
           </q-td>
           <q-td key="estado" :props="props">
-            <q-badge :color="props.row.estado=='ANULADO'?'teal':'positive'" :label="props.row.estado"/>
+            <q-badge :color="props.row.estado=='ANULADO'?'teal':props.row.estado=='PAGADO'?'positive':'negative'" :label="props.row.estado"/>
           </q-td>
           <q-td key="cajero" :props="props">
             {{props.row.cajero}}
           </q-td>
           <q-td key="verificadosistema" :props="props" >
-            <q-checkbox v-model="props.row.verificadosistema" />
+            <template v-if="!props.row.verificadosistema">
+              <q-checkbox v-if="props.row.estado=='PAGADO'" size="xs" v-model="props.row.verificadosistema" />
+            </template>
+            <template v-else>
+              <q-badge class="bg-green">verificado</q-badge>
+            </template>
           </q-td>
           </q-tr>
         </template>
+          <template v-slot:top-right>
+            <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
         </q-table>
       </div>
       <div class="col-12 q-pt-md">
@@ -83,6 +98,7 @@ const { addToDate } = date
 export default {
   data() {
     return {
+      filter:'',
       model:'',
       unidad:'',
       // fecha2:date.formatDate(Date.now(),'YYYY-MM-DD'),
@@ -95,16 +111,16 @@ export default {
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ],
       nrocomprobante:'',
-      columns:[
-        {name:'codsubitem',label:'Codigo', align:'left',field:'codsubitem',sortable:true},
-        {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
-        {name:'precio',label:'Precio', align:'left',field:'precio',    format: val => `${val} Bs`,sortable:true},
-        {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad',sortable:true},
-        {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
-      ],
+      // columns:[
+      //   {name:'codsubitem',label:'Codigo', align:'left',field:'codsubitem',sortable:true},
+      //   {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
+      //   {name:'precio',label:'Precio', align:'left',field:'precio',    format: val => `${val} Bs`,sortable:true},
+      //   {name:'cantidad',label:'Cantidad', align:'left',field:'cantidad',sortable:true},
+      //   {name:'subtotal',label:'Subtotal', align:'left',field:'subtotal',    format: val => `${val} Bs`,sortable:true},
+      // ],
       pcolumns:[
         {name:'nrocomprobante',label:'N comprobante', align:'left',field:'nrocomprobante',sortable:true},
-        {name:'unidad',label:'Unidad', align:'left',field:row=>row.unidad.codigo,sortable:true},
+        {name:'unidad',label:'Unidad', align:'left',field:'unidad',sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
         {name:'estado',label:'Estado', align:'left',field:'estado'},
         {name:'cajero',label:'Cajero', align:'left',field:'cajero'},
@@ -122,7 +138,7 @@ export default {
     // this.mispagos()
     this.$axios.get(process.env.URL+'/unid').then(res=>{
       this.unidades=res.data
-      console.log(res.data)
+      // console.log(res.data)
     })
     this.historial()
   },
@@ -296,7 +312,7 @@ export default {
       },
       verificar(){
         this.pagos.forEach(elemt=>{
-          if(elemt.verificadosistema)
+          // if(elemt.verificadosistema)
            this.$axios.post(process.env.URL+'/verificadosistema',elemt);
         });
         this.$q.dialog({
@@ -307,15 +323,18 @@ export default {
     historial(){
       this.$q.loading.show()
       this.$axios.post(process.env.URL+'/historial3',{fecha:this.fecha,unid_id:this.unidad.id}).then(res=>{
-        console.log(res.data)
+        // console.log(res.data)
         this.$q.loading.hide()
         this.pagos=[];
-        res.data.forEach(element => {
-            if(element.verificadosistema==1)
-            element.verificadocaja=true;
-            else
-            element.verificadosistema=false;
-            this.pagos.push(element);
+        res.data.forEach(r => {
+          // console.log(r)
+          if(r.verificadosistema==1){
+            r.verificadocaja=true;
+            r.verificadosistema=true;
+          }else{
+            r.verificadosistema=false;
+          }
+          this.pagos.push(r);
         });
         this.pagos=res.data;
       }).catch(err=>{

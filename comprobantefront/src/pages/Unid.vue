@@ -63,9 +63,9 @@
       </q-card>
     </q-dialog>
 
-    <q-table title="Unidades" :data="data" :columns="columns" row-key="name" :rows-per-page-options="[50,100,0]" :filter="filter">
+    <q-table dense title="Unidades" :data="data" :columns="columns" row-key="name" :rows-per-page-options="[50,100,0]" :filter="filter">
       <template v-slot:top-right>
-        <q-input borderless dense debounce="300" v-model="filter" placeholder="Search">
+        <q-input outlined dense debounce="300" v-model="filter" placeholder="Buscar..">
           <template v-slot:append>
             <q-icon name="search" />
           </template>

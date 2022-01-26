@@ -58,6 +58,7 @@ export default {
         let lin=yy
         let cont=0
         let fin=50
+        doc.setFontSize(8);
         dat.detalles.forEach(r=>{
           doc.text(xx, yy, r.coditem.toString());
           doc.text(xx+2.5, yy, r.nombreitem.toString());
@@ -81,6 +82,7 @@ export default {
 
         doc.text(x+15.5, y+15.5, dat.total.toString()+' Bs');
         doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
+        doc.setFontSize(11);
         // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
         // doc.save("Comprobante.pdf");
 

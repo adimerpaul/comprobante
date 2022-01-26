@@ -1,13 +1,11 @@
 <template>
   <q-page class="q-pa-md">
     <div class="row">
-      <div class="col-12 col-sm-12 q-pa-xs flex flex-center">
-        <q-btn icon="search" label="Actualizar" color="primary" @click="loscomprobantes"/>
-      </div>
-      <div class="col-12 col-sm-12 q-pa-xs">
+
+      <div class="col-12 col-sm-9 q-pa-xs">
         <q-select
           outlined
-          filled
+          dense
           v-model="model"
           use-input
           input-debounce="0"
@@ -23,6 +21,9 @@
             </q-item>
           </template>
         </q-select>
+      </div>
+      <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
+        <q-btn icon="refresh" label="Actualizar" color="primary" @click="loscomprobantes"/>
       </div>
 <!--      <div class="col-12 col-sm-6">-->
 <!--        <q-input-->
@@ -40,6 +41,7 @@
       <div class="col-12 col-sm-3">
         <q-input
           outlined
+          dense
           label="Nombre completo"
           v-model="model.nombrecompleto"
           disable
@@ -48,6 +50,7 @@
       <div class="col-12 col-sm-3">
         <q-input
           outlined
+          dense
           label="Padron"
           v-model="model.padron"
           disable
@@ -56,6 +59,7 @@
       <div class="col-12 col-sm-2">
         <q-input
           outlined
+          dense
           label="Carnet de identidad"
           v-model="model.ci"
           disable
@@ -88,13 +92,14 @@
         />
       </div>
       <div class="col-8">
-        <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>
+        <q-input dense label="fecha de cobro" outlined type="date" v-model="fecha"/>
       </div>
       <div class="col-4">
-        <q-btn color="primary" icon="search" @click="mispagos" label="Buscar" class="full-width full-height" />
+        <q-btn size="xs" color="primary" icon="search" @click="mispagos" label="Buscar" class="full-width full-height" />
       </div>
       <div class="col-12 q-pt-md">
         <q-table
+          dense
         title="Historial de cobros"
         :columns="pcolumns"
         :data="pagos"
