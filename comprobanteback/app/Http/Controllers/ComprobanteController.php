@@ -489,6 +489,15 @@ class ComprobanteController extends Controller
         ->whereDate('fechapago','<=',$request->fin)->where('cajero',$request->cajero);
     }
 
+    public function reimprimir(Request $request){
+        return comprobante::with('cliente')
+            ->where('estado','IMPRESO')
+            ->where('fecha',date('Y-m-d'))
+            ->where('user_id',$request->user()->id)
+            ->get();
+    }
+
+
     public function convertirletra($total){
         $formatter = new NumeroALetras();
 
@@ -521,14 +530,14 @@ SUM(d.subtotal) as monto
 
     public function reportecomp(Request $request){
         return DB::select('
-SELECT c.fechasistema ,u.nombre,
-MIN(c.nrocomprobante) as menor,
-MAX(c.nrocomprobante) as mayor
-FROM comprobantes c INNER JOIN unids u on c.unid_id=u.id
-WHERE c.fechasistema >= "'.$request->inicio.'" and c.fechasistema<="'.$request->fin.'"
-AND c.verificadosistema =1
-GROUP by c.fechasistema,u.nombre;
-');
+    SELECT c.fechasistema ,u.nombre,
+    MIN(c.nrocomprobante) as menor,
+    MAX(c.nrocomprobante) as mayor
+    FROM comprobantes c INNER JOIN unids u on c.unid_id=u.id
+    WHERE c.fechasistema >= "'.$request->inicio.'" and c.fechasistema<="'.$request->fin.'"
+    AND c.verificadosistema =1
+    GROUP by c.fechasistema,u.nombre;
+    ');
     }
     public function listramite(){
 //        return DB::table('comprobantes')
@@ -553,6 +562,10 @@ GROUP by c.fechasistema,u.nombre;
             ->with('unid')
             ->where('id',$id)
             ->get();
+    }
+    public function imprimir(Request $request){
+//        return $request;
+        return Comprobante::with('cliente')->where('id',$request->id)->with('detalles')->get();
     }
 
     public function modcomprobante(Request $request)

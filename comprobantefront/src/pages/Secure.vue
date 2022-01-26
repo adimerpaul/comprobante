@@ -114,16 +114,23 @@
         </q-form>
       </div>
       <div class="col-12 col-md-6 q-pa-xs">
-        <q-select
-          @input="buscarsubitems()"
-          outlined
-          v-model="item"
-          lazy-rules
-          :options="items"
-          label="Selecionar item"
-          option-value="id"
-          option-label="nombre"
-        />
+        <div class="row">
+          <div class="col-11">
+            <q-select
+              @input="buscarsubitems()"
+              outlined
+              v-model="item"
+              lazy-rules
+              :options="items"
+              label="Selecionar item"
+              option-value="id"
+              option-label="nombre"
+            />
+          </div>
+          <div class="col-1 flex flex-center">
+            <q-btn size="xs" icon="refresh" color="primary" @click="misitems" />
+          </div>
+        </div>
         <q-select
           @input="val=>colocarprecio(val)"
           outlined
@@ -236,18 +243,21 @@ export default {
   },
   created() {
     this.numcomprobante()
-    this.$axios.get(process.env.URL+'/item').then(res=>{
-      // console.log(res.data)
-      // return false
-      // return false
-      // this.items=[]
-      res.data.forEach(r=>{
-        this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
-      })
-      // this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
-    })
+    this.misitems()
   },
   methods: {
+    misitems(){
+      this.$axios.get(process.env.URL+'/item').then(res=>{
+        // console.log(res.data)
+        // return false
+        // return false
+        // this.items=[]
+        res.data.forEach(r=>{
+          this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
+        })
+        // this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
+      })
+    },
     filter(val, update){
       if (val === '') {
         update(() => {

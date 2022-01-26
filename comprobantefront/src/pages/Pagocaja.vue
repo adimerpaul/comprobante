@@ -53,7 +53,7 @@
           disable
         />
       </div>
-      <div class="col-12 col-sm-3">
+      <div class="col-12 col-sm-2">
         <q-input
           outlined
           label="Carnet de identidad"
@@ -61,21 +61,23 @@
           disable
         />
       </div>
-      <div class="col-12 col-sm-3">
-        <q-input
-          label-color="white"
-          color="white"
-          bg-color="red-5"
-          outlined
-          label="TOTAL"
-          v-model="model.total"
-          disable
-        />
-      </div>
-      <div class="col-12 col-sm-9"></div>
-      <div class="col-12 col-sm-3">
-        <q-btn @click="cancelar" icon="add_circle" label="Cobrar comprobante" color="warning" />
+      <div class="col-12 col-sm-1">
+<!--        <q-input-->
+<!--          label-color="white"-->
+<!--          color="white"-->
+<!--          bg-color="red-5"-->
+<!--          outlined-->
+<!--          label="TOTAL"-->
+<!--          v-model="model.total"-->
+<!--          disable-->
+<!--        />-->
+        <q-badge class="full-width full-height text-subtitle2">
+          <b>TOTAL: </b> {{ model.total }} BS
+        </q-badge>
 
+      </div>
+      <div class="col-12 col-sm-3 flex flex-center">
+        <q-btn  @click="cancelar" icon="add_circle" label="Cobrar comprobante" color="warning" />
       </div>
       <div class="col-12 q-mb-lg">
         <q-table
@@ -92,7 +94,6 @@
         <q-btn color="primary" icon="search" @click="mispagos" label="Buscar" class="full-width full-height" />
       </div>
       <div class="col-12 q-pt-md">
-
         <q-table
         title="Historial de cobros"
         :columns="pcolumns"

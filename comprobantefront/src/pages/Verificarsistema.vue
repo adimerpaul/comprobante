@@ -4,15 +4,14 @@
       <div class="col-12">
       <q-form @submit.prevent="historial">
         <div class="row">
-          <div class="col-4 q-pa-xs">
-            <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>
+          <div class="col-6 q-pa-xs">
+            <q-input dense label="fecha de cobro" outlined type="date" v-model="fecha"/>
           </div>
-          <div class="col-4 q-pa-xs">
-    <!--        <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>-->
-            <q-select v-model="unidad" outlined :options="unidades" option-label="nombre" option-value="id" required/>
-          </div>
-
-          <div class="col-4 q-pa-xs">
+<!--          <div class="col-4 q-pa-xs">-->
+<!--    &lt;!&ndash;        <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>&ndash;&gt;-->
+<!--            <q-select v-model="unidad" outlined :options="unidades" option-label="nombre" option-value="id" required label="Unidad"/>-->
+<!--          </div>-->
+          <div class="col-6 q-pa-xs">
             <q-btn color="primary" type="submit" icon="search"  label="Buscar" class="full-width full-height" />
           </div>
         </div>
@@ -22,6 +21,7 @@
 <!--        <q-checkbox v-model="selectodos" v-on:click.native="seleccionar" label="Seleccionar Todos" />-->
 
         <q-table
+          dense
         title="Historial de cobros"
         :columns="pcolumns"
         :data="pagos">
@@ -51,14 +51,14 @@
       </div>
       <div class="col-12 q-pt-md">
         <q-btn color="info" :label="'Total '+ total +'BS'" class="full-width text-red text-bold"/>
-        <q-btn color="green" label="Registrar Verificados" class="full-width text-black text-bold" @click="verificar"/>
+        <q-btn color="green" label="Registrar Verificados" icon="send" class="full-width text-black text-bold" @click="verificar"/>
 <!--        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>-->
       </div>
       <div class="col-12">
         <q-form @submit.prevent="reportecomp">
           <div class="row">
-            <div class="col-4 q-pa-md"><q-input label="Fecha 1" type="date" outlined v-model="fecha" /></div>
-            <div class="col-4 q-pa-md"><q-input label="Fecha 1" type="date" outlined v-model="fecha2" /></div>
+            <div class="col-4 q-pa-md"><q-input dense label="Fecha 1" type="date" outlined v-model="fecha" /></div>
+            <div class="col-4 q-pa-md"><q-input dense label="Fecha 1" type="date" outlined v-model="fecha2" /></div>
             <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="consulta" color="accent" icon="search"/></div>
           </div>
         </q-form>
@@ -66,8 +66,8 @@
       <div class="col-12">
         <q-form @submit.prevent="generarsubitem">
           <div class="row">
-            <div class="col-4 q-pa-md"><q-input label="Fecha Inicio" type="date" outlined v-model="buscar.inicio" /></div>
-            <div class="col-4 q-pa-md"><q-input label="Fecha Fin" type="date" outlined v-model="buscar.fin" /></div>
+            <div class="col-4 q-pa-md"><q-input dense label="Fecha Inicio" type="date" outlined v-model="buscar.inicio" /></div>
+            <div class="col-4 q-pa-md"><q-input dense label="Fecha Fin" type="date" outlined v-model="buscar.fin" /></div>
             <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="Generar item" color="warning" icon="search"/></div>
           </div>
         </q-form>
@@ -122,8 +122,9 @@ export default {
     // this.mispagos()
     this.$axios.get(process.env.URL+'/unid').then(res=>{
       this.unidades=res.data
-      // console.log(res.data)
+      console.log(res.data)
     })
+    this.historial()
   },
   methods: {
           generarsubitem(){
@@ -295,10 +296,8 @@ export default {
       },
       verificar(){
         this.pagos.forEach(elemt=>{
-                if(elemt.verificadosistema)
-                 this.$axios.post(process.env.URL+'/verificadosistema',elemt);
-        // console.log(res.data)
-
+          if(elemt.verificadosistema)
+           this.$axios.post(process.env.URL+'/verificadosistema',elemt);
         });
         this.$q.dialog({
           title:'Verificado Exitoso'
@@ -317,11 +316,8 @@ export default {
             else
             element.verificadosistema=false;
             this.pagos.push(element);
-
         });
         this.pagos=res.data;
-
-
       }).catch(err=>{
         // console.log(err.response)
         this.$q.notify({

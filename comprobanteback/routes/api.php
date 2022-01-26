@@ -80,4 +80,6 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/subir',[\App\Http\Controllers\ExportController::class,'subir']);
     Route::post('/reportecomp',[\App\Http\Controllers\ComprobanteController::class,'reportecomp']);
     Route::post('/reportitem',[\App\Http\Controllers\ComprobanteController::class,'reportitem']);
+    Route::post('/reimprimir',[\App\Http\Controllers\ComprobanteController::class,'reimprimir']);
+    Route::post('/imprimir',[\App\Http\Controllers\ComprobanteController::class,'imprimir']);
 });

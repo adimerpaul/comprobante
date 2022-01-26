@@ -10,12 +10,10 @@
           aria-label="Menu"
           @click="leftDrawerOpen = !leftDrawerOpen"
         />
-
         <q-toolbar-title>
-          <div style="text-align:center"><b style="font-size:16px; ;">SIRCU</b> <span style="font-size:14px"> Sistema de Informacion de Registro de Comprobantes de Unidades</span></div>
+          <div v-if="!$store.getters.isLoggedIn" style="text-align:center"><b style="font-size:16px; ;">SIRCU</b> <span style="font-size:14px"> Sistema de Informacion de Registro de Comprobantes de Unidades</span></div>
           {{$store.state.user.name}}
         </q-toolbar-title>
-
         <div v-if="Object.keys($store.state.user).length>0">Uni: {{$store.state.user.unid.nombre}} </div>
         <q-btn @click="logout" v-if="$store.getters.isLoggedIn" label="salir" color="black" />
       </q-toolbar>
@@ -32,18 +30,11 @@
           header
           class="text-grey-8"
         >
-          Essential Links
+          Opciones
         </q-item-label>
 
 
-        <q-item
-          clickable
-          to="/"
-          exact
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/" exact><q-item-section avatar>
             <q-icon name="home" />
           </q-item-section>
 
@@ -60,9 +51,7 @@
           exact
           to="/login"
         >
-          <q-item-section
-            avatar
-          >
+          <q-item-section avatar>
             <q-icon name="login" />
           </q-item-section>
 
@@ -74,15 +63,8 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/cliente"
-          exact
-          v-if="$store.state.boolcontribuyente"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/cliente" exact v-if="$store.state.boolcontribuyente">
+          <q-item-section avatar>
             <q-icon name="person" />
           </q-item-section>
 
@@ -93,15 +75,8 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item
-          clickable
-          to="/user"
-          exact
-          v-if="$store.state.boolusuario"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/user" exact v-if="$store.state.boolusuario">
+          <q-item-section avatar>
             <q-icon name="person" />
           </q-item-section>
 
@@ -113,15 +88,8 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/item"
-          exact
-          v-if="$store.state.boolitem"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/item" exact v-if="$store.state.boolitem">
+          <q-item-section avatar>
             <q-icon name="category" />
           </q-item-section>
 
@@ -133,15 +101,8 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/unid"
-          exact
-          v-if="$store.state.boolunidad"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/unid" exact v-if="$store.state.boolunidad">
+          <q-item-section avatar>
             <q-icon name="meeting_room" />
           </q-item-section>
 
@@ -153,18 +114,10 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/secure"
-          exact
-          v-if="$store.state.boolcomprobante"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/secure" exact v-if="$store.state.boolcomprobante">
+          <q-item-section avatar>
             <q-icon name="article" />
           </q-item-section>
-
           <q-item-section>
             <q-item-label>Crear comprobantes</q-item-label>
             <q-item-label caption>
@@ -172,15 +125,19 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item
-          clickable
-          to="/pago"
-          exact
-          v-if="$store.state.boolimprimir"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/reimprimir" exact v-if="$store.state.boolcomprobante">
+          <q-item-section avatar>
+            <q-icon name="print" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Reimprimir comprobante</q-item-label>
+            <q-item-label caption>
+              Reimprimir comprobante
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable to="/pago" exact v-if="$store.state.boolimprimir">
+          <q-item-section avatar>
             <q-icon name="picture_as_pdf" />
           </q-item-section>
 
@@ -192,15 +149,8 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/anular"
-          exact
-          v-if="$store.state.boolanular"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/anular" exact v-if="$store.state.boolanular">
+          <q-item-section avatar>
             <q-icon name="running_with_errors" />
           </q-item-section>
 
@@ -212,15 +162,8 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/cancelar"
-          exact
-          v-if="$store.state.boolpagounidad"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/cancelar" exact v-if="$store.state.boolpagounidad">
+          <q-item-section avatar>
             <q-icon name="paid" />
           </q-item-section>
 
@@ -232,15 +175,8 @@
           </q-item-section>
         </q-item>
 
-        <q-item
-          clickable
-          to="/pagocaja"
-          exact
-          v-if="$store.state.boolpagocaja"
-        >
-          <q-item-section
-            avatar
-          >
+        <q-item clickable to="/pagocaja" exact v-if="$store.state.boolpagocaja">
+          <q-item-section avatar>
             <q-icon name="paid" />
           </q-item-section>
 
@@ -258,9 +194,7 @@
           exact
           v-if="$store.state.boolresumencaja"
         >
-          <q-item-section
-            avatar
-          >
+          <q-item-section avatar>
             <q-icon name="list" />
           </q-item-section>
 
@@ -371,9 +305,7 @@
           clickable
           @click="logout"
         >
-          <q-item-section
-            avatar
-          >
+          <q-item-section avatar>
             <q-icon name="logout" />
           </q-item-section>
 
