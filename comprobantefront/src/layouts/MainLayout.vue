@@ -119,20 +119,9 @@
             <q-icon name="article" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>Crear comprobantes</q-item-label>
+            <q-item-label>01 Crear comprobantes</q-item-label>
             <q-item-label caption>
-              Crear comprobante
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-        <q-item clickable to="/reimprimir" exact v-if="$store.state.boolcomprobante">
-          <q-item-section avatar>
-            <q-icon name="print" />
-          </q-item-section>
-          <q-item-section>
-            <q-item-label>Reimprimir comprobante</q-item-label>
-            <q-item-label caption>
-              Reimprimir comprobante
+              01 Crear comprobante
             </q-item-label>
           </q-item-section>
         </q-item>
@@ -142,13 +131,39 @@
           </q-item-section>
 
           <q-item-section>
-            <q-item-label>Imprimir Comprobantes</q-item-label>
+            <q-item-label>02 Imprimir Comprobantes</q-item-label>
             <q-item-label caption>
-              Imprimir de comprobante
+              02 Imprimir comprobante
             </q-item-label>
           </q-item-section>
         </q-item>
 
+
+
+
+        <q-item clickable to="/cancelar" exact v-if="$store.state.boolpagounidad">
+          <q-item-section avatar>
+            <q-icon name="paid" />
+          </q-item-section>
+
+          <q-item-section>
+            <q-item-label>03 Pagos Comprobantes</q-item-label>
+            <q-item-label caption>
+              03 Pagos Comprobantes
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable to="/reimprimir" exact v-if="$store.state.boolcomprobante">
+          <q-item-section avatar>
+            <q-icon name="print" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Reimprimir (opcional)</q-item-label>
+            <q-item-label caption>
+              Reimprimir (opcional)
+            </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable to="/anular" exact v-if="$store.state.boolanular">
           <q-item-section avatar>
             <q-icon name="running_with_errors" />
@@ -158,19 +173,6 @@
             <q-item-label>Anular Comprobantes</q-item-label>
             <q-item-label caption>
               Imprimir de comprobante
-            </q-item-label>
-          </q-item-section>
-        </q-item>
-
-        <q-item clickable to="/cancelar" exact v-if="$store.state.boolpagounidad">
-          <q-item-section avatar>
-            <q-icon name="paid" />
-          </q-item-section>
-
-          <q-item-section>
-            <q-item-label>Pagos Comprobantes por unidad</q-item-label>
-            <q-item-label caption>
-              Pagos de comprobante por unidad
             </q-item-label>
           </q-item-section>
         </q-item>
