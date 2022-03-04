@@ -167,7 +167,7 @@
             <q-input outlined label="Subtotal" v-model="subtotal" />
           </div>
           <div class="col-4">
-            <q-btn color="positive" @click="agregar" label="Agregar"  class="full-width full-height" text-color="white" />
+            <q-btn color="positive" @click="agregar" label="Agregar"  icon="add_circle" class="full-width full-height" text-color="white" />
           </div>
         </div>
       </div>
@@ -188,6 +188,21 @@
           :data="data"
           row-key="nombre"
         >
+          <template v-slot:body-cell-precio="props">
+            <q-td :props="props">
+              <q-input style="width: 4em" outlined dense v-model="props.row.precio" />
+            </q-td>
+          </template>
+          <template v-slot:body-cell-cantidad="props">
+            <q-td :props="props">
+              <q-input style="width: 4em" outlined dense v-model="props.row.cantidad" />
+            </q-td>
+          </template>
+          <template v-slot:body-cell-subtotal="props">
+            <q-td :props="props">
+              {{props.row.precio*props.row.cantidad}}
+            </q-td>
+          </template>
         </q-table>
         <div class="bg-info q-ma-xs text-center text-red-7 text-h5 text-weight-bold">Total: {{total}} Bs </div>
         <q-btn @click="crear" icon="add_circle" label="Crear comprobante" color="positive" class="full-width"></q-btn>
@@ -262,7 +277,6 @@ export default {
       if (val === '') {
         update(() => {
           this.subitems = this.subitems2
-
           // here you have access to "ref" which
           // is the Vue reference of the QSelect
         })
@@ -316,6 +330,10 @@ export default {
       }).onOk(()=>{
         // console.log('ok')
         this.$q.loading.show()
+        this.data.forEach(r=>{
+          this.data.subtotal=this.data.precio*this.data.cantidad
+        })
+
         this.$axios.post(process.env.URL+'/comprobante',{
           nrotramite:this.nrotramite,
           padron:this.padron,
