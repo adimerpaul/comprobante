@@ -37,7 +37,8 @@ export default new Vuex.Store({
     boolverificarcaja:false,
     boolverificarsistema:false,
     boolmisitems:false,
-    boolactualizarcomprobante:false
+    boolactualizarcomprobante:false,
+    boolcomprobantemercado:false,
   },
   mutations: {
     auth_request(state){
@@ -80,6 +81,7 @@ export default new Vuex.Store({
         state.boolverificarsistema=data.user.permisos.find(permiso=>permiso.id===16)!=undefined
         state.boolmisitems=data.user.permisos.find(permiso=>permiso.id===17)!=undefined
         state.boolactualizarcomprobante=data.user.permisos.find(permiso=>permiso.id===18)!=undefined
+        state.boolcomprobantemercado=data.user.permisos.find(permiso=>permiso.id===19)!=undefined
     },
     auth_error(state){
       state.status = 'error'
@@ -106,6 +108,7 @@ export default new Vuex.Store({
       state.boolverificarsistema=false
       state.boolmisitems=false
       state.boolactualizarcomprobante=false
+      state.boolcomprobantemercado=false
     },
   },
   actions: {

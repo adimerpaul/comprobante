@@ -20,6 +20,7 @@ import Verificarsistema from "pages/Verificarsistema";
 import Misitems from "pages/Misitems";
 import Actualizarcomprobante from "pages/Actualizarcomprobante";
 import Reimprimir from "pages/Reimprimir";
+import Pagomercado from "pages/Pagomercado";
 const routes = [
   {
     path: '/',
@@ -44,6 +45,7 @@ const routes = [
       { path: '/exportar', component: Exportar,meta: {requiresAuth: true} },
       { path: '/importar', component: Importar,meta: {requiresAuth: true} },
       { path: '/misitems', component: Misitems,meta: {requiresAuth: true} },
+      { path: '/pagomercado', component: Pagomercado,meta: {requiresAuth: true} },
       { path: '/actualizarcomprobante', component: Actualizarcomprobante,meta: {requiresAuth: true} },
       { path: '/reimprimir', component: Reimprimir,meta: {requiresAuth: true} },
     ]

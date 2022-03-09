@@ -333,7 +333,6 @@ export default {
         this.data.forEach(r=>{
           this.data.subtotal=this.data.precio*this.data.cantidad
         })
-
         this.$axios.post(process.env.URL+'/comprobante',{
           nrotramite:this.nrotramite,
           padron:this.padron,
@@ -363,10 +362,10 @@ export default {
           this.expedido='';
           this.direccion='';
           this.numcasa='';
-          this.$q.dialog({
-            title:'Correctamente ',
-            message:'Creado!!!'
-          });
+          // this.$q.dialog({
+          //   title:'Correctamente ',
+          //   message:'Creado!!!'
+          // });
         }).catch(err=>{
           // console.log(err.response);
           this.$q.loading.hide();

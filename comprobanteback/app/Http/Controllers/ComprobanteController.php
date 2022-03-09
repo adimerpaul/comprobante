@@ -250,7 +250,7 @@ class ComprobanteController extends Controller
     public function store(Request $request)
     {
 
-//        return count( $request->data);
+//        return $request->data;
         if (count($request->data)==1){
             $item=$request->data[0]['coditem'];
         }else{

@@ -92,7 +92,6 @@
       </q-form>
       </div>
       <div class="col-12 q-pt-md">
-
         <q-table
         title="Historial de cobros"
         :columns="pcolumns"

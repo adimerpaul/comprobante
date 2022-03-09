@@ -113,7 +113,6 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-
         <q-item clickable to="/secure" exact v-if="$store.state.boolcomprobante">
           <q-item-section avatar>
             <q-icon name="article" />
@@ -122,6 +121,17 @@
             <q-item-label>01 Crear comprobantes</q-item-label>
             <q-item-label caption>
               01 Crear comprobante
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable to="/pagomercado" exact v-if="$store.state.boolcomprobantemercado">
+          <q-item-section avatar>
+            <q-icon name="article" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>01 Crear comprobantes</q-item-label>
+            <q-item-label caption>
+              01 Pago mercado
             </q-item-label>
           </q-item-section>
         </q-item>
