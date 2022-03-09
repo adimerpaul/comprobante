@@ -21,7 +21,10 @@
       </q-table>
     </div>
     <div class="col-12">
-      <q-btn @click="reportecomprobantes" class="full-width" color="info" icon="print" label="Imprimir comprobantes"/>
+      <q-btn @click="reportecomprobantes" class="full-width" color="info" icon="print" label="Imprimir comprobantes usuario"/>
+    </div>
+    <div class="col-12">
+      <q-btn @click="reportecomprobantestotales" class="full-width" color="warning" icon="warning" label="Imprimir comprobantes totales"/>
     </div>
   </div>
   <q-dialog v-model="dialogcomprobante" full-width>
@@ -297,6 +300,7 @@ export default {
       subitem:{monto:0,cantidad:0,label:''},
       nrotramite:'',
       miscomprobantes:[],
+      miscomprobantestotales:[],
       micomprobante:{},
       columnscomprobantes:[
         {name:'nrocomprobante',label:'nrocomprobante',field:'nrocomprobante',sortable:true},
@@ -341,6 +345,67 @@ export default {
     this.miscomprobantesmercados()
   },
   methods:{
+    reportecomprobantestotales(){
+      this.$q.loading.show()
+      this.$axios.get(process.env.URL + '/mercado/1').then(res=>{
+        // this.miscomprobantes=[]
+        // res.data.forEach(r=>{
+        //   let d=r
+        //   d.contribuyente=r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre
+        //   this.miscomprobantes.push(d)
+        // })
+        this.miscomprobantestotales=res.data
+        let cm=this;
+        function header(fecha){
+          var img = new Image()
+          img.src = 'logo.jpg'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
+          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+fecha)
+          doc.text(1, 3, 'Nº COMPROBANTE')
+          doc.text(4, 3, 'Nº TRAMITE')
+          doc.text(7, 3, 'CONTRIBUYENTE')
+          doc.text(13.5, 3, 'CI/RUN/RUC')
+          doc.text(16, 3, 'MONTO BS.')
+          doc.text(18, 3, 'OPERADOR')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        // console.log(dat);
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        // var x=0,y=
+        header(this.fecha)
+        // let xx=x
+        // let yy=y
+        let y=0
+        let sumtotal=0
+        this.miscomprobantestotales.forEach(r=>{
+          // xx+=0.5
+          y+=0.5
+          // console.log(r)
+          doc.text(1, y+3, r.nrocomprobante)
+          doc.text(4, y+3, r.nrotramite)
+          doc.text(7, y+3, r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre)
+          doc.text(13.5, y+3, r.cliente.ci)
+          doc.text(16, y+3, r.total)
+          sumtotal+=parseInt(r.total)
+          doc.text(18, y+3, r.user.codigo )
+          // if (y+3>25){
+          //   doc.addPage();
+          //   header(this.fecha)
+          //   y=0
+          // }
+        })
+        doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
+        doc.text(18, y+4, sumtotal+'Bs')
+        // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+        window.open(doc.output('bloburl'), '_blank');
+        // console.log(res.data)
+        this.$q.loading.hide()
+      })
+    },
     reportecomprobantes(){
       let cm=this;
       function header(fecha){
@@ -367,6 +432,7 @@ export default {
       // let xx=x
       // let yy=y
       let y=0
+      let sumtotal=0
       this.miscomprobantes.forEach(r=>{
         // xx+=0.5
         y+=0.5
@@ -376,6 +442,7 @@ export default {
         doc.text(7, y+3, r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre)
         doc.text(13.5, y+3, r.cliente.ci)
         doc.text(16, y+3, r.total)
+        sumtotal+=parseInt(r.total)
         doc.text(18, y+3, r.user.codigo )
         // if (y+3>25){
         //   doc.addPage();
@@ -384,7 +451,7 @@ export default {
         // }
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
-      doc.text(18, y+4, this.total+'Bs')
+      doc.text(18, y+4, sumtotal+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
@@ -621,7 +688,6 @@ export default {
     miscomprobantesmercados(){
       this.$q.loading.show()
       this.$axios.get(process.env.URL + '/mercado').then(res=>{
-        // console.log(res.data)
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r
@@ -629,7 +695,6 @@ export default {
           this.miscomprobantes.push(d)
         })
         this.$q.loading.hide()
-
       })
     },
     crearcomprobante(){
@@ -855,8 +920,15 @@ export default {
 
     },
     nuevocomprobante(){
-      this.dialogcomprobante=true;
-      // this.comprobante={}
+      this.dialogcomprobante=true
+      this.ci=''
+      this.paterno=''
+      this.materno=''
+      this.nombre=''
+      this.padron=''
+      this.expedido=''
+      this.direccion=''
+      this.numcasa=''
       this.numcomprobante()
       this.detalles=[{
         coditem:'1220007',
@@ -915,12 +987,9 @@ export default {
         this.items=[]
         res.data.forEach(r=>{
           let d=r
-          // console.log(r)
           d.label=r.codigo+' '+r.nombre
           this.items.push(d)
-          // this.items.push({id:r.id,nombre:r.nombre+' '+r.codigo,codigo:r.codigo,nombre2:r.nombre})
         })
-        // this.nrotramite=this.$store.state.user.codigo+this.zfill(parseInt(res.data)+1,4);
       })
     },
   },
