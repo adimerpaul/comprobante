@@ -2,8 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Comprobante;
+use App\Models\Detalle;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Luecano\NumeroALetras\NumeroALetras;
 
 class MercadoController extends Controller
 {
@@ -83,7 +87,87 @@ class MercadoController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        //        return $request->data;
+        if (count($request->data)==1){
+            $item=$request->data[0]['coditem'];
+        }else{
+            $item=$request->data[1]['coditem'];
+        }
+        if (Cliente::where('ci',$request->ci)->get()->count()==0 && $request->ci!=''){
+            $cliente=Cliente::create([
+                'paterno'=>strtoupper($request->paterno==null?'':$request->paterno),
+                'ci'=>$request->ci==null?'':$request->ci,
+                'materno'=> strtoupper($request->materno==null?'':$request->materno),
+                'nombre'=>strtoupper($request->nombre==null?'':$request->nombre),
+                'padron'=>strtoupper($request->padron==null?'':$request->padron),
+                'expedido'=>strtoupper($request->expedido==null?'':$request->expedido),
+                'direccion'=>strtoupper($request->direccion==null?'':$request->direccion),
+                'numcasa'=>strtoupper($request->numcasa==null?'':$request->numcasa),
+            ]);
+        }else{
+            $cliente=Cliente::where('ci',$request->ci)->firstOrFail();
+            $cliente->nombre=strtoupper($request->nombre==null?'':$request->nombre);
+            $cliente->paterno=strtoupper($request->paterno==null?'':$request->paterno);
+            $cliente->materno=strtoupper($request->materno==null?'':$request->materno);
+            $cliente->padron=strtoupper($request->padron==null?'':$request->padron);
+            $cliente->expedido=strtoupper($request->expedido==null?'':$request->expedido);
+            $cliente->direccion=strtoupper($request->direccion==null?'':$request->direccion);
+            $cliente->numcasa=strtoupper($request->numcasa==null?'':$request->numcasa);
+            $cliente->save();
+        }
+//        return $cliente;
+        $formatter = new NumeroALetras();
+        $literal= $formatter->toWords($request->total);
+//        return $request->user()->unid_id;
+        Comprobante::where('nrotramite',$request->nrotramite)->update([
+            'unid_id'=>$request->user()->unid_id,
+//            'nrotramite'=>$request->nrotramite,
+//            'nrocomprobante'=>'139044',
+            'fecha'=>date('Y-m-d'),
+            'fechalimite'=>date("Y-m-d",strtotime(now()."+ 21 days")),
+            'tipo'=>'VARIOS',
+            'codigo'=>'',
+            'valorcatastral'=>'',
+            'mtsfrte'=>'',
+            'placa'=>'',
+            'marca'=>'',
+            'modelo'=>'',
+            'padron'=>$cliente->padron,
+            'capital'=>'',
+            'varios'=>"",
+            'tipopago'=>'EFECTIVO',
+            'banco'=>'',
+            'banconro'=>'',
+            'intere'=>'',
+            'multa'=>'',
+            'otros'=>'',
+            'formulario'=>'',
+            'total'=>$request->total,
+            'literal'=>$literal,
+            'controlinterno'=>'',
+            'estado'=>'CREADO',
+            'cajero'=>'',
+            'user_id'=>$request->user()->id,
+            'cliente_id'=>$cliente->id,
+            'item'=>$item
+        ]);
+        $comprobante=Comprobante::where('nrotramite',$request->nrotramite)->firstOrFail();
+        DB::select("DELETE FROM detalles where comprobante_id='".$comprobante->id."'");
+        foreach ($request->data as $row){
+//            echo $row['subtotal'].' -';
+            Detalle::create([
+                'coditem'=>$row['coditem'],
+                'nombreitem'=>$row['nombreitem'],
+                'codsubitem'=>$row['codsubitem'],
+                'nombresubitem'=>$row['nombresubitem'],
+                'detalle'=>$row['detalle'],
+                'precio'=>$row['precio'],
+                'cantidad'=>$row['cantidad'],
+                'subtotal'=>$row['subtotal'],
+                'comprobante_id'=>$comprobante->id,
+            ]);
+        }
+//        return $request->data[1]['coditem'];
     }
 
     /**

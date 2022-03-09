@@ -135,6 +135,18 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/modificarcomprobante" exact v-if="$store.state.boolmodificarcomprobante">
+          <q-item-section avatar>
+            <q-icon name="edit" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Modificar comprobante</q-item-label>
+            <q-item-label caption>
+              Modificar comprobante
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+
         <q-item clickable to="/pago" exact v-if="$store.state.boolimprimir">
           <q-item-section avatar>
             <q-icon name="picture_as_pdf" />

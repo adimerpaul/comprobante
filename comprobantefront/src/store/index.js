@@ -39,6 +39,7 @@ export default new Vuex.Store({
     boolmisitems:false,
     boolactualizarcomprobante:false,
     boolcomprobantemercado:false,
+    boolmodificarcomprobante:false,
   },
   mutations: {
     auth_request(state){
@@ -61,8 +62,7 @@ export default new Vuex.Store({
       // state.boolpagocaja=data.user.permisos.find( permiso => permiso.id === 10)!=undefined
       // state.boolanular=data.user.permisos.find( permiso => permiso.id === 11)!=undefined
       // state.boolresumen=data.user.permisos.find( permiso => permiso.id === 12)!=undefined
-
-
+      // console.log(data.user.permisos)
         state.boolcontribuyente=data.user.permisos.find(permiso=>permiso.id===1)!=undefined
         state.boolusuario=data.user.permisos.find(permiso=>permiso.id===2)!=undefined
         state.boolitem=data.user.permisos.find(permiso=>permiso.id===3)!=undefined
@@ -82,6 +82,7 @@ export default new Vuex.Store({
         state.boolmisitems=data.user.permisos.find(permiso=>permiso.id===17)!=undefined
         state.boolactualizarcomprobante=data.user.permisos.find(permiso=>permiso.id===18)!=undefined
         state.boolcomprobantemercado=data.user.permisos.find(permiso=>permiso.id===19)!=undefined
+        state.boolmodificarcomprobante=data.user.permisos.find(permiso=>permiso.id===20)!=undefined
     },
     auth_error(state){
       state.status = 'error'
@@ -109,6 +110,7 @@ export default new Vuex.Store({
       state.boolmisitems=false
       state.boolactualizarcomprobante=false
       state.boolcomprobantemercado=false
+      state.boolmodificarcomprobante=false
     },
   },
   actions: {

@@ -55,34 +55,34 @@
               <div class="text-subtitle2">PATERNO</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  square dense outlined v-model="paterno" />
+              <q-input  disable dense outlined v-model="paterno" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">MATERNO</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  square dense outlined v-model="materno" />
+              <q-input  disable dense outlined v-model="materno" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">NOMBRES</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  square dense outlined v-model="nombre" />
+              <q-input  disable dense outlined v-model="nombre" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">DIRECCION</div>
             </div>
             <div class="col-12 col-sm-7">
-              <q-input  square dense outlined v-model="direccion" />
+              <q-input  disable dense outlined v-model="direccion" />
             </div>
             <div class="col-12 col-sm-2">
-              <q-input  square dense outlined v-model="numcasa" label="Num casa" />
+              <q-input  disable dense outlined v-model="numcasa" label="Num casa" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">PADRON MUNICIPAL</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  square dense outlined v-model="padron" />
+              <q-input  disable dense outlined v-model="padron" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">ITEM</div>
@@ -173,7 +173,7 @@
               <div class="text-subtitle2">CI/NIT/RUC</div>
             </div>
             <div class="col-12 col-sm-5">
-              <q-input @input="buscarcliente" square dense outlined v-model="ci" />
+              <q-input disable @input="buscarcliente" square dense outlined v-model="ci" />
             </div>
             <div class="col-12 col-sm-4">
               <q-select :options="['CH','LP','CB','OR','PT','TJ','SC','BE','PD','OTROS']" outlined dense square label="Expedido" v-model="expedido"
@@ -183,62 +183,62 @@
               <div class="text-subtitle2">PATERNO</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  square dense outlined v-model="paterno" />
+              <q-input  disable dense outlined v-model="paterno" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">MATERNO</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  square dense outlined v-model="materno" />
+              <q-input  disable dense outlined v-model="materno" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">NOMBRES</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  square dense outlined v-model="nombre" />
+              <q-input  disable dense outlined v-model="nombre" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">DIRECCION</div>
             </div>
             <div class="col-12 col-sm-7">
-              <q-input  square dense outlined v-model="direccion" />
+              <q-input  disable dense outlined v-model="direccion" />
             </div>
             <div class="col-12 col-sm-2">
-              <q-input  square dense outlined v-model="numcasa" label="Num casa" />
+              <q-input  disable dense outlined v-model="numcasa" label="Num casa" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">PADRON MUNICIPAL</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  square dense outlined v-model="padron" />
+              <q-input  disable dense outlined v-model="padron" />
             </div>
-            <div class="col-12 col-sm-3 bg-red flex flex-center ">
-              <div class="text-subtitle2">ITEM</div>
-            </div>
-            <div class="col-12 col-sm-9">
-              <q-select :options="items" @input="buscarsubitems()" square dense outlined v-model="item" />
-            </div>
-            <div class="col-12 col-sm-3 bg-red flex flex-center ">
-              <div class="text-subtitle2">SUBITEM</div>
-            </div>
-            <div class="col-12 col-sm-9">
-              <q-select :options="subitems" square  dense outlined v-model="subitem" />
-            </div>
-            <div class="col-12 col-sm-3 bg-red flex flex-center ">
-              <div class="text-subtitle2">MONTO BS</div>
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input color="red" label-color="red" square label="Tasa" dense outlined v-model="subitem.monto"/>
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input color="red" label-color="red" square label="Cantidad" dense outlined v-model="subitem.cantidad"/>
-            </div>
-            <div class="col-12 col-sm-2">
-              <q-input color="red" disable label-color="red" square label="Monto" dense outlined :value="subtotal" />
-            </div>
-            <div class="col-12 col-sm-3 flex flex-center">
-              <q-btn @click="agregardetalle" icon="add_circle" color="primary" label="Agregar" disable/>
-            </div>
+<!--            <div class="col-12 col-sm-3 bg-red flex flex-center ">-->
+<!--              <div class="text-subtitle2">ITEM</div>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-9">-->
+<!--              <q-select :options="items" @input="buscarsubitems()" square dense outlined v-model="item" />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-3 bg-red flex flex-center ">-->
+<!--              <div class="text-subtitle2">SUBITEM</div>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-9">-->
+<!--              <q-select :options="subitems" square  dense outlined v-model="subitem" />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-3 bg-red flex flex-center ">-->
+<!--              <div class="text-subtitle2">MONTO BS</div>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input color="red" label-color="red" square label="Tasa" dense outlined v-model="subitem.monto"/>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input color="red" label-color="red" square label="Cantidad" dense outlined v-model="subitem.cantidad"/>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-2">-->
+<!--              <q-input color="red" disable label-color="red" square label="Monto" dense outlined :value="subtotal" />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-3 flex flex-center">-->
+<!--              <q-btn @click="agregardetalle" icon="add_circle" color="primary" label="Agregar" disable/>-->
+<!--            </div>-->
             <div class="col-12 ">
               <q-table :rows-per-page-options="[1000]" dense :columns="columnsdetalles" :data="detalles">
                 <template v-slot:body-cell-detalle="props">
@@ -804,7 +804,9 @@ export default {
         var x=0,y=-2;
         doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
+        doc.setFontSize(9);
         doc.text(x+9.5, y+9, dat.cliente.direccion.toString());
+        doc.setFontSize(11);
         doc.text(x+14, y+9, dat.cliente.numcasa.toString());
         doc.text(x+15.6, y+2, dat.cliente.ci.toString()+' '+dat.cliente.expedido.toString());
         doc.text(x+18, y+9, dat.cliente.telefono.toString());

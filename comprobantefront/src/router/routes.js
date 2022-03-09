@@ -21,6 +21,7 @@ import Misitems from "pages/Misitems";
 import Actualizarcomprobante from "pages/Actualizarcomprobante";
 import Reimprimir from "pages/Reimprimir";
 import Pagomercado from "pages/Pagomercado";
+import Modificarcomprobante from "pages/Modificarcomprobante";
 const routes = [
   {
     path: '/',
@@ -48,6 +49,7 @@ const routes = [
       { path: '/pagomercado', component: Pagomercado,meta: {requiresAuth: true} },
       { path: '/actualizarcomprobante', component: Actualizarcomprobante,meta: {requiresAuth: true} },
       { path: '/reimprimir', component: Reimprimir,meta: {requiresAuth: true} },
+      { path: '/modificarcomprobante', component: Modificarcomprobante,meta: {requiresAuth: true} },
     ]
   },
 

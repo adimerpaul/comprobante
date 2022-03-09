@@ -364,8 +364,6 @@ class ComprobanteController extends Controller
     public function update(Request $request, Comprobante $comprobante)
     {
 //        if ()
-
-
         $numcomprobante=str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT);
         $count=Comprobante::where('nrocomprobante',$numcomprobante)->where('unid_id',$request->user()->unid_id)->get()->count();
         if ($count>0){
