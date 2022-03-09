@@ -720,6 +720,8 @@ export default {
           numcasa: this.numcasa,
           data: this.detalles,
         }).then((res) => {
+          // console.log(res.data)
+          // return false
           this.miscomprobantesmercados()
           this.$q.loading.hide()
           this.numcomprobante()
@@ -776,7 +778,7 @@ export default {
     agregardetalle(){
       this.detalles.push({
         coditem:this.item.codigo,
-        nombreitem:this.subitem.nombre.trim(),
+        nombreitem:this.item.nombre.trim(),
         codsubitem:this.subitem.codigo,
         nombresubitem:this.subitem.nombre.trim(),
         detalle:this.subitem.nombre.trim(),
