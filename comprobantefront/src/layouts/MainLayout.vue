@@ -135,6 +135,17 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/pagourbano" exact v-if="$store.state.boolcomprobanteurbano">
+          <q-item-section avatar>
+            <q-icon name="article" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>01 Crear comprobantes</q-item-label>
+            <q-item-label caption>
+              01 Pago urbano
+            </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable to="/modificarcomprobante" exact v-if="$store.state.boolmodificarcomprobante">
           <q-item-section avatar>
             <q-icon name="edit" />
