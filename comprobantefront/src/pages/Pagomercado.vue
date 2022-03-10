@@ -844,7 +844,7 @@ export default {
         doc.text(x+3, y+9.5, dat.varios.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+0.7
-        yy=y+9.5
+        yy=y+11.7
         let lin=yy
         cont=0
         fin=50
@@ -869,6 +869,7 @@ export default {
         })
 
         doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
+        doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
         doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
         doc.setFontSize(11);
         // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
