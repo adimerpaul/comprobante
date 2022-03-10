@@ -59,6 +59,7 @@ FROM items i
 INNER JOIN item_unid iu ON i.id=iu.item_id
 WHERE iu.unid_id='".$request->user()->unid_id."'
 AND i.id IN (SELECT item_id FROM subitems GROUP BY item_id)
+ORDER BY i.codigo
 ");
     }
 
