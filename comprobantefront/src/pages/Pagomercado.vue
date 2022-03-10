@@ -23,7 +23,10 @@
     <div class="col-12">
       <q-btn @click="reportecomprobantes" class="full-width" color="info" icon="print" label="Imprimir comprobantes usuario"/>
     </div>
-    <div class="col-12">
+    <div class="col-6">
+      <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
+    </div>
+    <div class="col-6">
       <q-btn @click="reportecomprobantestotales" class="full-width" color="warning" icon="warning" label="Imprimir comprobantes totales"/>
     </div>
   </div>
@@ -347,7 +350,10 @@ export default {
   methods:{
     reportecomprobantestotales(){
       this.$q.loading.show()
-      this.$axios.get(process.env.URL + '/mercado/1').then(res=>{
+      console.log('a')
+      this.$axios.get(process.env.URL + '/mercado/'+this.fecha).then(res=>{
+        console.log('aaa')
+        console.log(res.data)
         // this.miscomprobantes=[]
         // res.data.forEach(r=>{
         //   let d=r
@@ -387,7 +393,7 @@ export default {
           // console.log(r)
           doc.text(1, y+3, r.nrocomprobante)
           doc.text(4, y+3, r.nrotramite)
-          doc.text(7, y+3, r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre)
+          doc.text(7, y+3, (r.cliente.paterno+'').substring(0,15)+' '+r.cliente.materno+' '+r.cliente.nombre)
           doc.text(13.5, y+3, r.cliente.ci)
           doc.text(16, y+3, r.total)
           sumtotal+=parseInt(r.total)
@@ -593,7 +599,7 @@ export default {
             var x=1,y=-3;
             doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
             doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
-            doc.setFontSize(8);
+            doc.setFontSize(10);
             let cont=0
             let fin=25
             let xx=x
@@ -614,7 +620,7 @@ export default {
             // console.log(dat.cliente)
             doc.text(x+15.6, y+8.5, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
             doc.text(x+18, y+8.5, dat.cliente.telefono.toString());
-            doc.text(x+3, y+9.5, dat.varios.toString());
+            doc.text(x+3, y+10.5, dat.padron.toString());
             doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
             xx=x+0.7
             yy=y+11.7
@@ -706,7 +712,7 @@ export default {
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r
-          d.contribuyente=r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre
+          d.contribuyente=(r.cliente.paterno+'').substring(0,50)+' '+r.cliente.materno+' '+r.cliente.nombre
           this.miscomprobantes.push(d)
         })
         this.$q.loading.hide()
@@ -819,20 +825,20 @@ export default {
         var x=1,y=-3;
         doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
-        doc.setFontSize(8);
+        doc.setFontSize(10);
         let cont=0
-        let fin=25
+        let fin=22
         let xx=x
         let yy=y
-        if(dat.cliente.direccion.toString().length<25)
+        if(dat.cliente.direccion.toString().length<22)
           doc.text(x+9, y+8.5, dat.cliente.direccion.toString());
         else{
           while (dat.cliente.direccion.toString().length>=cont){
             // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
             doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
-            cont+=25;
-            fin+=25
-            yy+=0.2;
+            cont+=22;
+            fin+=22
+            yy+=0.3;
           }
         }
         doc.setFontSize(11);
@@ -840,7 +846,7 @@ export default {
         // console.log(dat.cliente)
         doc.text(x+15.6, y+8.5, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
         doc.text(x+18, y+8.5, dat.cliente.telefono.toString());
-        doc.text(x+3, y+9.5, dat.varios.toString());
+        doc.text(x+3, y+10.5, dat.padron.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+0.7
         yy=y+11.7
@@ -951,7 +957,7 @@ export default {
         // console.log(dat.cliente)
         doc.text(x+15.6, y+8.7, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
         doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
-        doc.text(x+3, y+9.5, dat.varios.toString());
+        doc.text(x+3, y+10.5, dat.padron.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+1.2
         yy=x+9.7
