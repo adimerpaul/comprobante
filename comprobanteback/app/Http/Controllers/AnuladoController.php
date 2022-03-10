@@ -85,52 +85,52 @@ class AnuladoController extends Controller
 //            'cliente_id'=>$comprobante->cliente_id,
 //            'item'=>$comprobante->item
 //        ]);
-        $com=new Comprobante();
-        $com->unid_id=$comprobante->unid_id;
-        $com->nrotramite=$comprobante->nrotramite;
-        $com->fecha=$comprobante->fecha;
-        $com->fechalimite=$comprobante->fechalimite;
-        $com->tipo=$comprobante->tipo;
-        $com->codigo='';
-        $com->valorcatastral='';
-        $com->mtsfrte='';
-        $com->placa='';
-        $com->marca='';
-        $com->modelo='';
-        $com->padron=$comprobante->padron;
-        $com->capital='';
-        $com->varios=$comprobante->varios;
-        $com->tipopago=$comprobante->tipopago;
-        $com->banco='';
-        $com->banconro='';
-        $com->intere='';
-        $com->multa='';
-        $com->otros='';
-        $com->formulario='';
-        $com->total=$comprobante->total;
-        $com->literal=$comprobante->literal;
-        $com->controlinterno='';
-        $com->estado='CREADO';
-        $com->cajero='';
-        $com->user_id=$comprobante->user_id;
-        $com->cliente_id=$comprobante->cliente_id;
-        $com->item=$comprobante->item;
-        $com->save();
+//        $com=new Comprobante();
+//        $com->unid_id=$comprobante->unid_id;
+//        $com->nrotramite=$comprobante->nrotramite;
+//        $com->fecha=$comprobante->fecha;
+//        $com->fechalimite=$comprobante->fechalimite;
+//        $com->tipo=$comprobante->tipo;
+//        $com->codigo='';
+//        $com->valorcatastral='';
+//        $com->mtsfrte='';
+//        $com->placa='';
+//        $com->marca='';
+//        $com->modelo='';
+//        $com->padron=$comprobante->padron;
+//        $com->capital='';
+//        $com->varios=$comprobante->varios;
+//        $com->tipopago=$comprobante->tipopago;
+//        $com->banco='';
+//        $com->banconro='';
+//        $com->intere='';
+//        $com->multa='';
+//        $com->otros='';
+//        $com->formulario='';
+//        $com->total=$comprobante->total;
+//        $com->literal=$comprobante->literal;
+//        $com->controlinterno='';
+//        $com->estado='CREADO';
+//        $com->cajero='';
+//        $com->user_id=$comprobante->user_id;
+//        $com->cliente_id=$comprobante->cliente_id;
+//        $com->item=$comprobante->item;
+//        $com->save();
 
-        $detalles=Detalle::where('comprobante_id',$request->comprobante_id)->get();
-        foreach ($detalles as $detalle){
-            $d= new Detalle();
-            $d->coditem=$detalle->coditem;
-            $d->nombreitem=$detalle->nombreitem;
-            $d->codsubitem=$detalle->codsubitem;
-            $d->nombresubitem=$detalle->nombresubitem;
-            $d->detalle=$detalle->detalle;
-            $d->precio=$detalle->precio;
-            $d->cantidad=$detalle->cantidad;
-            $d->subtotal=$detalle->subtotal;
-            $d->comprobante_id=$com->id;
-            $d->save();
-        }
+//        $detalles=Detalle::where('comprobante_id',$request->comprobante_id)->get();
+//        foreach ($detalles as $detalle){
+//            $d= new Detalle();
+//            $d->coditem=$detalle->coditem;
+//            $d->nombreitem=$detalle->nombreitem;
+//            $d->codsubitem=$detalle->codsubitem;
+//            $d->nombresubitem=$detalle->nombresubitem;
+//            $d->detalle=$detalle->detalle;
+//            $d->precio=$detalle->precio;
+//            $d->cantidad=$detalle->cantidad;
+//            $d->subtotal=$detalle->subtotal;
+//            $d->comprobante_id=$com->id;
+//            $d->save();
+//        }
 
         $nroprobante=$comprobante->nrocomprobante;
 
