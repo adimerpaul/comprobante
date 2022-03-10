@@ -706,7 +706,7 @@ export default {
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r
-          d.contribuyente=r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre
+          d.contribuyente=(r.cliente.paterno+'').substr(0,50)+' '+r.cliente.materno+' '+r.cliente.nombre
           this.miscomprobantes.push(d)
         })
         this.$q.loading.hide()
