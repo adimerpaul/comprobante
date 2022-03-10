@@ -146,6 +146,17 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/pagocatastronombres" exact v-if="$store.state.boolcomprobantecatastro">
+          <q-item-section avatar>
+            <q-icon name="article" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>01 Crear comprobantes </q-item-label>
+            <q-item-label caption>
+              01 Pago catastro nombre largo
+            </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable to="/pagourbano" exact v-if="$store.state.boolcomprobanteurbano">
           <q-item-section avatar>
             <q-icon name="article" />

@@ -52,23 +52,23 @@
               />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
-              <div class="text-subtitle2">PATERNO</div>
+              <div class="text-subtitle2">Nombre</div>
             </div>
             <div class="col-12 col-sm-9">
               <q-input   dense outlined v-model="paterno" />
             </div>
-            <div class="col-12 col-sm-3 bg-red flex flex-center ">
-              <div class="text-subtitle2">MATERNO</div>
-            </div>
-            <div class="col-12 col-sm-9">
-              <q-input   dense outlined v-model="materno" />
-            </div>
-            <div class="col-12 col-sm-3 bg-red flex flex-center ">
-              <div class="text-subtitle2">NOMBRES</div>
-            </div>
-            <div class="col-12 col-sm-9">
-              <q-input   dense outlined v-model="nombre" />
-            </div>
+<!--            <div class="col-12 col-sm-3 bg-red flex flex-center ">-->
+<!--              <div class="text-subtitle2">MATERNO</div>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-9">-->
+<!--              <q-input   dense outlined v-model="materno" />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-3 bg-red flex flex-center ">-->
+<!--              <div class="text-subtitle2">NOMBRES</div>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-9">-->
+<!--              <q-input   dense outlined v-model="nombre" />-->
+<!--            </div>-->
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">DIRECCION</div>
             </div>
@@ -185,18 +185,18 @@
             <div class="col-12 col-sm-9">
               <q-input  disable dense outlined v-model="paterno" />
             </div>
-            <div class="col-12 col-sm-3 bg-red flex flex-center ">
-              <div class="text-subtitle2">MATERNO</div>
-            </div>
-            <div class="col-12 col-sm-9">
-              <q-input  disable dense outlined v-model="materno" />
-            </div>
-            <div class="col-12 col-sm-3 bg-red flex flex-center ">
-              <div class="text-subtitle2">NOMBRES</div>
-            </div>
-            <div class="col-12 col-sm-9">
-              <q-input  disable dense outlined v-model="nombre" />
-            </div>
+<!--            <div class="col-12 col-sm-3 bg-red flex flex-center ">-->
+<!--              <div class="text-subtitle2">MATERNO</div>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-9">-->
+<!--              <q-input  disable dense outlined v-model="materno" />-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-3 bg-red flex flex-center ">-->
+<!--              <div class="text-subtitle2">NOMBRES</div>-->
+<!--            </div>-->
+<!--            <div class="col-12 col-sm-9">-->
+<!--              <q-input  disable dense outlined v-model="nombre" />-->
+<!--            </div>-->
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">DIRECCION</div>
             </div>
@@ -593,12 +593,27 @@ export default {
             var x=1,y=-2;
             doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
             doc.text(x+16.5, y+6, dat.cliente.padron.toString());
-            doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
             doc.setFontSize(7);
             let cont=0
-            let fin=20
+            let fin=65
             let xx=x
             let yy=y
+            if(dat.cliente.paterno.toString().length<65)
+              doc.text(xx+9, yy+7, dat.cliente.paterno.toString());
+            else{
+              while (dat.cliente.paterno.toString().length>=cont){
+                // doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+                doc.text(xx+9, yy+7, dat.cliente.paterno.toString().substring(cont,fin));
+                cont+=65;
+                fin+=65
+                yy+=0.2;
+              }
+            }
+            cont=0
+            fin=20
+            xx=x
+            yy=y
+
             if(dat.cliente.direccion.toString().length<20)
               doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
             else{
@@ -619,7 +634,6 @@ export default {
             doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
             xx=x+1.2
             yy=y+11.7
-            let lin=yy
             cont=0
             fin=50
             doc.setFontSize(10);
@@ -637,7 +651,8 @@ export default {
                   cont+=50;
                   fin+=50
                   yy+=0.3;
-                }}
+                }
+              }
               yy+=0.6
               // console.log(r)
             })
@@ -706,7 +721,7 @@ export default {
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r
-          d.contribuyente=r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre
+          d.contribuyente=(r.cliente.paterno+'').substr(0,50) +' '+r.cliente.materno+' '+r.cliente.nombre
           this.miscomprobantes.push(d)
         })
         this.$q.loading.hide()
@@ -819,12 +834,27 @@ export default {
         var x=1,y=-2;
         doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+16.5, y+6, dat.cliente.padron.toString());
-        doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
         doc.setFontSize(7);
         let cont=0
-        let fin=20
+        let fin=65
         let xx=x
         let yy=y
+        if(dat.cliente.paterno.toString().length<65)
+          doc.text(xx+9, yy+7, dat.cliente.paterno.toString());
+        else{
+          while (dat.cliente.paterno.toString().length>=cont){
+            // doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+            doc.text(xx+9, yy+7, dat.cliente.paterno.toString().substring(cont,fin));
+            cont+=65;
+            fin+=65
+            yy+=0.2;
+          }
+        }
+        cont=0
+        fin=20
+        xx=x
+        yy=y
+
         if(dat.cliente.direccion.toString().length<20)
           doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
         else{
@@ -845,7 +875,6 @@ export default {
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+1.2
         yy=y+11.7
-        let lin=yy
         cont=0
         fin=50
         doc.setFontSize(10);
@@ -863,7 +892,8 @@ export default {
               cont+=50;
               fin+=50
               yy+=0.3;
-            }}
+            }
+          }
           yy+=0.6
           // console.log(r)
         })
