@@ -593,32 +593,32 @@ export default {
             var x=1,y=-3;
             doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
             doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
-            doc.setFontSize(8);
+            doc.setFontSize(7);
             let cont=0
-            let fin=25
+            let fin=20
             let xx=x
             let yy=y
-            if(dat.cliente.direccion.toString().length<25)
-              doc.text(x+9, y+8.5, dat.cliente.direccion.toString());
+            if(dat.cliente.direccion.toString().length<20)
+              doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
             else{
               while (dat.cliente.direccion.toString().length>=cont){
                 // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
-                doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
-                cont+=25;
-                fin+=25
+                doc.text(xx+9.5, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+                cont+=20;
+                fin+=20
                 yy+=0.2;
               }
             }
             doc.setFontSize(11);
-            doc.text(x+14, y+8.5, dat.cliente.numcasa.toString());
+            doc.text(x+14, y+8.7, dat.cliente.numcasa.toString());
             // console.log(dat.cliente)
-            doc.text(x+15.6, y+8.5, dat.cliente.ci.toString());
+            doc.text(x+15.6, y+8.7, dat.cliente.ci.toString());
             doc.text(x+15.6, y+10.7, 'CODIGO CATASTRAL');
-            doc.text(x+18, y+8.5, dat.cliente.telefono.toString());
+            doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
             doc.text(x+3, y+9.5, dat.varios.toString());
             doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
-            xx=x+0.7
-            yy=y+11.7
+            xx=x+1.2
+            yy=x+7.7
             let lin=yy
             cont=0
             fin=50
@@ -642,7 +642,6 @@ export default {
               // console.log(r)
             })
             doc.setFontSize(12);
-            doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
             doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
             doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
 
@@ -845,7 +844,7 @@ export default {
         doc.text(x+3, y+9.5, dat.varios.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+1.2
-        yy=x+11.7
+        yy=x+7.7
         let lin=yy
         cont=0
         fin=50
