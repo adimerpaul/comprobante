@@ -30,7 +30,7 @@
   <q-dialog v-model="dialogcomprobante" full-width>
     <q-card >
       <q-card-section class="bg-green text-white">
-        <div class="text-h6 ">LIQUIDACION DE INGRESOS</div>
+        <div class="text-h6 "> <q-icon name="add_circle"/> DE INGRESOS</div>
       </q-card-section>
       <q-card-section class="q-pt-none">
         <q-form @submit="crearcomprobante">
@@ -55,34 +55,34 @@
               <div class="text-subtitle2">PATERNO</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  disable dense outlined v-model="paterno" />
+              <q-input   dense outlined v-model="paterno" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">MATERNO</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  disable dense outlined v-model="materno" />
+              <q-input   dense outlined v-model="materno" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">NOMBRES</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  disable dense outlined v-model="nombre" />
+              <q-input   dense outlined v-model="nombre" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">DIRECCION</div>
             </div>
             <div class="col-12 col-sm-7">
-              <q-input  disable dense outlined v-model="direccion" />
+              <q-input   dense outlined v-model="direccion" />
             </div>
             <div class="col-12 col-sm-2">
-              <q-input  disable dense outlined v-model="numcasa" label="Num casa" />
+              <q-input   dense outlined v-model="numcasa" label="Num casa" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">PADRON MUNICIPAL</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input  disable dense outlined v-model="padron" />
+              <q-input   dense outlined v-model="padron" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">ITEM</div>
@@ -593,17 +593,33 @@ export default {
             var x=0,y=-2;
             doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
             doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
-            doc.text(x+9.5, y+9, dat.cliente.direccion.toString());
-            doc.text(x+14, y+9, dat.cliente.numcasa.toString());
-            doc.text(x+15.6, y+2, dat.cliente.ci.toString()+' '+dat.cliente.expedido.toString());
-            doc.text(x+18, y+9, dat.cliente.telefono.toString());
+            doc.setFontSize(7);
+            let cont=0
+            let fin=20
+            let xx=x
+            let yy=y
+            if(dat.cliente.direccion.toString().length<20)
+              doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
+            else{
+              while (dat.cliente.direccion.toString().length>=cont){
+                // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
+                doc.text(xx+9.5, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+                cont+=20;
+                fin+=20
+                yy+=0.2;
+              }
+            }
+            doc.setFontSize(11);
+            doc.text(x+14, y+8.7, dat.cliente.numcasa.toString());
+            // console.log(dat.cliente)
+            doc.text(x+15.6, y+8.7, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
+            doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
             doc.text(x+3, y+9.5, dat.varios.toString());
             doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
-            let xx=x+1.2
-            let yy=x+9.7
-            let lin=yy
-            let cont=0
-            let fin=50
+             xx=x+1.2
+             yy=x+9.7
+             cont=0
+             fin=50
             doc.setFontSize(8);
             dat.detalles.forEach(r=>{
               doc.text(xx, yy, r.coditem.toString());
@@ -804,19 +820,34 @@ export default {
         var x=0,y=-2;
         doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
-        doc.setFontSize(9);
-        doc.text(x+9.5, y+9, dat.cliente.direccion.toString());
+        doc.setFontSize(7);
+        let cont=0
+        let fin=20
+        let xx=x
+        let yy=y
+        if(dat.cliente.direccion.toString().length<20)
+          doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
+        else{
+          while (dat.cliente.direccion.toString().length>=cont){
+            // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
+            doc.text(xx+9.5, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+            cont+=20;
+            fin+=20
+            yy+=0.2;
+          }
+        }
         doc.setFontSize(11);
-        doc.text(x+14, y+9, dat.cliente.numcasa.toString());
-        doc.text(x+15.6, y+2, dat.cliente.ci.toString()+' '+dat.cliente.expedido.toString());
-        doc.text(x+18, y+9, dat.cliente.telefono.toString());
+        doc.text(x+14, y+8.7, dat.cliente.numcasa.toString());
+        // console.log(dat.cliente)
+        doc.text(x+15.6, y+8.7, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
+        doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
         doc.text(x+3, y+9.5, dat.varios.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
-        let xx=x+1.2
-        let yy=x+9.7
+        xx=x+1.2
+        yy=x+9.7
         let lin=yy
-        let cont=0
-        let fin=50
+        cont=0
+        fin=50
         doc.setFontSize(8);
         dat.detalles.forEach(r=>{
           doc.text(xx, yy, r.coditem.toString());
