@@ -142,7 +142,7 @@
           <q-item-section>
             <q-item-label>01 Crear comprobantes</q-item-label>
             <q-item-label caption>
-              01 Pago mercado
+              01 Pago catastro
             </q-item-label>
           </q-item-section>
         </q-item>
