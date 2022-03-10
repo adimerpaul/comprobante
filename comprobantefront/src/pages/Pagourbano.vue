@@ -590,7 +590,7 @@ export default {
             // console.log(dat);
             doc.setFont("courier",'bold');
             doc.setFontSize(11);
-            var x=1,y=-3;
+            var x=1,y=-1;
             doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
             doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
             doc.setFontSize(8);
@@ -817,7 +817,7 @@ export default {
         // console.log(dat);
         doc.setFont("courier",'bold');
         doc.setFontSize(11);
-        var x=0,y=-2;
+        var x=1,y=-1;
         doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
         doc.setFontSize(7);
@@ -956,6 +956,8 @@ export default {
 
     },
     nuevocomprobante(){
+      this.item=''
+      this.subitem={monto:0,cantidad:0,label:''}
       this.dialogcomprobante=true
       this.ci=''
       this.paterno=''

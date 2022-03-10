@@ -1065,6 +1065,8 @@ export default {
 
     },
     nuevocomprobante(){
+      this.item=''
+      this.subitem={monto:0,cantidad:0,label:''}
       this.dialogcomprobante=true
       this.ci=''
       this.paterno=''
