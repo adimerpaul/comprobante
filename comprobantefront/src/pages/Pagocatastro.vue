@@ -590,7 +590,7 @@ export default {
             // console.log(dat);
             doc.setFont("courier",'bold');
             doc.setFontSize(11);
-            var x=1,y=-1;
+            var x=1,y=-2;
             doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
             doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
             doc.setFontSize(7);
@@ -617,7 +617,7 @@ export default {
             doc.text(x+3, y+9.5, dat.varios.toString());
             doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
             xx=x+1.2
-            yy=y+12.7
+            yy=y+10.7
             let lin=yy
             cont=0
             fin=50
@@ -815,7 +815,7 @@ export default {
         // console.log(dat);
         doc.setFont("courier",'bold');
         doc.setFontSize(11);
-        var x=1,y=-1;
+        var x=1,y=-2;
         doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
         doc.setFontSize(7);
@@ -842,7 +842,7 @@ export default {
         doc.text(x+3, y+9.5, dat.varios.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+1.2
-        yy=y+12.7
+        yy=y+10.7
         let lin=yy
         cont=0
         fin=50
