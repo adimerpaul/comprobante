@@ -844,7 +844,7 @@ export default {
         doc.text(x+3, y+9.5, dat.varios.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+0.7
-        yy=y+11.5
+        yy=y+11.6
         let lin=yy
         cont=0
         fin=50
