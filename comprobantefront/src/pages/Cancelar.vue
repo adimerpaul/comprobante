@@ -228,7 +228,6 @@ export default {
         // return false;
         // this.pagos=[]
         res.data.forEach(r=>{
-
           this.pagos.push({
             nrotramite:r.nrotramite,
             nrocomprobante:r.nrocomprobante,
@@ -239,39 +238,6 @@ export default {
             ci:r.cliente.ci,
             total:r.total,
           })
-
-
-          // if (typeof r.cliente.paterno !== 'undefined') {
-          // if (r.hasOwnProperty('cliente')) {
-          //     console.log('si')
-          //   let paterno=r.cliente.paterno
-          //   let materno=r.cliente.materno
-          //   let nombre=r.cliente.nombre
-          //   let ci=r.cliente.ci
-          //   this.pagos.push({
-          //     nrotramite:r.nrotramite,
-          //     nrocomprobante:r.nrocomprobante,
-          //     cliente:paterno+' '+materno+' '+nombre,
-          //     // cliente:'',
-          //     cajero:r.cajero,
-          //     // ci:r.cliente.ci,
-          //     ci:ci,
-          //     total:r.total,
-          //   })
-          // }else{
-          //   console.log('no')
-          //   this.pagos.push({
-          //     nrotramite:'ANULADO',
-          //     nrocomprobante:r.nrocomprobante,
-          //     cliente:'ANULADO',
-          //     // cliente:'',
-          //     cajero:r.user.codigo,
-          //     // ci:r.cliente.ci,
-          //     ci:'ANULADO',
-          //     total:'0',
-          //   })
-          // }
-
         })
       })
         .catch(err=>{
