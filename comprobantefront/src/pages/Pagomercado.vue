@@ -799,7 +799,7 @@ export default {
         detalle:this.subitem.nombre.trim(),
         precio:this.subitem.monto,
         cantidad:this.subitem.cantidad,
-        monto:this.subitem.monto*this.subitem.cantidad
+        monto:Math.round(this.subitem.monto*this.subitem.cantidad)
       })
     },
     quitardetalle(item){
@@ -1140,7 +1140,7 @@ export default {
   },
   computed:{
     subtotal(){
-      return parseInt(this.subitem.monto)*parseInt(this.subitem.cantidad);
+      return Math.round(this.subitem.monto*this.subitem.cantidad)
     },
     total(){
       let s=0
