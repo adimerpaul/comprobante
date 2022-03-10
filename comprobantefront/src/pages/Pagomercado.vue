@@ -640,11 +640,11 @@ export default {
               yy+=0.6
               // console.log(r)
             })
-
+            doc.setFontSize(12);
             doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
             doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
             doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
-            doc.setFontSize(11);
+
             // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
             // doc.save("Comprobante.pdf");
 
@@ -677,7 +677,7 @@ export default {
 
               setTimeout(function(){
                 resolve("¡Éxito!"); // ¡Todo salió bien!
-              }, 250);
+              }, 500);
             });
             miPrimeraPromise.then((successMessage) => {
               // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
@@ -866,11 +866,11 @@ export default {
           yy+=0.6
           // console.log(r)
         })
-
+        doc.setFontSize(12);
         doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
         doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
         doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
-        doc.setFontSize(11);
+
         // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
         // doc.save("Comprobante.pdf");
 
@@ -903,7 +903,7 @@ export default {
 
           setTimeout(function(){
             resolve("¡Éxito!"); // ¡Todo salió bien!
-          }, 250);
+          }, 500);
         });
         miPrimeraPromise.then((successMessage) => {
           // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
@@ -977,10 +977,10 @@ export default {
           yy+=0.6
           // console.log(r)
         })
-
+        doc.setFontSize(12);
         doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
         doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
-        doc.setFontSize(11);
+
         // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
         // doc.save("Comprobante.pdf");
 
@@ -1013,7 +1013,7 @@ export default {
 
           setTimeout(function(){
             resolve("¡Éxito!"); // ¡Todo salió bien!
-          }, 250);
+          }, 500);
         });
         miPrimeraPromise.then((successMessage) => {
           // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
