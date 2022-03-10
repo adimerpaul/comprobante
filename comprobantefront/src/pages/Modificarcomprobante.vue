@@ -12,7 +12,7 @@
         </template>
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
-            <q-btn v-if="props.row.estado=='CREADO'" @click="modificar(props.row)" label="modificar" icon="edit" color="warning" size="xs"/>
+            <q-btn  @click="modificar(props.row)" label="modificar" icon="edit" color="warning" size="xs"/>
           </q-td>
         </template>
       </q-table>
