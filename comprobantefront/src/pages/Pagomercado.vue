@@ -616,11 +616,11 @@ export default {
             doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
             doc.text(x+3, y+9.5, dat.varios.toString());
             doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
-             xx=x+1.2
-             yy=x+9.7
-             cont=0
-             fin=50
-            doc.setFontSize(8);
+            xx=x+1.2
+            yy=x+9.7
+            cont=0
+            fin=50
+            doc.setFontSize(10);
             dat.detalles.forEach(r=>{
               doc.text(xx, yy, r.coditem.toString());
               doc.text(xx+2.5, yy, r.nombreitem.toString());
@@ -848,7 +848,7 @@ export default {
         let lin=yy
         cont=0
         fin=50
-        doc.setFontSize(8);
+        doc.setFontSize(10);
         dat.detalles.forEach(r=>{
           doc.text(xx, yy, r.coditem.toString());
           doc.text(xx+2.5, yy, r.nombreitem.toString());
