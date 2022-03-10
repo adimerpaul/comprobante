@@ -135,7 +135,7 @@ class AnuladoController extends Controller
         $nroprobante=$comprobante->nrocomprobante;
 
         $comprobante->estado='ANULADO';
-        $comprobante->cliente_id=1;
+//        $comprobante->cliente_id=1;
         $comprobante->cajero=$request->user()->codigo;
         $comprobante->cajero_id=$request->user()->id;
 //        $comprobante->nrocomprobante='';

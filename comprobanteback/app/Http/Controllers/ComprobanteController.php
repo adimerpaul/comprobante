@@ -327,7 +327,7 @@ class ComprobanteController extends Controller
                 'detalle'=>$row['detalle'],
                 'precio'=>$row['precio'],
                 'cantidad'=>$row['cantidad'],
-                'subtotal'=>$row['subtotal'],
+                'subtotal'=>$row['monto'],
                 'comprobante_id'=>$comprobante->id,
             ]);
         }
