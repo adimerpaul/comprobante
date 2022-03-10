@@ -55,14 +55,14 @@ class MercadoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id,Request $request)
+    public function show($fecha,Request $request)
     {
         return Comprobante::with('cliente')
             ->with('detalles')
             ->with('user')
-            ->whereDate('fechalimite','>=',now())
+//            ->whereDate('fechalimite','>=',now())
             ->where('unid_id',$request->user()->unid_id)
-            ->whereDate('fecha',now())
+            ->whereDate('fecha',$fecha)
             ->orderBy('id','desc')
             ->get();
     }

@@ -23,7 +23,10 @@
     <div class="col-12">
       <q-btn @click="reportecomprobantes" class="full-width" color="info" icon="print" label="Imprimir comprobantes usuario"/>
     </div>
-    <div class="col-12">
+    <div class="col-6">
+      <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
+    </div>
+    <div class="col-6">
       <q-btn @click="reportecomprobantestotales" class="full-width" color="warning" icon="warning" label="Imprimir comprobantes totales"/>
     </div>
   </div>
@@ -347,7 +350,7 @@ export default {
   methods:{
     reportecomprobantestotales(){
       this.$q.loading.show()
-      this.$axios.get(process.env.URL + '/mercado/1').then(res=>{
+      this.$axios.get(process.env.URL + '/mercado/'+this.fecha).then(res=>{
         // this.miscomprobantes=[]
         // res.data.forEach(r=>{
         //   let d=r
@@ -387,7 +390,7 @@ export default {
           // console.log(r)
           doc.text(1, y+3, r.nrocomprobante)
           doc.text(4, y+3, r.nrotramite)
-          doc.text(7, y+3, r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre)
+          doc.text(7, y+3, (r.cliente.paterno+'').substring(0,15)+' '+r.cliente.materno+' '+r.cliente.nombre)
           doc.text(13.5, y+3, r.cliente.ci)
           doc.text(16, y+3, r.total)
           sumtotal+=parseInt(r.total)
