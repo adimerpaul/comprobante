@@ -21,19 +21,6 @@
           </template>
         </q-select>
       </div>
-<!--      <div class="col-12 col-sm-6">-->
-<!--        <q-input-->
-<!--        outlined-->
-<!--        label="Nro Comprobante"-->
-<!--        v-model="nrocomprobante"-->
-<!--        type="number"-->
-<!--        lazy-rules-->
-<!--        :rules="[-->
-<!--          val=>val && val.length>0||'Porfavor llenar este campo',-->
-<!--          val => val >= $store.state.user.unid.inicio && val <= $store.state.user.unid.fin || 'Tiene que estar en el rango de '+$store.state.user.unid.inicio+'-'+$store.state.user.unid.fin-->
-<!--          ]"-->
-<!--        />-->
-<!--      </div>-->
       <div class="col-12 col-sm-3">
         <q-input
           outlined
@@ -143,6 +130,7 @@ export default {
         {name:'ci',label:'Carnet identidad', align:'left',field:'ci',sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
         {name:'cajero',label:'Cajero', align:'left',field:'cajero',sortable:true},
+        {name:'estado',label:'Observacion', align:'left',field:'estado',sortable:true},
       ],
       comprobantes:[],
       pagos:[],
@@ -170,7 +158,7 @@ export default {
         doc.text(7, 3, 'CONTRIBUYENTE')
         doc.text(13.5, 3, 'CI/RUN/RUC')
         doc.text(16, 3, 'MONTO BS.')
-        doc.text(18, 3, 'CAJERO')
+        doc.text(18, 3, 'OBSERVACION')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -190,7 +178,7 @@ export default {
         doc.text(7, y+3, r.cliente)
         doc.text(13.5, y+3, r.ci)
         doc.text(16, y+3, r.total)
-        doc.text(18, y+3, r.cajero )
+        doc.text(18, y+3, r.estado )
         if (y+3>25){
           doc.addPage();
           header(this.fecha)
@@ -230,6 +218,7 @@ export default {
         res.data.forEach(r=>{
           this.pagos.push({
             nrotramite:r.nrotramite,
+            estado:r.estado,
             nrocomprobante:r.nrocomprobante,
             cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
             //:'',
