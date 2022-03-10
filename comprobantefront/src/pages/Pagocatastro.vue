@@ -617,7 +617,7 @@ export default {
             doc.text(x+3, y+9.5, dat.varios.toString());
             doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
             xx=x+1.2
-            yy=y+10.7
+            yy=y+11.7
             let lin=yy
             cont=0
             fin=50
@@ -842,7 +842,7 @@ export default {
         doc.text(x+3, y+9.5, dat.varios.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+1.2
-        yy=y+10.7
+        yy=y+11.7
         let lin=yy
         cont=0
         fin=50
