@@ -826,25 +826,25 @@ export default {
         let xx=x
         let yy=y
         if(dat.cliente.direccion.toString().length<20)
-          doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
+          doc.text(x+9, y+8.3, dat.cliente.direccion.toString());
         else{
           while (dat.cliente.direccion.toString().length>=cont){
             // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
-            doc.text(xx+9.5, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+            doc.text(xx+9, yy+8.3, dat.cliente.direccion.toString().substring(cont,fin));
             cont+=20;
             fin+=20
             yy+=0.2;
           }
         }
         doc.setFontSize(11);
-        doc.text(x+14, y+8.7, dat.cliente.numcasa.toString());
+        doc.text(x+14, y+8.3, dat.cliente.numcasa.toString());
         // console.log(dat.cliente)
-        doc.text(x+15.6, y+8.7, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
-        doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
+        doc.text(x+15.6, y+8.3, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
+        doc.text(x+18, y+8.3, dat.cliente.telefono.toString());
         doc.text(x+3, y+9.5, dat.varios.toString());
         doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
-        xx=x+1.2
-        yy=x+9.7
+        xx=x+0.7
+        yy=y+9.5
         let lin=yy
         cont=0
         fin=50
