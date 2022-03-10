@@ -817,7 +817,7 @@ export default {
         // console.log(dat);
         doc.setFont("courier",'bold');
         doc.setFontSize(11);
-        var x=1,y=0;
+        var x=1,y=-3;
         doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
         doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
         doc.setFontSize(7);
@@ -842,7 +842,7 @@ export default {
         doc.text(x+15.6, y+8.7, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
         doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
         doc.text(x+3, y+9.5, dat.varios.toString());
-        doc.text(x+9.5, y+10, 'OR '+ dat.fecha.toString());
+        doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
         xx=x+1.2
         yy=x+9.7
         let lin=yy
