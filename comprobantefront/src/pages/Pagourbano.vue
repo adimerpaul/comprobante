@@ -405,7 +405,6 @@ export default {
               y=0
             }
           }
-
         })
         doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
         doc.text(18, y+4, sumtotal+'Bs')

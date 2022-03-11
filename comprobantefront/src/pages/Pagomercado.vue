@@ -387,22 +387,26 @@ export default {
         // let yy=y
         let y=0
         let sumtotal=0
+        let con=0
         this.miscomprobantestotales.forEach(r=>{
           // xx+=0.5
-          y+=0.5
-          // console.log(r)
-          doc.text(1, y+3, r.nrocomprobante)
-          doc.text(4, y+3, r.nrotramite)
-          doc.text(7, y+3, (r.cliente.paterno+'').substring(0,15)+' '+r.cliente.materno+' '+r.cliente.nombre)
-          doc.text(13.5, y+3, r.cliente.ci)
-          doc.text(16, y+3, r.total)
-          sumtotal+=parseInt(r.total)
-          doc.text(18, y+3, r.user.codigo )
-          // if (y+3>25){
-          //   doc.addPage();
-          //   header(this.fecha)
-          //   y=0
-          // }
+          if (r.nrocomprobante!=''){
+            y+=0.5
+            con++
+            doc.text(1, y+3, r.nrocomprobante)
+            doc.text(4, y+3, r.nrotramite)
+            doc.text(7, y+3, (r.cliente.paterno).substring(0,15)+' '+r.cliente.materno+' '+r.cliente.nombre)
+            doc.text(13.5, y+3, r.cliente.ci)
+            doc.text(16, y+3, r.total)
+            sumtotal+=parseInt(r.total)
+            doc.text(18, y+3, r.user.codigo )
+            if (con==40){
+              con=0
+              doc.addPage();
+              header(this.fecha)
+              y=0
+            }
+          }
         })
         doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
         doc.text(18, y+4, sumtotal+'Bs')
