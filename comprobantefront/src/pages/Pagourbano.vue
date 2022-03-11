@@ -1018,7 +1018,7 @@ export default {
           yy+=0.3
           doc.text(xx+2.5, yy, r.detalle.toString().substring(605,660));
         }
-        yy+=0.6
+        yy+=0.3
         // console.log(r)
       })
       doc.setFontSize(12);
