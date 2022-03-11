@@ -860,8 +860,9 @@ export default {
         if(texto.length<50)
           doc.text(xx+2.5, yy+0.3, texto);
         else{
+          console.log(texto)
           while (texto.length>=cont){
-            console.log(texto)
+
             doc.text(xx+2.5, yy+0.3, texto.substring(cont,fin));
             cont+=50;
             fin+=50
