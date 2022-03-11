@@ -846,7 +846,7 @@ export default {
       xx=x+0.7
       yy=y+11.7
       cont=0
-      fin=60
+      fin=55
       doc.setFontSize(10);
       dat.detalles.forEach(r=>{
 
@@ -855,17 +855,172 @@ export default {
         // doc.text(xx, yy, r.codsubitem.toString());
         doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
         //count=r.detalle.toString().length
-        //console.log(r.detalle.toString().length)
-        if(r.detalle.toString().length<60)
+        console.log(r.detalle.toString().length)
+        if(r.detalle.toString().length<55){
           doc.text(xx+2.5, yy+0.3, r.detalle.toString());
-        else{
-          while (r.detalle.toString().length>=cont){
-            console.log(r.detalle.toString())
-            doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(cont,fin));
-            cont+=60;
-            fin+=60
-            yy+=0.3;
-          }}
+        }
+        else if (r.detalle.toString().length<110){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          // while (r.detalle.toString().length>=cont){
+          //   console.log(r.detalle.toString())
+          //   doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(cont,fin));
+          //   cont+=55;
+          //   fin+=55
+          //   yy+=0.3;
+          // }
+        }else if (r.detalle.toString().length<165){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+        }else if (r.detalle.toString().length<220){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+        }else if (r.detalle.toString().length<275){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(220,275));
+        }else if (r.detalle.toString().length<330){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(220,275));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(275,330));
+        }else if (r.detalle.toString().length<385){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(220,275));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(275,330));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(330,385));
+        }else if (r.detalle.toString().length<440){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(220,275));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(275,330));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(330,385));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(385,440));
+        } else if (r.detalle.toString().length<495){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(220,275));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(275,330));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(330,385));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(385,440));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(440,495));
+        }else if (r.detalle.toString().length<550){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(220,275));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(275,330));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(330,385));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(385,440));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(440,495));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(495,550));
+        }else if (r.detalle.toString().length<605){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(220,275));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(275,330));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(330,385));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(385,440));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(440,495));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(495,550));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(550,605));
+        }else if (r.detalle.toString().length<660){
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(110,165));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(165,220));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(220,275));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(275,330));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(330,385));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(385,440));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(440,495));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(495,550));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(550,605));
+          yy+=0.3
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(605,660));
+        }
         yy+=0.6
         // console.log(r)
       })
