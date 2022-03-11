@@ -812,69 +812,67 @@ export default {
     quitardetalle(item){
       this.detalles.splice(item, 1)
     },
-    async reporte(dat) {
-      var doc = new jsPDF('p', 'cm', 'letter')
+    reporte(dat){
+      var doc = new jsPDF('p','cm','letter')
       // console.log(dat);
-      doc.setFont("courier", 'bold');
+      doc.setFont("courier",'bold');
       doc.setFontSize(11);
-      var x = 1, y = -3;
-      doc.text(x + 14.5, y + 5.1, 'TRAMITE N ' + dat.nrotramite.toString());
-      doc.text(x + 9.5, y + 7.5, dat.cliente.paterno.toString() + ' ' + dat.cliente.materno.toString() + ' ' + dat.cliente.nombre.toString());
+      var x=1,y=-3;
+      doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
+      doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
       doc.setFontSize(10);
-      let cont = 0
-      let fin = 22
-      let xx = x
-      let yy = y
-      if (dat.cliente.direccion.toString().length < 22)
-        doc.text(x + 9, y + 8.5, dat.cliente.direccion.toString());
-      else {
-        while (dat.cliente.direccion.toString().length >= cont) {
+      let cont=0
+      let fin=22
+      let xx=x
+      let yy=y
+      if(dat.cliente.direccion.toString().length<22)
+        doc.text(x+9, y+8.5, dat.cliente.direccion.toString());
+      else{
+        while (dat.cliente.direccion.toString().length>=cont){
           // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
-          doc.text(xx + 9, yy + 8.5, dat.cliente.direccion.toString().substring(cont, fin));
-          cont += 22;
-          fin += 22
-          yy += 0.3;
+          doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+          cont+=22;
+          fin+=22
+          yy+=0.3;
         }
       }
       doc.setFontSize(11);
-      doc.text(x + 14, y + 8.5, dat.cliente.numcasa.toString());
+      doc.text(x+14, y+8.5, dat.cliente.numcasa.toString());
       // console.log(dat.cliente)
-      doc.text(x + 15.6, y + 8.5, dat.cliente.ci.toString() + dat.cliente.expedido.toString() + '  ');
-      doc.text(x + 18, y + 8.5, dat.cliente.telefono.toString());
-      doc.text(x + 3, y + 10.5, dat.padron.toString());
-      doc.text(x + 9.5, y + 10.5, 'OR ' + dat.fecha.toString());
-      xx = x + 0.7
-      yy = y + 11.7
-      cont = 0
-      fin = 50
+      doc.text(x+15.6, y+8.5, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
+      doc.text(x+18, y+8.5, dat.cliente.telefono.toString());
+      doc.text(x+3, y+10.5, dat.padron.toString());
+      doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
+      xx=x+0.7
+      yy=y+11.7
+      cont=0
+      fin=50
       doc.setFontSize(10);
-      for (const r of dat.detalles) {
+      dat.detalles.forEach(r=>{
 
         doc.text(xx, yy, r.coditem.toString());
-        doc.text(xx + 2.5, yy, r.nombreitem.toString());
+        doc.text(xx+2.5, yy, r.nombreitem.toString());
         // doc.text(xx, yy, r.codsubitem.toString());
-        doc.text(xx + 15.5, yy, r.subtotal.toString() + ' Bs');
+        doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
         //count=r.detalle.toString().length
-        // console.log(r.detalle.toString())
-        let texto = r.detalle.toString()
-        if (texto.length < 50)
-          doc.text(xx + 2.5, yy + 0.3, texto);
-        else {
-          console.log(texto)
-          while (texto.length >= cont) {
-            await doc.text(xx + 2.5, yy + 0.3, texto.substring(cont, fin));
-            cont += 50;
-            fin += 50
-            yy += 0.3;
-          }
-        }
-        yy += 0.6
+        //console.log(r.detalle.toString().length)
+        if(r.detalle.toString().length<50)
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString());
+        else{
+          while (r.detalle.toString().length>=cont){
+            console.log(r.detalle.toString())
+            doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(cont,fin));
+            cont+=50;
+            fin+=50
+            yy+=0.3;
+          }}
+        yy+=0.6
         // console.log(r)
-      }
+      })
       doc.setFontSize(12);
-      doc.text(x + 16.5, y + 15.5, dat.total.toString() + ' Bs');
-      doc.text(x + 16.5, y + 20, dat.total.toString() + ' Bs');
-      doc.text(x + 2, y + 17.5, dat.literal.toString() + ' 00/100Bs');
+      doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
+      doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
+      doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
 
       // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
       // doc.save("Comprobante.pdf");
@@ -901,12 +899,12 @@ export default {
           text: dat.controlinterno.toString(),
           width: 128,
           height: 128,
-          colorDark: "#000000",
-          colorLight: "#ffffff",
-          correctLevel: QRCode.CorrectLevel.H
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
         });
 
-        setTimeout(function () {
+        setTimeout(function(){
           resolve("¡Éxito!"); // ¡Todo salió bien!
         }, 500);
       });
@@ -916,7 +914,7 @@ export default {
         // console.log("¡Sí! " + successMessage);
         let base64Image = $('#qr_code img').attr('src');
         // console.log(base64Image);
-        doc.addImage(base64Image, 'png', x + 9, y + 20, 2, 2);
+        doc.addImage(base64Image, 'png', x+9, y+20, 2, 2);
         window.open(doc.output('bloburl'), '_blank');
       });
     },
