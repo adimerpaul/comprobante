@@ -849,17 +849,15 @@ export default {
       fin=55
       doc.setFontSize(10);
       dat.detalles.forEach(r=>{
-
         doc.text(xx, yy, r.coditem.toString());
         doc.text(xx+2.5, yy, r.nombreitem.toString());
         // doc.text(xx, yy, r.codsubitem.toString());
         doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
         //count=r.detalle.toString().length
-        console.log(r.detalle.toString().length)
+        // console.log(r.detalle.toString().length)
         if(r.detalle.toString().length<55){
           doc.text(xx+2.5, yy+0.3, r.detalle.toString());
-        }
-        else if (r.detalle.toString().length<110){
+        }else if (r.detalle.toString().length<110){
           doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(0,55));
           yy+=0.3
           doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(55,110));
