@@ -845,17 +845,17 @@ export default {
       doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
       xx=x+0.7
       yy=y+11.7
-      let lin=yy
       cont=0
       fin=50
       doc.setFontSize(10);
       dat.detalles.forEach(r=>{
-        console.log(r.detalle)
+
         doc.text(xx, yy, r.coditem.toString());
         doc.text(xx+2.5, yy, r.nombreitem.toString());
         // doc.text(xx, yy, r.codsubitem.toString());
         doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
         //count=r.detalle.toString().length
+        console.log(r.detalle.toString().length)
         if(r.detalle.toString().length<50)
           doc.text(xx+2.5, yy+0.3, r.detalle.toString());
         else{
