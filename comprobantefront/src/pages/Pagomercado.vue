@@ -855,13 +855,14 @@ export default {
         // doc.text(xx, yy, r.codsubitem.toString());
         doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
         //count=r.detalle.toString().length
-        console.log(r.detalle.toString())
-        if(r.detalle.toString().length<50)
-          doc.text(xx+2.5, yy+0.3, r.detalle.toString());
+        // console.log(r.detalle.toString())
+        // let texto=r.detalle.toString()
+        if(texto.length<50)
+          doc.text(xx+2.5, yy+0.3, texto);
         else{
-          while (r.detalle.toString().length>=cont){
-            // console.log(r.detalle.toString())
-            doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(cont,fin));
+          while (texto.length>=cont){
+            console.log(texto)
+            doc.text(xx+2.5, yy+0.3, texto.substring(cont,fin));
             cont+=50;
             fin+=50
             yy+=0.3;
