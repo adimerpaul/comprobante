@@ -846,7 +846,7 @@ export default {
       xx=x+0.7
       yy=y+11.7
       cont=0
-      fin=50
+      fin=60
       doc.setFontSize(10);
       dat.detalles.forEach(r=>{
 
@@ -856,14 +856,14 @@ export default {
         doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
         //count=r.detalle.toString().length
         //console.log(r.detalle.toString().length)
-        if(r.detalle.toString().length<50)
+        if(r.detalle.toString().length<60)
           doc.text(xx+2.5, yy+0.3, r.detalle.toString());
         else{
           while (r.detalle.toString().length>=cont){
             console.log(r.detalle.toString())
             doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(cont,fin));
-            cont+=50;
-            fin+=50
+            cont+=60;
+            fin+=60
             yy+=0.3;
           }}
         yy+=0.6
