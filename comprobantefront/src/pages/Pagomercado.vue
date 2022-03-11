@@ -860,6 +860,7 @@ export default {
           doc.text(xx+2.5, yy+0.3, r.detalle.toString());
         else{
           while (r.detalle.toString().length>=cont){
+            console.log(r.detalle.toString())
             doc.text(xx+2.5, yy+0.3, r.detalle.toString().substring(cont,fin));
             cont+=50;
             fin+=50
