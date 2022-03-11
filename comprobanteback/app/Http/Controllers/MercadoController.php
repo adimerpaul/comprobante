@@ -63,7 +63,7 @@ class MercadoController extends Controller
 //            ->whereDate('fechalimite','>=',now())
             ->where('unid_id',$request->user()->unid_id)
             ->whereDate('fecha',$fecha)
-            ->orderBy('id','desc')
+            ->orderBy('nrocomprobante')
             ->get();
     }
 
