@@ -407,8 +407,8 @@ export default {
           }
 
         })
-        doc.text(12, y+3, 'TOTAL RECAUDADCION: ')
-        doc.text(18, y+3, sumtotal+'Bs')
+        doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
+        doc.text(18, y+4, sumtotal+'Bs')
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');
         // console.log(res.data)
