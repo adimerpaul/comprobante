@@ -855,7 +855,7 @@ export default {
         // doc.text(xx, yy, r.codsubitem.toString());
         doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
         //count=r.detalle.toString().length
-        console.log(r.detalle.toString().length)
+        // console.log(r.detalle.toString().length)
         if(r.detalle.toString().length<50)
           doc.text(xx+2.5, yy+0.3, r.detalle.toString());
         else{
