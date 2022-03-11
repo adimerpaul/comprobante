@@ -38,7 +38,8 @@ class AnuladoController extends Controller
         return Comprobante::with('cliente')
             ->with('detalles')
             ->with('unid')
-            ->whereDate('fechalimite','>=',now())
+//            ->whereDate('fechalimite','>=',now())
+            ->whereDate('fecha',now())
             ->where('unid_id',$request->user()->unid_id)
             ->where('impreso_id',$request->user()->id)
             ->where('estado','IMPRESO')
@@ -135,23 +136,26 @@ class AnuladoController extends Controller
         $nroprobante=$comprobante->nrocomprobante;
 
         $comprobante->estado='ANULADO';
-//        $comprobante->cliente_id=1;
+        $comprobante->cliente_id=1;
         $comprobante->cajero=$request->user()->codigo;
         $comprobante->cajero_id=$request->user()->id;
 //        $comprobante->nrocomprobante='';
         $comprobante->total=0;
 //        $comprobante->controlinterno='';
         $comprobante->save();
+        $detalles=Detalle::where('comprobante_id',$request->comprobante_id)->get();
+        foreach ($detalles as $detalle){
+            Detalle::where('id',$detalle['id'])->update(['precio'=>0,'subtotal'=>0]);
+        }
 
-
-        Anulado::create([
-            'nrocomprobante'=>$nroprobante,
-            'fecha'=>date('Y-m-d'),
-            'hora'=>date('H:i:s'),
-            'comprobante_id'=>$comprobante->id,
-            'unid_id'=>$request->user()->unid_id,
-            'user_id'=>$request->user()->id,
-        ]);
+//        Anulado::create([
+//            'nrocomprobante'=>$nroprobante,
+//            'fecha'=>date('Y-m-d'),
+//            'hora'=>date('H:i:s'),
+//            'comprobante_id'=>$comprobante->id,
+//            'unid_id'=>$request->user()->unid_id,
+//            'user_id'=>$request->user()->id,
+//        ]);
         echo 1;
     }
 
@@ -163,11 +167,20 @@ class AnuladoController extends Controller
      */
     public function show($fecha,Request $request)
     {
-        return Anulado::with('user')
+//        return Anulado::with('user')
+//            ->with('unid')
+//            ->with('comprobante')
+////            ->where('user_id',$request->user()->id)
+//            ->where('unid_id',$request->user()->unid_id)
+//            ->whereDate('fecha',$fecha)
+//            ->get();
+
+        return Comprobante::with('user')
             ->with('unid')
-            ->with('comprobante')
+            ->with('cliente')
 //            ->where('user_id',$request->user()->id)
             ->where('unid_id',$request->user()->unid_id)
+            ->where('estado','ANULADO')
             ->whereDate('fecha',$fecha)
             ->get();
     }

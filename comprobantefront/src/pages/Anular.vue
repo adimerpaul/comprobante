@@ -22,26 +22,25 @@
 <!--          </tr>-->
 <!--          </tbody>-->
 <!--        </table>-->
-        <q-table :columns="columcomprobantes" title="Comprobantes impresos" :data="comprobantes" >
+        <q-table dense :columns="columcomprobantes" title="Comprobantes impresos" :data="comprobantes" >
           <template v-slot:body-cell-opcion="props">
             <q-td :props="props">
-              <q-btn color="red" @click="anular(props)" label="Anular" size="md" icon="refresh"/>
+              <q-btn  color="red" @click="anular(props)" label="Anular" size="xs" icon="refresh"/>
             </q-td>
           </template>
         </q-table>
       </div>
       <div class="col-12 col-md-6 q-pa-xs">
-        <q-input outlined filled type="date" v-model="fecha" label="Fecha de consulta"/>
+        <q-input outlined dense type="date" v-model="fecha" label="Fecha de consulta"/>
       </div>
       <div class="col-12 col-md-6 q-pa-xs" >
-        <q-btn label="Consultar" @click="misanulados" icon="send" color="warning" class="full-width full-height "/>
+        <q-btn label="Consultar"  @click="misanulados" icon="send" color="warning" class="full-width full-height "/>
       </div>
       <div class="col-12 q-mt-ms">
-        <q-table title="Historial Anulados" :columns="columns" :data="anulados"/>
+        <q-table title="Historial Anulados" :columns="columns" :data="anulados" dense/>
       </div>
       <div class="col-12">
         <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>
-
       </div>
     </div>
   </q-page>
@@ -154,12 +153,12 @@ export default {
           this.anulados.push({
             // label:r.padron+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
             id:r.id,
-            fecha:r.fecha+' '+r.hora,
+            fecha:r.fecha,
             // unidad:r.unid.nombre,
             nrocomprobante:r.nrocomprobante,
-            nrotramite:r.comprobante.nrotramite,
+            nrotramite:r.nrotramite,
             // detalles:r.detalles,
-            cliente:r.comprobante.cliente.paterno+' '+r.comprobante.cliente.materno+' '+r.comprobante.cliente.nombre,
+            cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
             unidad:r.unid.nombre,
             usuario:r.user.name,
             // total:r.total,
