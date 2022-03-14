@@ -399,7 +399,7 @@ export default {
             doc.text(13.5, y+3, r.cliente.ci)
             doc.text(16, y+3, r.total)
             sumtotal+=parseInt(r.total)
-            console.log(r.total)
+            // console.log(r.total)
             doc.text(18, y+3, r.user.codigo )
             if (con==40){
               con=0
@@ -410,7 +410,7 @@ export default {
           }
         })
         doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
-        doc.text(18, y+4, sumtotal+'Bs')
+        doc.text(18, y+4, sumtotal+ ' Bs')
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');
         // console.log(res.data)
