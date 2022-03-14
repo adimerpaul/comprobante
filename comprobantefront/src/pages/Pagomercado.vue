@@ -350,9 +350,9 @@ export default {
   methods:{
     reportecomprobantestotales(){
       this.$q.loading.show()
-      console.log('a')
+      // console.log('a')
       this.$axios.get(process.env.URL + '/mercado/'+this.fecha).then(res=>{
-        console.log('aaa')
+        // console.log('aaa')
         console.log(res.data)
         // this.miscomprobantes=[]
         // res.data.forEach(r=>{
@@ -395,10 +395,11 @@ export default {
             con++
             doc.text(1, y+3, r.nrocomprobante)
             doc.text(4, y+3, r.nrotramite)
-            doc.text(7, y+3, (r.cliente.paterno).substring(0,15)+' '+r.cliente.materno+' '+r.cliente.nombre)
+            doc.text(7, y+3, (r.cliente.paterno).substring(0,15)+' '+(r.cliente.materno).substring(0,15)+' '+(r.cliente.nombre).substring(0,15))
             doc.text(13.5, y+3, r.cliente.ci)
             doc.text(16, y+3, r.total)
             sumtotal+=parseInt(r.total)
+            console.log(r.total)
             doc.text(18, y+3, r.user.codigo )
             if (con==40){
               con=0
