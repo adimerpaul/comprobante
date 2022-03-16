@@ -280,6 +280,7 @@ class ComprobanteController extends Controller
             $cliente->numcasa=strtoupper($request->numcasa==null?'':$request->numcasa);
             $cliente->save();
         }
+        $cliente=Cliente::where('ci',$request->ci)->firstOrFail();
 //        return $cliente;
         $formatter = new NumeroALetras();
         $literal= $formatter->toWords($request->total);
@@ -314,7 +315,11 @@ class ComprobanteController extends Controller
             'cajero'=>'',
             'user_id'=>$request->user()->id,
             'cliente_id'=>$cliente->id,
-            'item'=>$item
+            'item'=>$item,
+            'ci'=>$cliente->ci,
+            'paterno'=>$cliente->paterno,
+            'materno'=>$cliente->materno,
+            'nombre'=>$cliente->nombre,
         ]);
 
         foreach ($request->data as $row){

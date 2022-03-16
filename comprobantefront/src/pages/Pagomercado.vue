@@ -718,7 +718,7 @@ export default {
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r
-          d.contribuyente=(r.cliente.paterno+'').substring(0,50)+' '+r.cliente.materno+' '+r.cliente.nombre
+          d.contribuyente=(r.paterno+'').substring(0,50)+' '+r.materno+' '+r.nombre
           this.miscomprobantes.push(d)
         })
         this.$q.loading.hide()
@@ -1223,10 +1223,10 @@ export default {
         vm.$refs.nrocomprobanteinput.focus()
       }, 20)
       // this.detalle = this.micomprobante.cliente.detalle
-      this.ci = this.micomprobante.cliente.ci
-      this.paterno = this.micomprobante.cliente.paterno
-      this.materno = this.micomprobante.cliente.materno
-      this.nombre = this.micomprobante.cliente.nombre
+      this.ci = this.micomprobante.ci
+      this.paterno = this.micomprobante.paterno
+      this.materno = this.micomprobante.materno
+      this.nombre = this.micomprobante.nombre
       this.padron = this.micomprobante.cliente.padron
       this.expedido = this.micomprobante.cliente.expedido
       this.direccion = this.micomprobante.cliente.direccion

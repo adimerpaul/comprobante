@@ -85,7 +85,7 @@
               <div class="text-subtitle2">TIPO</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input   dense outlined v-model="padron" />
+              <q-input   dense outlined v-model="tipocatastro" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">ITEM</div>
@@ -298,6 +298,7 @@ export default {
       comprobante:{},
       filter:'',
       items:[],
+      tipocatastro:'',
       item:'',
       subitems:[],
       subitem:{monto:0,cantidad:0,label:''},
@@ -589,123 +590,7 @@ export default {
             this.dialogimprimir=false
             // this.ultimoscomprobante()
             let dat=res.data[0];
-            var doc = new jsPDF('p','cm','letter')
-            // console.log(dat);
-            doc.setFont("courier",'bold');
-            doc.setFontSize(11);
-            var x=1,y=-2;
-            doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
-            doc.text(x+16.5, y+6, dat.cliente.padron.toString());
-            doc.setFontSize(7);
-            let cont=0
-            let fin=65
-            let xx=x
-            let yy=y
-            if(dat.cliente.paterno.toString().length<65)
-              doc.text(xx+9, yy+7, dat.cliente.paterno.toString());
-            else{
-              while (dat.cliente.paterno.toString().length>=cont){
-                // doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
-                doc.text(xx+9, yy+7, dat.cliente.paterno.toString().substring(cont,fin));
-                cont+=65;
-                fin+=65
-                yy+=0.2;
-              }
-            }
-            cont=0
-            fin=20
-            xx=x
-            yy=y
-
-            if(dat.cliente.direccion.toString().length<20)
-              doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
-            else{
-              while (dat.cliente.direccion.toString().length>=cont){
-                // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
-                doc.text(xx+9.5, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
-                cont+=20;
-                fin+=20
-                yy+=0.2;
-              }
-            }
-            doc.setFontSize(11);
-            doc.text(x+14, y+8.7, dat.cliente.numcasa.toString());
-            // console.log(dat.cliente)
-            doc.text(x+15.6, y+8.7, dat.cliente.ci.toString());
-            doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
-            doc.text(x+3, y+9.5, dat.varios.toString());
-            doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
-            xx=x+1.2
-            yy=y+11.7
-            cont=0
-            fin=50
-            doc.setFontSize(10);
-            dat.detalles.forEach(r=>{
-              doc.text(xx, yy, r.coditem.toString());
-              doc.text(xx+2.5, yy, r.nombreitem.toString());
-              // doc.text(xx, yy, r.codsubitem.toString());
-              doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
-              //count=r.detalle.toString().length
-              if(r.detalle.toString().length<50)
-                doc.text(xx+2.5, yy+0.3, r.detalle.toString());
-              else{
-                while (r.detalle.toString().length>=cont){
-                  doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
-                  cont+=50;
-                  fin+=50
-                  yy+=0.3;
-                }
-              }
-              yy+=0.6
-              // console.log(r)
-            })
-            doc.setFontSize(12);
-            doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
-            doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
-
-            // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
-            // doc.save("Comprobante.pdf");
-
-            // var qrcode = await new QRCode(document.getElementById("qr_code"), {
-            //   text: "https://cravecookie.com/",
-            //   width: 128,
-            //   height: 128,
-            //   colorDark : "#000000",
-            //   colorLight : "#ffffff",
-            //   correctLevel : QRCode.CorrectLevel.H
-            // });
-            // let base64Image =  await $('#qr_code img').attr('src');
-            // await  console.log(base64Image);
-            //
-            // await doc.addImage(base64Image, 'png', 0, 0, 2, 2);
-            //
-            // await  window.open(doc.output('bloburl'), '_blank');
-            let miPrimeraPromise = new Promise((resolve, reject) => {
-              // Llamamos a resolve(...) cuando lo que estabamos haciendo finaliza con éxito, y reject(...) cuando falla.
-              // En este ejemplo, usamos setTimeout(...) para simular código asíncrono.
-              // En la vida real, probablemente uses algo como XHR o una API HTML5.
-              var qrcode = new QRCode(document.getElementById("qr_code"), {
-                text: dat.controlinterno.toString(),
-                width: 128,
-                height: 128,
-                colorDark : "#000000",
-                colorLight : "#ffffff",
-                correctLevel : QRCode.CorrectLevel.H
-              });
-
-              setTimeout(function(){
-                resolve("¡Éxito!"); // ¡Todo salió bien!
-              }, 500);
-            });
-            miPrimeraPromise.then((successMessage) => {
-              // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
-              // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
-              // console.log("¡Sí! " + successMessage);
-              let base64Image = $('#qr_code img').attr('src');
-              // console.log(base64Image);
-              doc.addImage(base64Image, 'png', x+9, y+20, 2, 2);
-              window.open(doc.output('bloburl'), '_blank');
-            });
+            this.reporte(dat)
           }).catch(err=>{
           console.error(err);
           this.$q.notify({
@@ -724,11 +609,134 @@ export default {
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r
-          d.contribuyente=(r.cliente.paterno+'').substr(0,50) +' '+r.cliente.materno+' '+r.cliente.nombre
+          d.contribuyente=(r.paterno+'').substr(0,50) +' '+r.materno+' '+r.nombre
           this.miscomprobantes.push(d)
         })
         this.$q.loading.hide()
       })
+    },
+    reporte(dat){
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier",'bold');
+      doc.setFontSize(11);
+      var x=1,y=-2;
+      doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
+      // console.log(dat.tipocatastro)
+      if (dat.tipocatastro!=null){
+        doc.text(x+16.5, y+6, dat.tipocatastro.toString());
+      }
+
+      doc.setFontSize(7);
+      let cont=0
+      let fin=65
+      let xx=x
+      let yy=y
+      if(dat.cliente.paterno.toString().length<65)
+        doc.text(xx+9, yy+7, dat.cliente.paterno.toString());
+      else{
+        while (dat.cliente.paterno.toString().length>=cont){
+          // doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+          doc.text(xx+9, yy+7, dat.cliente.paterno.toString().substring(cont,fin));
+          cont+=65;
+          fin+=65
+          yy+=0.2;
+        }
+      }
+      cont=0
+      fin=20
+      xx=x
+      yy=y
+
+      if(dat.cliente.direccion.toString().length<20)
+        doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
+      else{
+        while (dat.cliente.direccion.toString().length>=cont){
+          // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
+          doc.text(xx+9.5, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+          cont+=20;
+          fin+=20
+          yy+=0.2;
+        }
+      }
+      doc.setFontSize(11);
+      doc.text(x+14, y+8.7, dat.cliente.numcasa.toString());
+      // console.log(dat.cliente)
+      doc.text(x+15.6, y+8.7, dat.cliente.ci.toString());
+      doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
+      doc.text(x+3, y+9.5, dat.varios.toString());
+      doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
+      xx=x+1.2
+      yy=y+11.7
+      cont=0
+      fin=50
+      doc.setFontSize(10);
+      dat.detalles.forEach(r=>{
+        doc.text(xx, yy, r.coditem.toString());
+        doc.text(xx+2.5, yy, r.nombreitem.toString());
+        // doc.text(xx, yy, r.codsubitem.toString());
+        doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
+        //count=r.detalle.toString().length
+        if(r.detalle.toString().length<50)
+          doc.text(xx+2.5, yy+0.3, r.detalle.toString());
+        else{
+          while (r.detalle.toString().length>=cont){
+            doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
+            cont+=50;
+            fin+=50
+            yy+=0.3;
+          }
+        }
+        yy+=0.6
+        // console.log(r)
+      })
+      doc.setFontSize(12);
+      doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
+      doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
+
+      // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
+      // doc.save("Comprobante.pdf");
+
+      // var qrcode = await new QRCode(document.getElementById("qr_code"), {
+      //   text: "https://cravecookie.com/",
+      //   width: 128,
+      //   height: 128,
+      //   colorDark : "#000000",
+      //   colorLight : "#ffffff",
+      //   correctLevel : QRCode.CorrectLevel.H
+      // });
+      // let base64Image =  await $('#qr_code img').attr('src');
+      // await  console.log(base64Image);
+      //
+      // await doc.addImage(base64Image, 'png', 0, 0, 2, 2);
+      //
+      // await  window.open(doc.output('bloburl'), '_blank');
+      let miPrimeraPromise = new Promise((resolve, reject) => {
+        // Llamamos a resolve(...) cuando lo que estabamos haciendo finaliza con éxito, y reject(...) cuando falla.
+        // En este ejemplo, usamos setTimeout(...) para simular código asíncrono.
+        // En la vida real, probablemente uses algo como XHR o una API HTML5.
+        var qrcode = new QRCode(document.getElementById("qr_code"), {
+          text: dat.controlinterno.toString(),
+          width: 128,
+          height: 128,
+          colorDark : "#000000",
+          colorLight : "#ffffff",
+          correctLevel : QRCode.CorrectLevel.H
+        });
+
+        setTimeout(function(){
+          resolve("¡Éxito!"); // ¡Todo salió bien!
+        }, 500);
+      });
+      miPrimeraPromise.then((successMessage) => {
+        // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
+        // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
+        // console.log("¡Sí! " + successMessage);
+        let base64Image = $('#qr_code img').attr('src');
+        // console.log(base64Image);
+        doc.addImage(base64Image, 'png', x+9, y+20, 2, 2);
+        window.open(doc.output('bloburl'), '_blank');
+      });
     },
     crearcomprobante(){
       this.$q.dialog({
@@ -740,7 +748,7 @@ export default {
         this.detalles.forEach(r => {
           r.subtotal = r.precio * r.cantidad
         })
-        this.$axios.post(process.env.URL + '/comprobante', {
+        this.$axios.post(process.env.URL + '/catastro', {
           nrotramite: this.nrotramite,
           padron: this.padron,
           total: this.total,
@@ -752,6 +760,8 @@ export default {
           direccion: this.direccion,
           numcasa: this.numcasa,
           data: this.detalles,
+          tipocatastro: this.tipocatastro,
+          codcatastral: '',
         }).then((res) => {
           // console.log(res.data)
           // return false
@@ -830,123 +840,124 @@ export default {
         // this.reimprimir=res.data
         this.$q.loading.hide()
         let dat=res.data[0];
-        var doc = new jsPDF('p','cm','letter')
-        // console.log(dat);
-        doc.setFont("courier",'bold');
-        doc.setFontSize(11);
-        var x=1,y=-2;
-        doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
-        doc.text(x+16.5, y+6, dat.cliente.padron.toString());
-        doc.setFontSize(7);
-        let cont=0
-        let fin=65
-        let xx=x
-        let yy=y
-        if(dat.cliente.paterno.toString().length<65)
-          doc.text(xx+9, yy+7, dat.cliente.paterno.toString());
-        else{
-          while (dat.cliente.paterno.toString().length>=cont){
-            // doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
-            doc.text(xx+9, yy+7, dat.cliente.paterno.toString().substring(cont,fin));
-            cont+=65;
-            fin+=65
-            yy+=0.2;
-          }
-        }
-        cont=0
-        fin=20
-        xx=x
-        yy=y
-
-        if(dat.cliente.direccion.toString().length<20)
-          doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
-        else{
-          while (dat.cliente.direccion.toString().length>=cont){
-            // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
-            doc.text(xx+9.5, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
-            cont+=20;
-            fin+=20
-            yy+=0.2;
-          }
-        }
-        doc.setFontSize(11);
-        doc.text(x+14, y+8.7, dat.cliente.numcasa.toString());
-        // console.log(dat.cliente)
-        doc.text(x+15.6, y+8.7, dat.cliente.ci.toString());
-        doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
-        doc.text(x+3, y+9.5, dat.varios.toString());
-        doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
-        xx=x+1.2
-        yy=y+11.7
-        cont=0
-        fin=50
-        doc.setFontSize(10);
-        dat.detalles.forEach(r=>{
-          doc.text(xx, yy, r.coditem.toString());
-          doc.text(xx+2.5, yy, r.nombreitem.toString());
-          // doc.text(xx, yy, r.codsubitem.toString());
-          doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
-          //count=r.detalle.toString().length
-          if(r.detalle.toString().length<50)
-            doc.text(xx+2.5, yy+0.3, r.detalle.toString());
-          else{
-            while (r.detalle.toString().length>=cont){
-              doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
-              cont+=50;
-              fin+=50
-              yy+=0.3;
-            }
-          }
-          yy+=0.6
-          // console.log(r)
-        })
-        doc.setFontSize(12);
-        doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
-        doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
-
-        // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
-        // doc.save("Comprobante.pdf");
-
-        // var qrcode = await new QRCode(document.getElementById("qr_code"), {
-        //   text: "https://cravecookie.com/",
-        //   width: 128,
-        //   height: 128,
-        //   colorDark : "#000000",
-        //   colorLight : "#ffffff",
-        //   correctLevel : QRCode.CorrectLevel.H
+        this.reporte(dat)
+        // var doc = new jsPDF('p','cm','letter')
+        // // console.log(dat);
+        // doc.setFont("courier",'bold');
+        // doc.setFontSize(11);
+        // var x=1,y=-2;
+        // doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
+        // doc.text(x+16.5, y+6, dat.cliente.padron.toString());
+        // doc.setFontSize(7);
+        // let cont=0
+        // let fin=65
+        // let xx=x
+        // let yy=y
+        // if(dat.cliente.paterno.toString().length<65)
+        //   doc.text(xx+9, yy+7, dat.cliente.paterno.toString());
+        // else{
+        //   while (dat.cliente.paterno.toString().length>=cont){
+        //     // doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+        //     doc.text(xx+9, yy+7, dat.cliente.paterno.toString().substring(cont,fin));
+        //     cont+=65;
+        //     fin+=65
+        //     yy+=0.2;
+        //   }
+        // }
+        // cont=0
+        // fin=20
+        // xx=x
+        // yy=y
+        //
+        // if(dat.cliente.direccion.toString().length<20)
+        //   doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
+        // else{
+        //   while (dat.cliente.direccion.toString().length>=cont){
+        //     // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
+        //     doc.text(xx+9.5, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
+        //     cont+=20;
+        //     fin+=20
+        //     yy+=0.2;
+        //   }
+        // }
+        // doc.setFontSize(11);
+        // doc.text(x+14, y+8.7, dat.cliente.numcasa.toString());
+        // // console.log(dat.cliente)
+        // doc.text(x+15.6, y+8.7, dat.cliente.ci.toString());
+        // doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
+        // doc.text(x+3, y+9.5, dat.varios.toString());
+        // doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
+        // xx=x+1.2
+        // yy=y+11.7
+        // cont=0
+        // fin=50
+        // doc.setFontSize(10);
+        // dat.detalles.forEach(r=>{
+        //   doc.text(xx, yy, r.coditem.toString());
+        //   doc.text(xx+2.5, yy, r.nombreitem.toString());
+        //   // doc.text(xx, yy, r.codsubitem.toString());
+        //   doc.text(xx+15.5, yy, r.subtotal.toString()+' Bs');
+        //   //count=r.detalle.toString().length
+        //   if(r.detalle.toString().length<50)
+        //     doc.text(xx+2.5, yy+0.3, r.detalle.toString());
+        //   else{
+        //     while (r.detalle.toString().length>=cont){
+        //       doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
+        //       cont+=50;
+        //       fin+=50
+        //       yy+=0.3;
+        //     }
+        //   }
+        //   yy+=0.6
+        //   // console.log(r)
+        // })
+        // doc.setFontSize(12);
+        // doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
+        // doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
+        //
+        // // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
+        // // doc.save("Comprobante.pdf");
+        //
+        // // var qrcode = await new QRCode(document.getElementById("qr_code"), {
+        // //   text: "https://cravecookie.com/",
+        // //   width: 128,
+        // //   height: 128,
+        // //   colorDark : "#000000",
+        // //   colorLight : "#ffffff",
+        // //   correctLevel : QRCode.CorrectLevel.H
+        // // });
+        // // let base64Image =  await $('#qr_code img').attr('src');
+        // // await  console.log(base64Image);
+        // //
+        // // await doc.addImage(base64Image, 'png', 0, 0, 2, 2);
+        // //
+        // // await  window.open(doc.output('bloburl'), '_blank');
+        // let miPrimeraPromise = new Promise((resolve, reject) => {
+        //   // Llamamos a resolve(...) cuando lo que estabamos haciendo finaliza con éxito, y reject(...) cuando falla.
+        //   // En este ejemplo, usamos setTimeout(...) para simular código asíncrono.
+        //   // En la vida real, probablemente uses algo como XHR o una API HTML5.
+        //   var qrcode = new QRCode(document.getElementById("qr_code"), {
+        //     text: dat.controlinterno.toString(),
+        //     width: 128,
+        //     height: 128,
+        //     colorDark : "#000000",
+        //     colorLight : "#ffffff",
+        //     correctLevel : QRCode.CorrectLevel.H
+        //   });
+        //
+        //   setTimeout(function(){
+        //     resolve("¡Éxito!"); // ¡Todo salió bien!
+        //   }, 500);
         // });
-        // let base64Image =  await $('#qr_code img').attr('src');
-        // await  console.log(base64Image);
-        //
-        // await doc.addImage(base64Image, 'png', 0, 0, 2, 2);
-        //
-        // await  window.open(doc.output('bloburl'), '_blank');
-        let miPrimeraPromise = new Promise((resolve, reject) => {
-          // Llamamos a resolve(...) cuando lo que estabamos haciendo finaliza con éxito, y reject(...) cuando falla.
-          // En este ejemplo, usamos setTimeout(...) para simular código asíncrono.
-          // En la vida real, probablemente uses algo como XHR o una API HTML5.
-          var qrcode = new QRCode(document.getElementById("qr_code"), {
-            text: dat.controlinterno.toString(),
-            width: 128,
-            height: 128,
-            colorDark : "#000000",
-            colorLight : "#ffffff",
-            correctLevel : QRCode.CorrectLevel.H
-          });
-
-          setTimeout(function(){
-            resolve("¡Éxito!"); // ¡Todo salió bien!
-          }, 500);
-        });
-        miPrimeraPromise.then((successMessage) => {
-          // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
-          // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
-          // console.log("¡Sí! " + successMessage);
-          let base64Image = $('#qr_code img').attr('src');
-          // console.log(base64Image);
-          doc.addImage(base64Image, 'png', x+9, y+20, 2, 2);
-          window.open(doc.output('bloburl'), '_blank');
-        });
+        // miPrimeraPromise.then((successMessage) => {
+        //   // succesMessage es lo que sea que pasamos en la función resolve(...) de arriba.
+        //   // No tiene por qué ser un string, pero si solo es un mensaje de éxito, probablemente lo sea.
+        //   // console.log("¡Sí! " + successMessage);
+        //   let base64Image = $('#qr_code img').attr('src');
+        //   // console.log(base64Image);
+        //   doc.addImage(base64Image, 'png', x+9, y+20, 2, 2);
+        //   window.open(doc.output('bloburl'), '_blank');
+        // });
       })
     },
     frmimprimir(i){
@@ -976,10 +987,10 @@ export default {
         vm.$refs.nrocomprobanteinput.focus()
       }, 20)
       // this.detalle = this.micomprobante.cliente.detalle
-      this.ci = this.micomprobante.cliente.ci
-      this.paterno = this.micomprobante.cliente.paterno
-      this.materno = this.micomprobante.cliente.materno
-      this.nombre = this.micomprobante.cliente.nombre
+      this.ci = this.micomprobante.ci
+      this.paterno = this.micomprobante.paterno
+      this.materno = this.micomprobante.materno
+      this.nombre = this.micomprobante.nombre
       this.padron = this.micomprobante.cliente.padron
       this.expedido = this.micomprobante.cliente.expedido
       this.direccion = this.micomprobante.cliente.direccion

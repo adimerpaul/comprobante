@@ -6,26 +6,18 @@ use App\Models\Cliente;
 use App\Models\Comprobante;
 use App\Models\Detalle;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Luecano\NumeroALetras\NumeroALetras;
 
-class MercadoController extends Controller
+class CatastroController extends Controller
 {
     /**
      * Display a listing of the resource.
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(Request $request)
+    public function index()
     {
-        return Comprobante::with('cliente')
-            ->with('detalles')
-            ->with('user')
-            ->whereDate('fechalimite','>=',now())
-            ->where('user_id',$request->user()->id)
-            ->whereDate('fecha',now())
-            ->orderBy('id','desc')
-            ->get();
+        //
     }
 
     /**
@@ -46,53 +38,13 @@ class MercadoController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
-
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($fecha,Request $request)
-    {
-        return Comprobante::with('cliente')
-            ->with('detalles')
-            ->with('user')
-//            ->whereDate('fechalimite','>=',now())
-            ->where('unid_id',$request->user()->unid_id)
-            ->whereDate('fecha',$fecha)
-            ->orderBy('nrocomprobante')
-            ->get();
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
         //        return $request->data;
         if (count($request->data)==1){
             $item=$request->data[0]['coditem'];
         }else{
             $item=$request->data[1]['coditem'];
         }
+//        return $request->user();
         if (Cliente::where('ci',$request->ci)->get()->count()==0 && $request->ci!=''){
             $cliente=Cliente::create([
                 'paterno'=>strtoupper($request->paterno==null?'':$request->paterno),
@@ -104,6 +56,7 @@ class MercadoController extends Controller
                 'direccion'=>strtoupper($request->direccion==null?'':$request->direccion),
                 'numcasa'=>strtoupper($request->numcasa==null?'':$request->numcasa),
             ]);
+//            return $cliente;
         }else{
             $cliente=Cliente::where('ci',$request->ci)->firstOrFail();
             $cliente->nombre=strtoupper($request->nombre==null?'':$request->nombre);
@@ -115,14 +68,14 @@ class MercadoController extends Controller
             $cliente->numcasa=strtoupper($request->numcasa==null?'':$request->numcasa);
             $cliente->save();
         }
-//        return $cliente;
         $cliente=Cliente::where('ci',$request->ci)->firstOrFail();
+//        return $cliente;
         $formatter = new NumeroALetras();
         $literal= $formatter->toWords($request->total);
 //        return $request->user()->unid_id;
-        Comprobante::where('nrotramite',$request->nrotramite)->update([
+        $comprobante=Comprobante::create([
             'unid_id'=>$request->user()->unid_id,
-//            'nrotramite'=>$request->nrotramite,
+            'nrotramite'=>$request->nrotramite,
 //            'nrocomprobante'=>'139044',
             'fecha'=>date('Y-m-d'),
             'fechalimite'=>date("Y-m-d",strtotime(now()."+ 21 days")),
@@ -146,7 +99,7 @@ class MercadoController extends Controller
             'total'=>$request->total,
             'literal'=>$literal,
             'controlinterno'=>'',
-//            'estado'=>'CREADO',
+            'estado'=>'CREADO',
             'cajero'=>'',
             'user_id'=>$request->user()->id,
             'cliente_id'=>$cliente->id,
@@ -155,9 +108,10 @@ class MercadoController extends Controller
             'paterno'=>$cliente->paterno,
             'materno'=>$cliente->materno,
             'nombre'=>$cliente->nombre,
+            'tipocatastro'=>$request->tipocatastro,
+            'codcatastral'=>$request->codcatastral,
         ]);
-        $comprobante=Comprobante::where('nrotramite',$request->nrotramite)->firstOrFail();
-        DB::select("DELETE FROM detalles where comprobante_id='".$comprobante->id."'");
+
         foreach ($request->data as $row){
 //            echo $row['subtotal'].' -';
             Detalle::create([
@@ -173,6 +127,40 @@ class MercadoController extends Controller
             ]);
         }
 //        return $request->data[1]['coditem'];
+    }
+
+    /**
+     * Display the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function show($id)
+    {
+        //
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function edit($id)
+    {
+        //
+    }
+
+    /**
+     * Update the specified resource in storage.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @param  int  $id
+     * @return \Illuminate\Http\Response
+     */
+    public function update(Request $request, $id)
+    {
+        //
     }
 
     /**

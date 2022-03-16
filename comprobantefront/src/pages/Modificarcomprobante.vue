@@ -246,10 +246,10 @@ export default {
         this.detalles.push(d)
       })
       this.dialogcomprobante=true
-      this.ci = this.micomprobante.cliente.ci
-      this.paterno = this.micomprobante.cliente.paterno
-      this.materno = this.micomprobante.cliente.materno
-      this.nombre = this.micomprobante.cliente.nombre
+      this.ci = this.micomprobante.ci
+      this.paterno = this.micomprobante.paterno
+      this.materno = this.micomprobante.materno
+      this.nombre = this.micomprobante.nombre
       this.padron = this.micomprobante.cliente.padron
       this.expedido = this.micomprobante.cliente.expedido
       this.direccion = this.micomprobante.cliente.direccion
@@ -341,7 +341,7 @@ export default {
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r
-          d.contribuyente=r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre
+          d.contribuyente=r.paterno+' '+r.materno+' '+r.nombre
           this.miscomprobantes.push(d)
         })
         this.$q.loading.hide()

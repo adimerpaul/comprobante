@@ -51,7 +51,13 @@ class Comprobante extends Model
         'user_id',
         'cliente_id',
         'unid_id',
-        'anulado'
+        'anulado',
+        'ci',
+        'paterno',
+        'materno',
+        'nombre',
+        'tipocatastro',
+        'codcatastral',
     ];
     public function cliente(){
         return $this->belongsTo(Cliente::class);
