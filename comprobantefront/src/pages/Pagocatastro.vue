@@ -368,9 +368,9 @@ export default {
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
           doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+fecha)
-          doc.text(1, 3, 'Nº COMPROBANTE')
+          doc.text(1, 3, 'Nº COMPROB')
           doc.text(1, 3, '__________________________________________________________________________________________________')
-          doc.text(4, 3, 'Nº TRAMITE')
+          doc.text(4, 3, 'COD_CATASTRO')
           doc.text(7, 3, 'CONTRIBUYENTE')
           doc.text(13.5, 3, 'CI/RUN/RUC')
           doc.text(16, 3, 'MONTO BS.')
@@ -389,7 +389,7 @@ export default {
             y+=0.4
             con++
             doc.text(1, y+3, r.nrocomprobante)
-            doc.text(4, y+3, r.nrotramite)
+            doc.text(4, y+3, r.codcatastral==null?' ':r.codcatastral)
             doc.text(7, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
             doc.text(13.5, y+3, r.ci)
             doc.text(16, y+3, r.total)
