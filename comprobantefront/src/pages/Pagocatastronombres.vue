@@ -352,12 +352,6 @@ export default {
     reportecomprobantestotales(){
       this.$q.loading.show()
       this.$axios.get(process.env.URL + '/mercado/'+this.fecha).then(res=>{
-        // this.miscomprobantes=[]
-        // res.data.forEach(r=>{
-        //   let d=r
-        //   d.contribuyente=r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre
-        //   this.miscomprobantes.push(d)
-        // })
         this.miscomprobantestotales=res.data
         let cm=this;
         function header(fecha){
@@ -368,6 +362,7 @@ export default {
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
           doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+fecha)
           doc.text(1, 3, 'Nº COMPROBANTE')
+          doc.text(1, 3, '__________________________________________________________________________________________________')
           doc.text(4, 3, 'Nº TRAMITE')
           doc.text(7, 3, 'CONTRIBUYENTE')
           doc.text(13.5, 3, 'CI/RUN/RUC')
@@ -376,34 +371,40 @@ export default {
           doc.setFont(undefined,'normal')
         }
         var doc = new jsPDF('p','cm','letter')
-        // console.log(dat);
         doc.setFont("courier");
         doc.setFontSize(9);
-        // var x=0,y=
         header(this.fecha)
-        // let xx=x
-        // let yy=y
         let y=0
         let sumtotal=0
+        let con=0
         this.miscomprobantestotales.forEach(r=>{
-          // xx+=0.5
-          y+=0.5
-          // console.log(r)
-          doc.text(1, y+3, r.nrocomprobante)
-          doc.text(4, y+3, r.nrotramite)
-          doc.text(7, y+3, (r.cliente.paterno+'').substring(0,15)+' '+r.cliente.materno+' '+r.cliente.nombre)
-          doc.text(13.5, y+3, r.cliente.ci)
-          doc.text(16, y+3, r.total)
-          sumtotal+=parseInt(r.total)
-          doc.text(18, y+3, r.user.codigo )
-          // if (y+3>25){
-          //   doc.addPage();
-          //   header(this.fecha)
-          //   y=0
-          // }
+          if (r.nrocomprobante!=''){
+            y+=0.4
+            con++
+            doc.text(1, y+3, r.nrocomprobante)
+            doc.text(4, y+3, r.nrotramite)
+            doc.text(7, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
+            doc.text(13.5, y+3, r.ci)
+            doc.text(16, y+3, r.total)
+            sumtotal+=parseInt(r.total)
+            // console.log(r.total)
+            doc.text(18, y+3, r.user.codigo )
+            if (con==55){
+              con=0
+              doc.addPage();
+              header(this.fecha)
+              y=0
+            }
+          }
         })
-        doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
-        doc.text(18, y+4, sumtotal+'Bs')
+        doc.setFont(undefined,'bold')
+        doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
+        doc.text(1.8, y+5, '_____________________          _____________________________       _________________________')
+        doc.text(2, y+5.3, 'FIRMA SELLO CAJERO')
+        doc.text(8, y+5.3, 'FIRMA SELLO CONTROL INTERNO')
+        doc.text(15, y+5.3, 'FIRMA SELLO LIQUIDADOR')
+        doc.setFont(undefined,'normal')
+        doc.text(18, y+3.5, sumtotal+ ' Bs')
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');
         // console.log(res.data)
@@ -632,12 +633,12 @@ export default {
       let fin=65
       let xx=x
       let yy=y
-      if(dat.cliente.paterno.toString().length<65)
-        doc.text(xx+9, yy+7, dat.cliente.paterno.toString());
+      if(dat.paterno.toString().length<65)
+        doc.text(xx+9, yy+7, dat.paterno.toString());
       else{
-        while (dat.cliente.paterno.toString().length>=cont){
+        while (dat.paterno.toString().length>=cont){
           // doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
-          doc.text(xx+9, yy+7, dat.cliente.paterno.toString().substring(cont,fin));
+          doc.text(xx+9, yy+7, dat.paterno.toString().substring(cont,fin));
           cont+=65;
           fin+=65
           yy+=0.2;
