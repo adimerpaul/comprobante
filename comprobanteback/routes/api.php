@@ -79,6 +79,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/exportar',\App\Http\Controllers\ExportController::class);
     Route::resource('/mercado',\App\Http\Controllers\MercadoController::class);
     Route::resource('/catastro',\App\Http\Controllers\CatastroController::class);
+    Route::resource('/sistema',\App\Http\Controllers\SistemaController::class);
     Route::post('/subir',[\App\Http\Controllers\ExportController::class,'subir']);
     Route::post('/reportecomp',[\App\Http\Controllers\ComprobanteController::class,'reportecomp']);
     Route::post('/reportitem',[\App\Http\Controllers\ComprobanteController::class,'reportitem']);

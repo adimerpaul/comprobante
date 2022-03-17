@@ -1,18 +1,21 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-xs">
     <div class="row">
       <div class="col-12">
       <q-form @submit.prevent="historial">
         <div class="row">
-          <div class="col-6 q-pa-xs">
+          <div class="col-4">
             <q-input dense label="fecha de cobro" outlined type="date" v-model="fecha"/>
           </div>
-<!--          <div class="col-4 q-pa-xs">-->
+<!--          <div class="col-4">-->
 <!--    &lt;!&ndash;        <q-input label="fecha de cobro" outlined type="date" v-model="fecha"/>&ndash;&gt;-->
 <!--            <q-select v-model="unidad" outlined :options="unidades" option-label="nombre" option-value="id" required label="Unidad"/>-->
 <!--          </div>-->
-          <div class="col-6 q-pa-xs">
-            <q-btn color="primary" type="submit" icon="search"  label="Buscar" class="full-width full-height" />
+          <div class="col-4 flex flex-center">
+            <q-btn color="primary" type="submit" icon="search"  label="Consultar"  />
+          </div>
+          <div class="col-4 flex flex-center">
+<!--            <q-btn color="positive" type="button" icon="add_circle"  label="Crear comprobante"  />-->
           </div>
         </div>
       </q-form>
@@ -46,12 +49,12 @@
             {{props.row.cajero}}
           </q-td>
           <q-td key="verificadosistema" :props="props" >
-            <template v-if="!props.row.verificadosistema">
-              <q-checkbox v-if="props.row.estado=='PAGADO'" size="xs" v-model="props.row.verificadosistema" />
-            </template>
-            <template v-else>
-              <q-badge class="bg-green">verificado</q-badge>
-            </template>
+<!--            <template v-if="!props.row.verificadosistema">-->
+              <q-checkbox v-if="props.row.estado=='PAGADO'||props.row.estado=='ANULADO'" size="xs" v-model="props.row.verificadosistema" />
+<!--            </template>-->
+<!--            <template v-else>-->
+<!--              <q-badge class="bg-green">verificado</q-badge>-->
+<!--            </template>-->
           </q-td>
           </q-tr>
         </template>
@@ -65,8 +68,8 @@
         </q-table>
       </div>
       <div class="col-12 q-pt-md">
-        <q-btn color="info" :label="'Total '+ total +'BS'" class="full-width text-red text-bold"/>
-        <q-btn color="green" label="Registrar Verificados" icon="send" class="full-width text-black text-bold" @click="verificar"/>
+        <q-btn color="info" :label="'Total '+ total +'BS'" class="full-width  text-bold"/>
+        <q-btn color="green" label="Registrar Verificados" icon="send" class="full-width text-white text-bold" @click="verificar"/>
 <!--        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>-->
       </div>
       <div class="col-12">
@@ -74,7 +77,7 @@
           <div class="row">
             <div class="col-4 q-pa-md"><q-input dense label="Fecha 1" type="date" outlined v-model="fecha" /></div>
             <div class="col-4 q-pa-md"><q-input dense label="Fecha 1" type="date" outlined v-model="fecha2" /></div>
-            <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="consulta" color="accent" icon="search"/></div>
+            <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="Resumen mes" color="accent" icon="search"/></div>
           </div>
         </q-form>
       </div>
@@ -83,7 +86,7 @@
           <div class="row">
             <div class="col-4 q-pa-md"><q-input dense label="Fecha Inicio" type="date" outlined v-model="buscar.inicio" /></div>
             <div class="col-4 q-pa-md"><q-input dense label="Fecha Fin" type="date" outlined v-model="buscar.fin" /></div>
-            <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="Generar item" color="warning" icon="search"/></div>
+            <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="Resumen dia" color="warning" icon="search"/></div>
           </div>
         </q-form>
       </div>
@@ -185,24 +188,26 @@ export default {
       header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'))
       // let xx=x
       // let yy=y
-      let y=0;
+      let y=0
+      let sum=0
       this.item.forEach(item=>{
-               y+=0.5
-        doc.text(0.5, y+4, item.cod);
-        doc.text(3, y+4, item.nombre.substring(0,70));
-        doc.text(15, y+4, ''+item.cantidad);
-        doc.text(19, y+4, ''+item.monto,{align: 'right',});
-        // doc.text(19, y+4, item.monto ,{align: 'right',});
-
+        doc.text(0.5, y+3.8, item.cod);
+        doc.text(3, y+3.8, item.nombre.substring(0,70));
+        doc.text(15, y+3.8, ''+item.cantidad);
+        doc.text(19, y+3.8, ''+item.monto,{align: 'right',});
+        y+=0.5
+        sum+=parseInt(item.monto)
         if (y+4>25){
           doc.addPage();
-           header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'));
+           doc.setFont(undefined,'bold')
           y=0;
         }});
-      doc.text(4, y+4, '____________________________________________________________________________')
-      doc.text(4, y+4.5, 'TOTAL RECAUDACION: ')
-      doc.text(15, y+4.5, ''+this.tramite)
-      doc.text(18, y+4.5, ''+this.total)
+      doc.setFont(undefined,'bold')
+      doc.text(3, y+3.3, '____________________________________________________________________________________')
+      doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
+      doc.setFont(undefined,'normal')
+      doc.text(15, y+3.8, ''+this.tramite)
+      doc.text(19, y+3.8, ''+sum+' BS',{align: 'right',})
 
 
       window.open(doc.output('bloburl'), '_blank');
@@ -311,14 +316,36 @@ export default {
 
       },
       verificar(){
-        this.pagos.forEach(elemt=>{
-          // if(elemt.verificadosistema)
-           this.$axios.post(process.env.URL+'/verificadosistema',elemt);
-        });
-        this.$q.dialog({
-          title:'Verificado Exitoso'
+        this.$q.loading.show()
+
+        this.$axios.post(process.env.URL+'/sistema',{
+          datos:this.pagos
+        }).then(res=>{
+          // this.pagos=[]
+          // this.$q.loading.hide()
+          this.historial();
+          // console.log(res.data)
+          this.$q.notify({
+            message:'Verificado exitoso',
+            color:'green',
+            icon:'check'
+          })
+        }).catch(err=>{
+          this.$q.loading.hide()
+          this.$q.notify({
+            message:err.response.data.message,
+            color:'red',
+            icon:'error'
+          })
         })
-        this.historial();
+        // this.pagos.forEach(elemt=>{
+        //   // if(elemt.verificadosistema)
+        //    this.$axios.post(process.env.URL+'/verificadosistema',elemt);
+        // });
+        // this.$q.dialog({
+        //   title:'Verificado Exitoso'
+        // })
+        // this.historial();
       },
     historial(){
       this.$q.loading.show()
@@ -338,7 +365,7 @@ export default {
         });
         this.pagos=res.data;
       }).catch(err=>{
-        // console.log(err.response)
+        this.$q.loading.hide()
         this.$q.notify({
           message:err.response.data.message,
           color:'red',
@@ -521,13 +548,14 @@ export default {
   },
   computed:{
     total() {
+      // console.log(this.pagos)
       let total=0
-      this.item.forEach(r=>{
-        total+=parseFloat(r.monto);
+      this.pagos.forEach(r=>{
+        total+=parseFloat(r.total);
       })
       return total;
     },
-          tramite() {
+    tramite() {
       let tramite=0
       this.item.forEach(r=>{
         tramite+=parseInt(r.cantidad);

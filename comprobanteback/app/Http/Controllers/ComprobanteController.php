@@ -193,7 +193,7 @@ class ComprobanteController extends Controller
             ->with('unid')
             ->whereDate('fechapago',$request->fecha)
             ->where('cajero_id',$request->user()->id)
-            ->where('porcaja',true)
+//            ->where('porcaja',true)
             ->where('estado','PAGADO')
             ->get();
     }
@@ -433,7 +433,6 @@ class ComprobanteController extends Controller
 //        return 12;
 
         $comprobante=Comprobante::find($request->id);
-
         $comprobante->fechasistema=date('Y-m-d H:i:s');
         $comprobante->verificadosistema=$request->verificadosistema;
         $comprobante->verificadosistema_id=$request->user()->id;
