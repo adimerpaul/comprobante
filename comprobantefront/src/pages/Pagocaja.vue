@@ -122,7 +122,7 @@
           </template>
           <template v-slot:body-cell-opciones="props">
             <q-td :props="props">
-<!--              <q-btn @click="modificar(props.row)"  size="xs" color="warning" label="modificar" icon="edit"></q-btn>-->
+              <q-btn @click="modificar(props.row)"  size="xs" color="warning" label="modificar" icon="edit"></q-btn>
               <q-btn @click="anular(props)" v-if="props.row.estado!='ANULADO'" size="xs" color="negative" label="Anular" icon="warning"></q-btn>
             </q-td>
           </template>
@@ -259,7 +259,7 @@
               <div class="col-3"><q-input label="Total" outlined dense v-model="totalcorto"/></div>
             </div>
           </q-form>
-          <q-btn label="Crear comprobante" @click="modificarcomprobantecorto" icon="add_circle" color="warning" class="full-width" />
+          <q-btn label="Modificar comprobante" @click="modificarcomprobantecorto" icon="add_circle" color="warning" class="full-width" />
 
         </q-card-section>
 
@@ -288,7 +288,7 @@ import {date} from 'quasar'
 export default {
   data() {
     return {
-      modalcomprobantemodificar:'',
+      modalcomprobantemodificar:false,
       totalcorto:'',
       items:[],
       item:{},
@@ -412,7 +412,12 @@ export default {
       this.comprobante=i
       this.modalcomprobantemodificar=true
       this.fechainsertar=this.comprobante.fecha
-        // this.unidad=this.comprobante.
+      // console.log(this.comprobante)
+      this.unidad=this.comprobante.unid
+      this.unidad.label=this.comprobante.unid.nombre
+      this.nrocomprobante=this.comprobante.nrocomprobante
+      this.totalcorto=this.comprobante.total
+
     },
     anular(props){
       // console.log(props.row)
@@ -492,7 +497,59 @@ export default {
       })
     },
     modificarcomprobantecorto(){
-
+      // console.log(this.comprobante)
+      // return false
+      this.$q.loading.show()
+      this.$axios.put(process.env.URL + '/caja/'+this.comprobante.id, {
+        total: this.totalcorto,
+        fecha: this.fechainsertar,
+        unid_id: this.unidad.id,
+        nrocomprobante:this.nrocomprobante,
+      }).then((res) => {
+        console.log(res.data)
+        this.totalcorto='',
+          this.$q.loading.hide()
+        // return false
+        this.mispagos()
+        this.detalle=[
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+        ]
+        this.ci = ''
+        this.paterno = ''
+        this.materno = ''
+        this.nombre = ''
+        this.padron = ''
+        this.expedido = ''
+        this.direccion = ''
+        this.numcasa = ''
+        this.nrocomprobante=''
+        this.$q.notify({
+          title: 'Creado ',
+          message:'Creado correctamente',
+          color: 'green',
+          icon: 'check'
+        })
+        this.modalcomprobantemodificar=false
+      }).catch(err => {
+        this.$q.loading.hide()
+        this.$q.notify({
+          title: 'Error ',
+          message: err.response.data.message,
+          color: 'red',
+          icon: 'error'
+        })
+      })
     },
     insertcomprobantecorto(){
       // this.detalle.forEach(r => {
@@ -516,7 +573,6 @@ export default {
         this.$q.loading.hide()
         // return false
         this.mispagos()
-
         this.detalle=[
           {coditem:'',item:'',monto:''},
           {coditem:'',item:'',monto:''},
@@ -600,9 +656,15 @@ export default {
     },
     crearcomprobante(){
       this.modalcomprobante=true
+      this.fechainsertar=date.formatDate(Date.now(),'YYYY-MM-DD')
+      this.nrocomprobante=''
+      this.totalcorto=''
     },
     crearcomprobantecorto(){
       this.modalcomprobantecorto=true
+      this.fechainsertar=date.formatDate(Date.now(),'YYYY-MM-DD')
+      this.nrocomprobante=''
+      this.totalcorto=''
     },
     loscomprobantes(){
       this.model=''
@@ -725,7 +787,7 @@ export default {
         }
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
-      doc.text(18, y+4, this.total+'Bs')
+      doc.text(18, y+4, this.total+ ' Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
@@ -752,18 +814,21 @@ export default {
         this.$q.loading.hide()
         this.pagos=[]
         res.data.forEach(r=>{
-          this.pagos.push({
-            nrotramite:r.nrotramite,
-            unidad:r.unid.nombre,
-            nrocomprobante:r.nrocomprobante,
-            cliente:r.paterno+' '+r.materno+' '+r.nombre,
-            cajero:r.cajero,
-            estado:r.estado,
-            ci:r.cliente.ci,
-            id:r.id,
-            total:r.total,
-            cajero_id:r.cajero_id,
-          })
+          let d=r
+          d.cliente=r.paterno+' '+r.materno+' '+r.nombre
+          this.pagos.push(d)
+          // this.pagos.push({
+          //   nrotramite:r.nrotramite,
+          //   unidad:r.unid.nombre,
+          //   nrocomprobante:r.nrocomprobante,
+          //   cliente:r.paterno+' '+r.materno+' '+r.nombre,
+          //   cajero:r.cajero,
+          //   estado:r.estado,
+          //   ci:r.cliente.ci,
+          //   id:r.id,
+          //   total:r.total,
+          //   cajero_id:r.cajero_id,
+          // })
         })
       }).catch(err=>{
         // console.log(err.response)

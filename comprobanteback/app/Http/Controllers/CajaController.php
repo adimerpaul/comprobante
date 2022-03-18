@@ -293,9 +293,10 @@ class CajaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request, $comprobante_id)
     {
-        //
+        $comprobante=Comprobante::find($comprobante_id);
+        $comprobante->update($request->all());
     }
 
     /**
