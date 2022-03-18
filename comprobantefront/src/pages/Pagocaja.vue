@@ -321,6 +321,7 @@ export default {
       this.$axios.post(process.env.URL + '/caja', {
         total: this.totalcomprobante,
         ci: this.ci,
+        fecha: this.fechainsertar,
         paterno: this.paterno,
         materno: this.materno,
         nombre: this.nombre,
