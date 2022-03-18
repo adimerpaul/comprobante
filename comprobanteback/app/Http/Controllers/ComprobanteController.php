@@ -194,7 +194,8 @@ class ComprobanteController extends Controller
             ->whereDate('fechapago',$request->fecha)
             ->where('cajero_id',$request->user()->id)
 //            ->where('porcaja',true)
-            ->where('estado','PAGADO')
+            ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
+            ->orderBy('nrocomprobante')
             ->get();
     }
 

@@ -107,18 +107,39 @@
           :rows-per-page-options="[10,50,100,0]"
         >
           <template v-slot:top-right>
-            <q-btn label="Agregar " @click="crearcomprobante" icon="add_circle" color="positive"/>
+            <q-btn size="xs" label="Agregar corto" @click="crearcomprobantecorto" icon="warning" color="warning"/>
+            <q-btn size="xs" label="Agregar largo" @click="crearcomprobante" icon="add_circle" color="positive"/>
             <q-input outlined dense v-model="filter" placeholder="Buscar">
               <template v-slot:append>
                 <q-icon name="search" />
               </template>
             </q-input>
           </template>
+          <template v-slot:body-cell-estado="props">
+            <q-td :props="props">
+              <q-badge :color="props.row.estado=='ANULADO'?'negative':'info'">{{props.row.estado}}</q-badge>
+            </q-td>
+          </template>
+          <template v-slot:body-cell-opciones="props">
+            <q-td :props="props">
+              <q-btn @click="anular(props)" v-if="props.row.estado!='ANULADO'" size="xs" color="negative" label="Anular" icon="warning"></q-btn>
+            </q-td>
+          </template>
         </q-table>
       </div>
-      <div class="col-12 q-pt-md">
-        <q-btn color="info" :label="'Total '+ total +'BS'" class="full-width text-red text-bold"/>
-        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>
+      <div class="col-12 q-pa-xs">
+<!--        <q-btn color="info" :label="'Total '+ total +'BS'" class="full-width text-red text-bold"/>-->
+<!--        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>-->
+        <div class="full-width text-center bg-red text-bold" > TOTAL {{total}} BS</div>
+      </div>
+      <div class="col-4 q-pa-xs">
+        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos todos"/>
+      </div>
+      <div class="col-4 q-pa-xs">
+        <q-select :options="cajeros" label="cajero" outlined dense v-model="cajero"/>
+      </div>
+      <div class="col-4 q-pa-xs">
+        <q-btn class="full-width" @click="imprimirusuario" color="warning"  icon="print" label="Imprimir usuario"/>
       </div>
     </div>
     <q-dialog full-width v-model="modalcomprobante">
@@ -198,6 +219,30 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog full-width v-model="modalcomprobantecorto">
+      <q-card >
+        <q-card-section>
+          <div class="text-h6">corto</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-form>
+            <div class="row">
+              <div class="col-3"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
+              <div class="col-3"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
+              <div class="col-3"><q-input label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
+              <div class="col-3"><q-input label="Total" outlined dense v-model="totalcorto"/></div>
+            </div>
+          </q-form>
+          <q-btn label="Crear comprobante" @click="insertcomprobantecorto" icon="add_circle" color="positive" class="full-width" />
+
+        </q-card-section>
+
+        <q-card-actions align="right" >
+          <q-btn flat label="cerrar" color="negative" icon="delete" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 <!--    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">-->
 <!--      <q-btn icon="add_circle" label="Actualizar" color="positive" />-->
 <!--    </div>-->
@@ -218,8 +263,11 @@ import {date} from 'quasar'
 export default {
   data() {
     return {
+      totalcorto:'',
       items:[],
       item:{},
+      cajeros:[],
+      cajero:{},
       detalle:[
         {coditem:'',item:'',monto:''},
         {coditem:'',item:'',monto:''},
@@ -248,6 +296,7 @@ export default {
       filter:'',
       model:'',
       modalcomprobante:false,
+      modalcomprobantecorto:false,
       fecha:date.formatDate(Date.now(),'YYYY-MM-DD'),
       fechainsertar:date.formatDate(Date.now(),'YYYY-MM-DD'),
       options: [
@@ -263,12 +312,14 @@ export default {
       ],
       pcolumns:[
         {name:'nrocomprobante',label:'Numero comprobante', align:'left',field:'nrocomprobante',sortable:true},
-        {name:'nrotramite',label:'Numero tramite', align:'left',field:'nrotramite',sortable:true},
-        {name:'ci',label:'Carnet identidad', align:'left',field:'ci',sortable:true},
+        {name:'estado',label:'estado', align:'left',field:'estado',sortable:true},
+        // {name:'nrotramite',label:'Numero tramite', align:'left',field:'nrotramite',sortable:true},
+        // {name:'ci',label:'Carnet identidad', align:'left',field:'ci',sortable:true},
         {name:'cliente',label:'Contribuyente', align:'left',field:'cliente', sortable:true},
-        {name:'unidad',label:'Unidad', align:'left',field:'unidad',sortable:true},
+        // {name:'unidad',label:'Unidad', align:'left',field:'unidad',sortable:true},
         {name:'total',label:'Monto', align:'left',field:'total',    format: val => `${val} Bs`,sortable:true},
         {name:'cajero',label:'Cajero', align:'left',field:'cajero',sortable:true},
+        {name:'opciones',label:'opciones', align:'left',field:'opciones',sortable:true},
       ],
       comprobantes:[],
       pagos:[],
@@ -284,6 +335,23 @@ export default {
         d.label=r.nombre
         this.unidades.push(d)
         this.unidad=this.unidades[0]
+      })
+      // this.unidades=res.data
+      // console.log(this.unidades)
+    }).catch(err=>{
+      this.$q.notify({
+        message:err.response.data.message,
+        color:'red',
+        icon:'error'
+      })
+    })
+    this.$axios.get(process.env.URL+'/caja').then(res=>{
+      this.cajeros=[]
+      res.data.forEach(r=>{
+        let d=r
+        d.label=r.name
+        this.cajeros.push(d)
+        this.cajero=this.cajeros[0]
       })
       // this.unidades=res.data
       // console.log(this.unidades)
@@ -313,6 +381,21 @@ export default {
     this.loscomprobantes();
   },
   methods: {
+    anular(props){
+      // console.log(props.row)
+      this.$q.dialog({
+        title:'Seguro de anular?',
+        // message:'',
+        cancel:true
+      }).onOk(()=>{
+        // console.log('a')
+        this.$axios.post(process.env.URL+'/anulado',{comprobante_id:props.row.id}).then(res=>{
+          console.log(res.data)
+          this.mispagos()
+          // this.misanulados()
+        })
+      })
+    },
     insertcomprobante(){
       // this.detalle.forEach(r => {
       //   r.subtotal = r.precio * r.cantidad
@@ -375,6 +458,69 @@ export default {
         })
       })
     },
+    insertcomprobantecorto(){
+      // this.detalle.forEach(r => {
+      //   r.subtotal = r.precio * r.cantidad
+      // })
+      this.$q.loading.show()
+      this.$axios.post(process.env.URL + '/insertarcorto', {
+        total: this.totalcorto,
+        // ci: this.ci,
+        fecha: this.fechainsertar,
+        // paterno: this.paterno,
+        // materno: this.materno,
+        // nombre: this.nombre,
+        // direccion: this.direccion,
+        // data: this.detalle,
+        unid_id: this.unidad.id,
+        nrocomprobante:this.nrocomprobante,
+      }).then((res) => {
+        console.log(res.data)
+        this.totalcorto='',
+        this.$q.loading.hide()
+        // return false
+        this.mispagos()
+
+        this.detalle=[
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+        ]
+        this.ci = ''
+        this.paterno = ''
+        this.materno = ''
+        this.nombre = ''
+        this.padron = ''
+        this.expedido = ''
+        this.direccion = ''
+        this.numcasa = ''
+        this.nrocomprobante=''
+        this.$q.notify({
+          title: 'Creado ',
+          message:'Creado correctamente',
+          color: 'green',
+          icon: 'check'
+        })
+        this.modalcomprobantecorto=false
+      }).catch(err => {
+        this.$q.loading.hide()
+        this.$q.notify({
+          title: 'Error ',
+          message: err.response.data.message,
+          color: 'red',
+          icon: 'error'
+        })
+      })
+    },
     buscar(i,index){
       // console.log(this.items)
       this.item=this.items.find(d=>d.codigo==i.coditem)
@@ -419,6 +565,9 @@ export default {
     crearcomprobante(){
       this.modalcomprobante=true
     },
+    crearcomprobantecorto(){
+      this.modalcomprobantecorto=true
+    },
     loscomprobantes(){
       this.model=''
       this.$q.loading.show()
@@ -433,11 +582,61 @@ export default {
             detalles:r.detalles,
             nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
             padron:r.padron,
-            ci:r.cliente.ci,
+            ci:r.ci,
             total:r.total,
           })
         })
       })
+    },
+    imprimirusuario(){
+      // console.log(this.$store.state.user.id)
+      function header(unidad,fecha){
+        var img = new Image()
+        img.src = 'logo.jpg'
+        doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+        doc.setFont(undefined,'bold')
+        doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
+        doc.text(5, 1.5, unidad +' DE '+fecha)
+        doc.text(1, 3, 'Nº COMPROBANTE')
+        doc.text(4, 3, 'Nº TRAMITE')
+        doc.text(6.5, 3, 'CONTRIBUYENTE')
+        doc.text(11.5, 3, 'CI/RUN')
+        doc.text(13.5, 3, 'UNIDAD')
+        doc.text(17, 3, 'MONTO BS.')
+        doc.text(19, 3, 'CAJERO')
+        doc.setFont(undefined,'normal')
+      }
+      var doc = new jsPDF('p','cm','letter')
+      // console.log(dat);
+      doc.setFont("courier");
+      doc.setFontSize(9);
+      // var x=0,y=
+      header(this.$store.state.user.unid.nombre.toString(),this.fecha)
+      // let xx=x
+      // let yy=y
+      let y=0
+      this.pagos.forEach(r=>{
+        // console.log(r.cajero_id)
+        if (this.cajero.id==r.cajero_id){
+          y+=0.5
+          doc.text(1, y+3, r.nrocomprobante)
+          doc.text(4, y+3, r.nrotramite)
+          doc.text(6.5, y+3, r.cliente)
+          doc.text(11.5, y+3, r.ci)
+          doc.text(13.5, y+3, r.unidad)
+          doc.text(18, y+3, r.total)
+          doc.text(19, y+3, r.cajero )
+          if (y+3>25){
+            doc.addPage();
+            header(this.fecha)
+            y=0
+          }
+        }
+      })
+      doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
+      doc.text(18, y+4, this.total+'Bs')
+      // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+      window.open(doc.output('bloburl'), '_blank');
     },
     imprimir(){
       function header(unidad,fecha){
@@ -516,8 +715,11 @@ export default {
             nrocomprobante:r.nrocomprobante,
             cliente:r.paterno+' '+r.materno+' '+r.nombre,
             cajero:r.cajero,
+            estado:r.estado,
             ci:r.cliente.ci,
+            id:r.id,
             total:r.total,
+            cajero_id:r.cajero_id,
           })
         })
       }).catch(err=>{

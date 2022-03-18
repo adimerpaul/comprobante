@@ -133,8 +133,12 @@ class AnuladoController extends Controller
 //            $d->save();
 //        }
 
-        $nroprobante=$comprobante->nrocomprobante;
+//        $nroprobante=$comprobante->nrocomprobante;
 
+        $comprobante->ci='0';
+        $comprobante->paterno='ANULADO';
+        $comprobante->materno='ANULADO';
+        $comprobante->nombre='ANULADO';
         $comprobante->estado='ANULADO';
         $comprobante->cliente_id=1;
         $comprobante->cajero=$request->user()->codigo;
@@ -156,7 +160,7 @@ class AnuladoController extends Controller
 //            'unid_id'=>$request->user()->unid_id,
 //            'user_id'=>$request->user()->id,
 //        ]);
-        echo 1;
+        return  $comprobante;
     }
 
     /**
