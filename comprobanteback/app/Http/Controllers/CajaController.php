@@ -69,7 +69,7 @@ class CajaController extends Controller
         $formatter = new NumeroALetras();
         $literal= $formatter->toWords($request->total);
 //        return $request->user()->unid_id;
-        $nrotramite =$request->user()->codigo.Comprobante::where('user_id',$request->user()->id)->get()->count()+1;
+        $nrotramite =$request->user()->codigo.(intval(Comprobante::where('user_id',$request->user()->id)->get()->count())+1);
 //        return $nrotramite;
         $comprobante=Comprobante::create([
             'unid_id'=>$request->unid_id,
