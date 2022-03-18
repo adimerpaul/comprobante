@@ -335,7 +335,20 @@ export default {
         // return false
         this.mispagos()
 
-        this.detalle = ''
+        this.detalle=[
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+          {coditem:'',item:'',monto:''},
+        ]
         this.ci = ''
         this.paterno = ''
         this.materno = ''
