@@ -739,7 +739,7 @@ export default {
         }
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
-      doc.text(18, y+4, su+'Bs')
+      doc.text(18, y+4, su+' Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
