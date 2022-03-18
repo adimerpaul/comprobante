@@ -723,15 +723,14 @@ export default {
         // console.log(r.cajero_id)
         if (this.cajero.id==r.cajero_id){
           y+=0.5
-          doc.text(1, y+3, r.nrocomprobante)
-          doc.text(4, y+3, r.nrotramite)
-          doc.text(6.5, y+3, r.cliente)
-          doc.text(11.5, y+3, r.ci)
-          doc.text(13.5, y+3, r.unidad)
-          doc.text(18, y+3, r.total)
-
+          doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante)
+          doc.text(4, y+3, r.nrotramite==undefined?'':r.nrotramite)
+          doc.text(6.5, y+3, r.cliente==undefined?'':r.cliente)
+          doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
+          doc.text(13.5, y+3, r.unidad==undefined?'':r.unidad)
+          doc.text(18, y+3, r.total==undefined?'':r.total)
+          doc.text(19, y+3, r.cajero ==undefined?'':r.cajero )
           su=su+parseInt(r.total)
-          doc.text(19, y+3, r.cajero )
           if (y+3>25){
             doc.addPage();
             header(this.fecha)
