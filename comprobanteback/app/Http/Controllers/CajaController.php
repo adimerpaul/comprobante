@@ -72,7 +72,7 @@ class CajaController extends Controller
         $nrotramite =$request->user()->codigo.Comprobante::where('user_id',$request->user()->id)->get()->count()+1;
 //        return $nrotramite;
         $comprobante=Comprobante::create([
-            'unid_id'=>$request->user()->unid_id,
+            'unid_id'=>$request->unid_id,
             'nrotramite'=>$nrotramite,
 //            'nrocomprobante'=>'139044',
             'fecha'=>date('Y-m-d'),

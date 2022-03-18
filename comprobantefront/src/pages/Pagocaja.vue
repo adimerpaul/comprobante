@@ -149,13 +149,14 @@
 <!--                <div class="text-h6">Crear comprobante</div>-->
                 <q-form>
                   <div class="row">
-                    <div class="col-2"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
-                    <div class="col-1"><q-input label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
-                    <div class="col-1"><q-input label="ci" @input="buscarcliente" outlined dense v-model="ci"/></div>
-                    <div class="col-2"><q-input label="paterno" outlined dense v-model="paterno"/></div>
-                    <div class="col-2"><q-input label="materno" outlined dense v-model="materno"/></div>
-                    <div class="col-2"><q-input label="nombre" outlined dense v-model="nombre"/></div>
-                    <div class="col-2"><q-input label="direccion" outlined dense v-model="direccion"/></div>
+                    <div class="col-3"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
+                    <div class="col-3"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
+                    <div class="col-3"><q-input label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
+                    <div class="col-3"><q-input label="ci" @input="buscarcliente" outlined dense v-model="ci"/></div>
+                    <div class="col-3"><q-input label="paterno" outlined dense v-model="paterno"/></div>
+                    <div class="col-3"><q-input label="materno" outlined dense v-model="materno"/></div>
+                    <div class="col-3"><q-input label="nombre" outlined dense v-model="nombre"/></div>
+                    <div class="col-3"><q-input label="direccion" outlined dense v-model="direccion"/></div>
                   </div>
                 </q-form>
                 <q-table dense :columns="columnscomprobante" :rows-per-page-options="[12]" :data="detalle">
@@ -272,12 +273,19 @@ export default {
       comprobantes:[],
       pagos:[],
       unidades:[],
-      unid:''
+      unidad:''
     };
   },
   created() {
     this.$axios.get(process.env.URL+'/unid').then(res=>{
-      this.unidades=res.data
+      this.unidades=[]
+      res.data.forEach(r=>{
+        let d=r
+        d.label=r.nombre
+        this.unidades.push(d)
+        this.unidad=this.unidades[0]
+      })
+      // this.unidades=res.data
       // console.log(this.unidades)
     }).catch(err=>{
       this.$q.notify({
@@ -318,6 +326,7 @@ export default {
         nombre: this.nombre,
         direccion: this.direccion,
         data: this.detalle,
+        unid_id: this.unidad.id,
         nrocomprobante:this.nrocomprobante,
       }).then((res) => {
         console.log(res.data)
@@ -399,7 +408,7 @@ export default {
     loscomprobantes(){
       this.model=''
       this.$q.loading.show()
-      this.$axios.post(process.env.URL+'/loscomprobantes',{unid_id:this.unid.id}).then(res=>{
+      this.$axios.post(process.env.URL+'/loscomprobantes').then(res=>{
         // console.log(res.data)
         this.comprobantes=[]
         this.$q.loading.hide()
