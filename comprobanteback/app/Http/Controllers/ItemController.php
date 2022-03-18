@@ -45,6 +45,9 @@ class ItemController extends Controller
             ->get();
 
     }
+    public function todoitems(){
+        return Item::all();
+    }
     public function index(Request $request)
     {
 //        return $request->user();
@@ -62,7 +65,10 @@ AND i.id IN (SELECT item_id FROM subitems GROUP BY item_id)
 ORDER BY i.codigo
 ");
     }
-
+public function nombreitem(Request $request){
+//        return $request;
+        return Item::where('codigo',$request->coditem)->get();
+}
     /**
      * Store a newly created resource in storage.
      *

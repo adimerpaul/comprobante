@@ -382,8 +382,8 @@ class ComprobanteController extends Controller
             'estado'=>'IMPRESO',
             'nrocomprobante'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT),
             'controlinterno'=>str_pad($request->nrocomprobante, 6, '0', STR_PAD_LEFT).date('d/m/Y'),
-            'nrocomprobante'=>$numcomprobante,
-            'controlinterno'=>$numcomprobante.date('d/m/Y'),
+//            'nrocomprobante'=>$numcomprobante,
+//            'controlinterno'=>$numcomprobante.date('d/m/Y'),
         ]);
 //        echo $comprobante;
         return Comprobante::with('cliente')->where('id',$comprobante->id)->with('detalles')->get();

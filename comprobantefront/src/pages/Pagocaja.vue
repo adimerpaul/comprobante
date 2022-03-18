@@ -1,8 +1,7 @@
 <template>
-  <q-page class="q-pa-md">
+  <q-page class="q-pa-xs">
     <div class="row">
-
-      <div class="col-12 col-sm-9 q-pa-xs">
+      <div class="col-12 col-sm-9">
         <q-select
           outlined
           dense
@@ -25,6 +24,7 @@
       <div class="col-12 col-sm-3 q-pa-xs flex flex-center">
         <q-btn icon="refresh" label="Actualizar" color="primary" @click="loscomprobantes"/>
       </div>
+
 <!--      <div class="col-12 col-sm-6">-->
 <!--        <q-input-->
 <!--        outlined-->
@@ -94,25 +94,112 @@
       <div class="col-8">
         <q-input dense label="fecha de cobro" outlined type="date" v-model="fecha"/>
       </div>
-      <div class="col-4">
-        <q-btn size="xs" color="primary" icon="search" @click="mispagos" label="Buscar" class="full-width full-height" />
+      <div class="col-4 flex flex-center">
+        <q-btn color="info" icon="search" @click="mispagos" label="Buscar" class="" />
       </div>
       <div class="col-12 q-pt-md">
         <q-table
           dense
-        title="Historial de cobros"
-        :columns="pcolumns"
-        :data="pagos"
-        />
+          title="Historial de cobros"
+          :columns="pcolumns"
+          :data="pagos"
+          :filter="filter"
+          :rows-per-page-options="[10,50,100,0]"
+        >
+          <template v-slot:top-right>
+            <q-btn label="Agregar " @click="crearcomprobante" icon="add_circle" color="positive"/>
+            <q-input outlined dense v-model="filter" placeholder="Buscar">
+              <template v-slot:append>
+                <q-icon name="search" />
+              </template>
+            </q-input>
+          </template>
+        </q-table>
       </div>
       <div class="col-12 q-pt-md">
         <q-btn color="info" :label="'Total '+ total +'BS'" class="full-width text-red text-bold"/>
         <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>
       </div>
     </div>
+    <q-dialog full-width v-model="modalcomprobante">
+      <q-card >
+        <q-card-section>
+          <div class="text-h6">Medium</div>
+        </q-card-section>
 
+        <q-card-section class="q-pt-none">
+          <q-card>
+            <q-tabs
+              v-model="tab"
+              dense
+              class="text-grey"
+              active-color="primary"
+              indicator-color="primary"
+              align="justify"
+              narrow-indicator
+            >
+              <q-tab name="simple" label="Simple" />
+              <q-tab name="unidades" label="Unidades" />
+            </q-tabs>
 
+            <q-separator />
 
+            <q-tab-panels v-model="tab" animated>
+              <q-tab-panel name="simple">
+<!--                <div class="text-h6">Crear comprobante</div>-->
+                <q-form>
+                  <div class="row">
+                    <div class="col-2"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
+                    <div class="col-1"><q-input label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
+                    <div class="col-1"><q-input label="ci" @input="buscarcliente" outlined dense v-model="ci"/></div>
+                    <div class="col-2"><q-input label="paterno" outlined dense v-model="paterno"/></div>
+                    <div class="col-2"><q-input label="materno" outlined dense v-model="materno"/></div>
+                    <div class="col-2"><q-input label="nombre" outlined dense v-model="nombre"/></div>
+                    <div class="col-2"><q-input label="direccion" outlined dense v-model="direccion"/></div>
+                  </div>
+                </q-form>
+                <q-table dense :columns="columnscomprobante" :rows-per-page-options="[12]" :data="detalle">
+                  <template v-slot:body-cell-coditem="props">
+                    <q-td auto-width :rops="props" >
+                      <q-input style="width: 15em" label="coditem" dense outlined v-model="props.row.coditem" @input="buscar(props.row,props.pageIndex)"  />
+                    </q-td>
+                  </template>
+                  <template v-slot:body-cell-item="props">
+                    <q-td auto-width :rops="props" >
+                      {{props.row.item}}
+                    </q-td>
+                  </template>
+                  <template v-slot:body-cell-monto="props">
+                    <q-td auto-width :rops="props" align="right">
+                      <q-input style="width: 5em" label="monto" dense outlined v-model="props.row.monto" @input="buscar(props.row,props.pageIndex)"  />
+                    </q-td>
+                  </template>
+                  <template v-slot:bottom >
+                    <div class="full-width" style="text-align: right">
+                      <div class="text-h5">{{totalcomprobante}} Bs</div>
+                    </div>
+                  </template>
+                </q-table>
+                <q-btn label="Crear comprobante" @click="insertcomprobante" icon="add_circle" color="positive" class="full-width" />
+              </q-tab-panel>
+              <q-tab-panel name="unidades">
+                <div class="text-h6">Alarms</div>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+              </q-tab-panel>
+
+            </q-tab-panels>
+          </q-card>
+
+        </q-card-section>
+
+        <q-card-actions align="right" >
+          <q-btn flat label="cerrar" color="negative" icon="delete" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+<!--    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">-->
+<!--      <q-btn icon="add_circle" label="Actualizar" color="positive" />-->
+<!--    </div>-->
 
   </q-page>
 </template>
@@ -130,8 +217,38 @@ import {date} from 'quasar'
 export default {
   data() {
     return {
+      items:[],
+      item:{},
+      detalle:[
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+        {coditem:'',item:'',monto:''},
+      ],
+      columnscomprobante:[
+        {name:'coditem',field:'coditem',label:'coditem', align:'center'},
+        {name:'item',field:'item',label:'item', align:'center'},
+        {name:'monto',field:'monto',label:'monto', align:'right'},
+      ],
+      tab:'simple',
+      ci:'',
+      paterno:'',
+      materno:'',
+      nombre:'',
+      direccion:'',
+      filter:'',
       model:'',
+      modalcomprobante:false,
       fecha:date.formatDate(Date.now(),'YYYY-MM-DD'),
+      fechainsertar:date.formatDate(Date.now(),'YYYY-MM-DD'),
       options: [
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ],
@@ -169,6 +286,16 @@ export default {
         icon:'error'
       })
     })
+    this.$axios.get(process.env.URL+'/todoitems').then(res=>{
+      this.items=res.data
+      // console.log(this.unidades)
+    }).catch(err=>{
+      this.$q.notify({
+        message:err.response.data.message,
+        color:'red',
+        icon:'error'
+      })
+    })
     // this.miscomprobante()
     this.mispagos()
     // this.loscomprobantes()
@@ -178,6 +305,97 @@ export default {
     this.loscomprobantes();
   },
   methods: {
+    insertcomprobante(){
+      // this.detalle.forEach(r => {
+      //   r.subtotal = r.precio * r.cantidad
+      // })
+      this.$q.loading.show()
+      this.$axios.post(process.env.URL + '/caja', {
+        total: this.totalcomprobante,
+        ci: this.ci,
+        paterno: this.paterno,
+        materno: this.materno,
+        nombre: this.nombre,
+        direccion: this.direccion,
+        data: this.detalle,
+        nrocomprobante:this.nrocomprobante,
+      }).then((res) => {
+        console.log(res.data)
+        this.$q.loading.hide()
+        // return false
+        this.mispagos()
+
+        this.detalle = ''
+        this.ci = ''
+        this.paterno = ''
+        this.materno = ''
+        this.nombre = ''
+        this.padron = ''
+        this.expedido = ''
+        this.direccion = ''
+        this.numcasa = ''
+        this.nrocomprobante=''
+        this.$q.notify({
+          title: 'Creado ',
+          message:'Creado correctamente',
+          color: 'green',
+          icon: 'check'
+        })
+        this.modalcomprobante=false
+      }).catch(err => {
+        this.$q.loading.hide()
+        this.$q.notify({
+          title: 'Error ',
+          message: err.response.data.message,
+          color: 'red',
+          icon: 'error'
+        })
+      })
+    },
+    buscar(i,index){
+      // console.log(this.items)
+      this.item=this.items.find(d=>d.codigo==i.coditem)
+      if (this.item!=undefined){
+        // console.log(this.item.nombre)
+        this.detalle[index].item=this.item.nombre
+      }
+      // console.log(this.item)
+      // this.$axios.post(process.env.URL+'/nombreitem',{coditem:i.coditem}).then(res=>{
+      //
+      //   if(res.data.length>0){
+      //     console.log(this.detalle[index])
+      //     this.detalle[index].item="asa"
+      //     // this.detalle[index]={coditem:res.data[0].coditem,item:res.data[0].nombre};
+      //   }
+      //   else{
+      //     this.detalle[index]={coditem:i.coditem,item:''};
+      //   }
+      // })
+    },
+    buscarcliente(){
+      this.paterno=''
+      this.materno=''
+      this.nombre=''
+      // this.padron=''
+      // this.expedido=''
+      this.direccion=''
+      // this.numcasa=''
+      if (this.ci!='')
+        this.$axios.get(process.env.URL+'/cliente/'+this.ci).then(res=>{
+          if (res.data.length>0){
+            this.paterno=res.data[0].paterno
+            this.materno=res.data[0].materno
+            this.nombre=res.data[0].nombre
+            // this.padron=res.data[0].padron
+            // this.expedido=res.data[0].expedido
+            this.direccion=res.data[0].direccion
+            // this.numcasa=res.data[0].numcasa
+          }
+        })
+    },
+    crearcomprobante(){
+      this.modalcomprobante=true
+    },
     loscomprobantes(){
       this.model=''
       this.$q.loading.show()
@@ -187,7 +405,7 @@ export default {
         this.$q.loading.hide()
         res.data.forEach(r=>{
           this.comprobantes.push({
-            label:'padron:'+r.varios+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre+' compro:'+r.nrocomprobante+' unid:'+r.unid.nombre,
+            label:r.nrocomprobante+' '+r.paterno+' '+r.materno+' '+r.nombre+' ',
             id:r.id,
             detalles:r.detalles,
             nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
@@ -242,14 +460,8 @@ export default {
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
       doc.text(18, y+4, this.total+'Bs')
-
-
-
-
-
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
-
     },
     // miscomprobante(){
     //   this.$axios.post(process.env.URL+'/buscarimpreso').then(res=>{
@@ -279,7 +491,7 @@ export default {
             nrotramite:r.nrotramite,
             unidad:r.unid.nombre,
             nrocomprobante:r.nrocomprobante,
-            cliente:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            cliente:r.paterno+' '+r.materno+' '+r.nombre,
             cajero:r.cajero,
             ci:r.cliente.ci,
             total:r.total,
@@ -391,9 +603,18 @@ export default {
     total() {
       let total=0
       this.pagos.forEach(r=>{
-        total+=parseFloat(r.total);
+        total+=parseFloat(r.total)
       })
-      return total;
+      return total.toFixed(2);
+    },
+    totalcomprobante(){
+      let total=0
+      this.detalle.forEach(r=>{
+        if (r.monto!=''){
+          total+=parseFloat(r.monto)
+        }
+      })
+      return total.toFixed(2)
     }
   }
 };

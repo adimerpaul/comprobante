@@ -73,7 +73,7 @@ class SubitemController extends Controller
     {
         return Subitem::where('item_id',$item_id)
 //            ->where('unid_id',$request->user()->unid_id)
-            ->orderBy('monto')
+            ->orderBy('id')
             ->where('estado','ACTIVO')
             ->get();
 //        return

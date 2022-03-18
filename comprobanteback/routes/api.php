@@ -56,6 +56,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/mistramites',[\App\Http\Controllers\ComprobanteController::class,'listramite']);
     Route::post('/modcomp/{id}',[\App\Http\Controllers\ComprobanteController::class,'modcomp']);
     Route::post('/modcomprobante',[\App\Http\Controllers\ComprobanteController::class,'modcomprobante']);
+    Route::post('/nombreitem',[\App\Http\Controllers\ItemController::class,'nombreitem']);
 
     Route::post('/mispagoscaja',[\App\Http\Controllers\ComprobanteController::class,'mispagoscaja']);
     Route::post('/convertirletra/{total}',[\App\Http\Controllers\ComprobanteController::class,'convertirletra']);
@@ -74,12 +75,14 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
 
     Route::get('/lista/{ci}',[\App\Http\Controllers\ClienteController::class,'listacliente']);
     Route::get('/subitemlist/{id}',[\App\Http\Controllers\SubitemController::class,'listasubitem']);
+    Route::get('/todoitems',[\App\Http\Controllers\ItemController::class,'todoitems']);
 
     Route::resource('/anulado',\App\Http\Controllers\AnuladoController::class);
     Route::resource('/exportar',\App\Http\Controllers\ExportController::class);
     Route::resource('/mercado',\App\Http\Controllers\MercadoController::class);
     Route::resource('/catastro',\App\Http\Controllers\CatastroController::class);
     Route::resource('/sistema',\App\Http\Controllers\SistemaController::class);
+    Route::resource('/caja',\App\Http\Controllers\CajaController::class);
     Route::post('/subir',[\App\Http\Controllers\ExportController::class,'subir']);
     Route::post('/reportecomp',[\App\Http\Controllers\ComprobanteController::class,'reportecomp']);
     Route::post('/reportitem',[\App\Http\Controllers\ComprobanteController::class,'reportitem']);
