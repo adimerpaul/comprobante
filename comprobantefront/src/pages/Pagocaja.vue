@@ -701,8 +701,8 @@ export default {
         doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
         doc.text(5, 1.5, unidad +' DE '+fecha)
         doc.text(1, 3, 'Nº COMPROBANTE')
-        doc.text(4, 3, 'Nº TRAMITE')
-        doc.text(6.5, 3, 'CONTRIBUYENTE')
+        // doc.text(4, 3, 'Nº TRAMITE')
+        doc.text(4.5, 3, 'CONTRIBUYENTE')
         doc.text(11.5, 3, 'CI/RUN')
         doc.text(13.5, 3, 'UNIDAD')
         doc.text(17, 3, 'MONTO BS.')
@@ -724,8 +724,8 @@ export default {
         if (this.cajero.id==r.cajero_id){
           y+=0.5
           doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante)
-          doc.text(4, y+3, r.nrotramite==undefined?'':r.nrotramite)
-          doc.text(6.5, y+3, r.cliente==undefined?'':r.cliente)
+          // doc.text(4, y+3, r.nrotramite==undefined?'':r.nrotramite)
+          doc.text(4.5, y+3, r.cliente==undefined?'':r.cliente)
           doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
           doc.text(13.5, y+3, r.unidad==undefined?'':r.unidad)
           doc.text(18, y+3, r.total==undefined?'':r.total)
