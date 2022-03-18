@@ -122,6 +122,7 @@
           </template>
           <template v-slot:body-cell-opciones="props">
             <q-td :props="props">
+<!--              <q-btn @click="modificar(props.row)"  size="xs" color="warning" label="modificar" icon="edit"></q-btn>-->
               <q-btn @click="anular(props)" v-if="props.row.estado!='ANULADO'" size="xs" color="negative" label="Anular" icon="warning"></q-btn>
             </q-td>
           </template>
@@ -243,6 +244,30 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+    <q-dialog full-width v-model="modalcomprobantemodificar">
+      <q-card >
+        <q-card-section>
+          <div class="text-h6">Modificar comprobante</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-form>
+            <div class="row">
+              <div class="col-3"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
+              <div class="col-3"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
+              <div class="col-3"><q-input label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
+              <div class="col-3"><q-input label="Total" outlined dense v-model="totalcorto"/></div>
+            </div>
+          </q-form>
+          <q-btn label="Crear comprobante" @click="modificarcomprobantecorto" icon="add_circle" color="warning" class="full-width" />
+
+        </q-card-section>
+
+        <q-card-actions align="right" >
+          <q-btn flat label="cerrar" color="negative" icon="delete" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 <!--    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">-->
 <!--      <q-btn icon="add_circle" label="Actualizar" color="positive" />-->
 <!--    </div>-->
@@ -263,6 +288,7 @@ import {date} from 'quasar'
 export default {
   data() {
     return {
+      modalcomprobantemodificar:'',
       totalcorto:'',
       items:[],
       item:{},
@@ -324,7 +350,8 @@ export default {
       comprobantes:[],
       pagos:[],
       unidades:[],
-      unidad:''
+      unidad:'',
+      comprobante:''
     };
   },
   created() {
@@ -381,6 +408,12 @@ export default {
     this.loscomprobantes();
   },
   methods: {
+    modificar(i){
+      this.comprobante=i
+      this.modalcomprobantemodificar=true
+      this.fechainsertar=this.comprobante.fecha
+        // this.unidad=this.comprobante.
+    },
     anular(props){
       // console.log(props.row)
       this.$q.dialog({
@@ -457,6 +490,9 @@ export default {
           icon: 'error'
         })
       })
+    },
+    modificarcomprobantecorto(){
+
     },
     insertcomprobantecorto(){
       // this.detalle.forEach(r => {
@@ -575,16 +611,21 @@ export default {
         // console.log(res.data)
         this.comprobantes=[]
         this.$q.loading.hide()
+
         res.data.forEach(r=>{
-          this.comprobantes.push({
-            label:r.nrocomprobante+' '+r.paterno+' '+r.materno+' '+r.nombre+' ',
-            id:r.id,
-            detalles:r.detalles,
-            nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
-            padron:r.padron,
-            ci:r.ci,
-            total:r.total,
-          })
+          let d=r
+          d.label=r.nrocomprobante+' '+r.paterno+' '+r.materno+' '+r.nombre+' '
+          d.nombrecompleto=r.paterno+' '+r.materno+' '+r.nombre
+          this.comprobantes.push(d)
+          // this.comprobantes.push({
+          //   label:r.nrocomprobante+' '+r.paterno+' '+r.materno+' '+r.nombre+' ',
+          //   id:r.id,
+          //   detalles:r.detalles,
+          //   nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+          //   padron:r.padron,
+          //   ci:r.ci,
+          //   total:r.total,
+          // })
         })
       })
     },
@@ -615,6 +656,7 @@ export default {
       // let xx=x
       // let yy=y
       let y=0
+      let su=0
       this.pagos.forEach(r=>{
         // console.log(r.cajero_id)
         if (this.cajero.id==r.cajero_id){
@@ -625,6 +667,8 @@ export default {
           doc.text(11.5, y+3, r.ci)
           doc.text(13.5, y+3, r.unidad)
           doc.text(18, y+3, r.total)
+
+          su=su+parseInt(r.total)
           doc.text(19, y+3, r.cajero )
           if (y+3>25){
             doc.addPage();
@@ -634,7 +678,7 @@ export default {
         }
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
-      doc.text(18, y+4, this.total+'Bs')
+      doc.text(18, y+4, su+'Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
     },
@@ -705,7 +749,6 @@ export default {
       this.$q.loading.show()
       this.$axios.post(process.env.URL+'/mispagoscaja',{'fecha':this.fecha}).then(res=>{
         // console.log(res.data)
-
         this.$q.loading.hide()
         this.pagos=[]
         res.data.forEach(r=>{
