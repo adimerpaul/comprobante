@@ -656,13 +656,13 @@ export default {
     },
     crearcomprobante(){
       this.modalcomprobante=true
-      this.fechainsertar=date.formatDate(Date.now(),'YYYY-MM-DD')
+      // this.fechainsertar=date.formatDate(Date.now(),'YYYY-MM-DD')
       this.nrocomprobante=''
       this.totalcorto=''
     },
     crearcomprobantecorto(){
       this.modalcomprobantecorto=true
-      this.fechainsertar=date.formatDate(Date.now(),'YYYY-MM-DD')
+      // this.fechainsertar=date.formatDate(Date.now(),'YYYY-MM-DD')
       this.nrocomprobante=''
       this.totalcorto=''
     },
