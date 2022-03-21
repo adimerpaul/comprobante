@@ -292,6 +292,7 @@ export default {
   data(){
     return{
       fecha:date.formatDate(new  Date(),'YYYY-MM-DD'),
+      fechahoy:date.formatDate(new  Date(),'YYYY-MM-DD'),
       nrocomprobante:'',
       dialogimprimir:false,
       dialogcomprobante:false,
@@ -432,7 +433,7 @@ export default {
       doc.setFont("courier");
       doc.setFontSize(9);
       // var x=0,y=
-      header(this.fecha)
+      header(this.fechahoy)
       // let xx=x
       // let yy=y
       let y=0

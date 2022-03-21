@@ -50,7 +50,7 @@
           </q-td>
           <q-td key="verificadosistema" :props="props" >
 <!--            <template v-if="!props.row.verificadosistema">-->
-              <q-checkbox  size="xs" v-model="props.row.verificadosistema" />
+              <q-checkbox  @input="actualizar(props.row)" size="xs" v-model="props.row.verificadosistema" />
 <!--            </template>-->
 <!--            <template v-else>-->
 <!--              <q-badge class="bg-green">verificado</q-badge>-->
@@ -68,8 +68,8 @@
         </q-table>
       </div>
       <div class="col-12 q-pt-md">
-        <q-btn color="info" :label="'Total '+ total +'BS'" class="full-width  text-bold"/>
-        <q-btn color="green" label="Registrar Verificados" icon="send" class="full-width text-white text-bold" @click="verificar"/>
+        <q-btn color="info" :label="'Total '+ total +' BS Son ' +pagos.length+' comprobantes'" class="full-width  text-bold"/>
+<!--        <q-btn color="green" label="Registrar Verificados" icon="send" class="full-width text-white text-bold" @click="verificar"/>-->
 <!--        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>-->
       </div>
       <div class="col-12">
@@ -211,6 +211,12 @@ export default {
 
 
       window.open(doc.output('bloburl'), '_blank');
+    },
+    actualizar(comprobante){
+      // console.log(comprobante)
+      this.$axios.put(process.env.URL+'/sistema/'+comprobante.id,comprobante).then(res=>{
+        // console.log(res.data)
+      })
     },
     reportecomp(){
       this.$q.loading.show()
@@ -415,8 +421,6 @@ export default {
       })
       doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
       doc.text(18, y+4, this.total+'Bs')
-
-
       doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
     },
     // miscomprobante(){
@@ -551,9 +555,12 @@ export default {
       // console.log(this.pagos)
       let total=0
       this.pagos.forEach(r=>{
-        total+=parseFloat(r.total);
+        if (r.verificadosistema){
+          total+=parseFloat(r.total);
+        }
+
       })
-      return total;
+      return total.toFixed(2);
     },
     tramite() {
       let tramite=0

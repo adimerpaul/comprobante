@@ -77,7 +77,11 @@ class SistemaController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+        $comprobante=Comprobante::find($id);
+        $comprobante->verificadosistema=$request->verificadosistema;
+        $comprobante->fechasistema=date('Y-m-d');
+        $comprobante->verificadosistema_id=$request->user()->id;
+        $comprobante->save();
     }
 
     /**
