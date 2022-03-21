@@ -50,7 +50,7 @@
           </q-td>
           <q-td key="verificadosistema" :props="props" >
 <!--            <template v-if="!props.row.verificadosistema">-->
-              <q-checkbox v-if="props.row.estado=='PAGADO'||props.row.estado=='ANULADO'" size="xs" v-model="props.row.verificadosistema" />
+              <q-checkbox  size="xs" v-model="props.row.verificadosistema" />
 <!--            </template>-->
 <!--            <template v-else>-->
 <!--              <q-badge class="bg-green">verificado</q-badge>-->
