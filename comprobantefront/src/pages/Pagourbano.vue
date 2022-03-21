@@ -92,13 +92,13 @@
               <div class="text-subtitle2">ITEM</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-select :options="items" @input="buscarsubitems()" square dense outlined v-model="item" />
+              <q-select  bg-color="green" :options="items" @input="buscarsubitems()" square dense outlined v-model="item" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">SUBITEM</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-select :options="subitems" square  dense outlined v-model="subitem" />
+              <q-select bg-color="blue" :options="subitems" square  dense outlined v-model="subitem" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">MONTO BS</div>
