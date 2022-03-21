@@ -137,10 +137,11 @@
         <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos todos"/>
       </div>
       <div class="col-4 q-pa-xs">
-        <q-select :options="cajeros" label="cajero" outlined dense v-model="cajero"/>
+<!--        <q-select :options="cajeros" label="cajero" outlined dense v-model="cajero"/>-->
+        <q-btn class="full-width" @click="imprimir" color="info"  icon="print" label=""/>
       </div>
       <div class="col-4 q-pa-xs">
-        <q-btn class="full-width" @click="imprimirusuario" color="warning"  icon="print" label="Imprimir usuario"/>
+<!--        <q-btn class="full-width" @click="imprimirusuario" color="warning"  icon="print" label="Imprimir usuario"/>-->
       </div>
     </div>
     <q-dialog full-width v-model="modalcomprobante">
