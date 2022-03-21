@@ -356,7 +356,7 @@ class ComprobanteController extends Controller
             ->with('unid')
             ->whereDate('fechalimite','>=',now())
 //            ->where('unid_id',$request->unid_id)
-            ->whereRaw('(estado = "ANULADO" OR estado = "PAGADO")')
+            ->whereRaw('(estado = "ANULADO" OR estado = "IMPRESO")')
 //            ->where('estado','IMPRESO')
             ->get();
     }
