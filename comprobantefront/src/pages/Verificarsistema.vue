@@ -68,7 +68,7 @@
         </q-table>
       </div>
       <div class="col-12 q-pt-md">
-        <q-btn color="info" :label="'Total '+ total +' BS Son ' +pagos.length+' comprobantes'" class="full-width  text-bold"/>
+        <q-btn color="info" :label="'Total '+ total +' BS Son ' +totalcomprobantes+' comprobantes verificados'" class="full-width  text-bold"/>
 <!--        <q-btn color="green" label="Registrar Verificados" icon="send" class="full-width text-white text-bold" @click="verificar"/>-->
 <!--        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>-->
       </div>
@@ -561,6 +561,17 @@ export default {
 
       })
       return total.toFixed(2);
+    },
+    totalcomprobantes() {
+      // console.log(this.pagos)
+      let total=0
+      this.pagos.forEach(r=>{
+        if (r.verificadosistema){
+          total++;
+        }
+
+      })
+      return total;
     },
     tramite() {
       let tramite=0

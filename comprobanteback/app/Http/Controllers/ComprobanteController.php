@@ -525,10 +525,11 @@ COUNT(d.coditem) as cantidad,
 SUM(d.subtotal) as monto
         from comprobantes c
         INNER JOIN detalles d on d.comprobante_id=c.id
-        WHERE date(c.fechapago)>= '$ini' and date(c.fechapago) <= '$fin'
+        WHERE date(c.fecha)>= '$ini' and date(c.fecha) <= '$fin'
         AND c.verificadosistema=1
 
         GROUP by date(c.fechapago),d.coditem,d.nombreitem;");
+
         return $datos;
     }
 
