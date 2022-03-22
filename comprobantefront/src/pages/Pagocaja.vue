@@ -350,6 +350,7 @@ export default {
       ],
       comprobantes:[],
       pagos:[],
+      pagos2:[],
       unidades:[],
       unidad:'',
       comprobante:''
@@ -748,7 +749,24 @@ export default {
       this.$q.loading.show()
       this.$axios.get(process.env.URL+'/caja/'+this.fecha).then(res=>{
         // console.log(res.data)
-        let datos=res.data
+        this.pagos2=[]
+        res.data.forEach(r=>{
+          let d=r
+          d.cliente=r.paterno+' '+r.materno+' '+r.nombre
+          this.pagos2.push(d)
+          // this.pagos.push({
+          //   nrotramite:r.nrotramite,
+          //   unidad:r.unid.nombre,
+          //   nrocomprobante:r.nrocomprobante,
+          //   cliente:r.paterno+' '+r.materno+' '+r.nombre,
+          //   cajero:r.cajero,
+          //   estado:r.estado,
+          //   ci:r.cliente.ci,
+          //   id:r.id,
+          //   total:r.total,
+          //   cajero_id:r.cajero_id,
+          // })
+        })
         this.$q.loading.hide()
         function header(unidad,fecha){
           var img = new Image()
@@ -775,7 +793,7 @@ export default {
         // let xx=x
         // let yy=y
         let y=0
-        datos.forEach(r=>{
+        this.pagos2.forEach(r=>{
           // xx+=0.5
           console.log(r)
           y+=0.5
