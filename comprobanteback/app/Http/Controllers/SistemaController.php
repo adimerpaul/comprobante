@@ -92,6 +92,7 @@ class SistemaController extends Controller
      */
     public function destroy($id)
     {
-        //
+        $comprobante=Comprobante::find($id);
+        $comprobante->delete();
     }
 }

@@ -50,7 +50,8 @@
           </q-td>
           <q-td key="verificadosistema" :props="props" >
 <!--            <template v-if="!props.row.verificadosistema">-->
-              <q-checkbox  @input="actualizar(props.row)" size="xs" v-model="props.row.verificadosistema" />
+            <q-checkbox  @input="actualizar(props.row)" size="xs" v-model="props.row.verificadosistema" />
+            <q-btn flat size="xs" @click="borrarcomprobante(props.row)" color="negative" icon="delete"  />
 <!--            </template>-->
 <!--            <template v-else>-->
 <!--              <q-badge class="bg-green">verificado</q-badge>-->
@@ -217,6 +218,16 @@ export default {
       this.$axios.put(process.env.URL+'/sistema/'+comprobante.id,comprobante).then(res=>{
         // console.log(res.data)
       })
+    },
+    borrarcomprobante(comprobante){
+      // console.log(comprobante)
+      if (confirm('Seguro de eliminar!!!!')){
+        this.$axios.delete(process.env.URL+'/sistema/'+comprobante.id).then(res=>{
+          this.$q.loading.show()
+          // console.log(res.data)
+          this.historial()
+        })
+      }
     },
     reportecomp(){
       this.$q.loading.show()
