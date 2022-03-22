@@ -748,6 +748,7 @@ export default {
       this.$q.loading.show()
       this.$axios.get(process.env.URL+'/caja/'+this.fecha).then(res=>{
         // console.log(res.data)
+        let datos=res.data
         this.$q.loading.hide()
         function header(unidad,fecha){
           var img = new Image()
@@ -774,7 +775,7 @@ export default {
         // let xx=x
         // let yy=y
         let y=0
-        res.data.forEach(r=>{
+        datos.forEach(r=>{
           // xx+=0.5
           console.log(r)
           y+=0.5
