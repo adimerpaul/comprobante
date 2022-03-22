@@ -270,9 +270,17 @@ class CajaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function show($id)
+    public function show($fecha)
     {
-        //
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->with('unid')
+            ->whereDate('fecha',$fecha)
+//            ->where('cajero_id',$request->user()->id)
+//            ->where('porcaja',true)
+            ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
+            ->orderBy('nrocomprobante')
+            ->get();
     }
 
     /**

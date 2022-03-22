@@ -134,11 +134,11 @@
         <div class="full-width text-center bg-red text-bold" > TOTAL {{total}} BS</div>
       </div>
       <div class="col-4 q-pa-xs">
-        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos todos"/>
+        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos usuario"/>
       </div>
       <div class="col-4 q-pa-xs">
 <!--        <q-select :options="cajeros" label="cajero" outlined dense v-model="cajero"/>-->
-        <q-btn class="full-width" @click="imprimir" color="info"  icon="print" label=""/>
+        <q-btn class="full-width" @click="imprimircajatotales" color="info"  icon="print" label="Imprimir pagos todos"/>
       </div>
       <div class="col-4 q-pa-xs">
 <!--        <q-btn class="full-width" @click="imprimirusuario" color="warning"  icon="print" label="Imprimir usuario"/>-->
@@ -743,6 +743,67 @@ export default {
       doc.text(18, y+4, su+' Bs')
       // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
       window.open(doc.output('bloburl'), '_blank');
+    },
+    imprimircajatotales(){
+      this.$q.loading.show()
+      this.$axios.get(process.env.URL+'/caja/'+this.fecha).then(res=>{
+        // console.log(res.data)
+        this.$q.loading.hide()
+        function header(unidad,fecha){
+          var img = new Image()
+          img.src = 'logo.jpg'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
+          doc.text(5, 1.5, unidad +' DE '+fecha)
+          doc.text(1, 3, 'Nº COMPROBANTE')
+          // doc.text(4, 3, 'Nº TRAMITE')
+          doc.text(4, 3, 'CONTRIBUYENTE')
+          doc.text(11.5, 3, 'CI/RUN')
+          doc.text(13.5, 3, 'UNIDAD')
+          doc.text(17, 3, 'MONTO BS.')
+          doc.text(19, 3, 'CAJERO')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        // console.log(dat);
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        // var x=0,y=
+        header(this.$store.state.user.unid.nombre.toString(),this.fecha)
+        // let xx=x
+        // let yy=y
+        let y=0
+        res.data.forEach(r=>{
+          // xx+=0.5
+          console.log(r)
+          y+=0.5
+          doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante)
+          // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
+          doc.text(4, y+3, r.cliente==undefined?'':r.cliente)
+          doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
+          doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre)
+          doc.text(18, y+3, r.total==undefined?'':r.total)
+          doc.text(19, y+3, r.cajero ==undefined?'':r.cajero )
+          if (y+3>25){
+            doc.addPage();
+            header(this.fecha)
+            y=0
+          }
+        })
+        doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
+        doc.text(18, y+4, this.total+ ' Bs')
+        // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+        window.open(doc.output('bloburl'), '_blank');
+
+      }).catch(err=>{
+        // console.log(err.response)
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
+        })
+      })
     },
     imprimir(){
       function header(unidad,fecha){
