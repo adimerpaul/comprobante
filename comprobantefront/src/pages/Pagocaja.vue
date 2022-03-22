@@ -798,7 +798,7 @@ export default {
           // xx+=0.5
           console.log(r)
           y+=0.5
-          doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante)
+          doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante.substr(0,21))
           // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
           doc.text(4, y+3, r.cliente==undefined?'':r.cliente)
           doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
@@ -860,7 +860,7 @@ export default {
         // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
         doc.text(4, y+3, r.cliente==undefined?'':r.cliente)
         doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
-        doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre)
+        doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre.substr(0,21))
         doc.text(18, y+3, r.total==undefined?'':r.total)
         doc.text(19, y+3, r.cajero ==undefined?'':r.cajero )
         if (y+3>25){
