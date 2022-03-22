@@ -88,6 +88,12 @@
               <q-input   dense outlined v-model="tipocatastro" />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
+              <div class="text-subtitle2">COD CATASTRAL</div>
+            </div>
+            <div class="col-12 col-sm-9">
+              <q-input   dense outlined v-model="codcatastral" />
+            </div>
+            <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">ITEM</div>
             </div>
             <div class="col-12 col-sm-9">
@@ -291,6 +297,7 @@ import {date} from "quasar";
 export default {
   data(){
     return{
+      codcatastral:'',
       fecha:date.formatDate(new  Date(),'YYYY-MM-DD'),
       nrocomprobante:'',
       dialogimprimir:false,
@@ -361,9 +368,9 @@ export default {
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
           doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+fecha)
-          doc.text(1, 3, 'Nº COMPROBANTE')
+          doc.text(1, 3, 'Nº COMPROB')
           doc.text(1, 3, '__________________________________________________________________________________________________')
-          doc.text(4, 3, 'Nº TRAMITE')
+          doc.text(4, 3, 'COD_CATASTRO')
           doc.text(7, 3, 'CONTRIBUYENTE')
           doc.text(13.5, 3, 'CI/RUN/RUC')
           doc.text(16, 3, 'MONTO BS.')
@@ -382,7 +389,7 @@ export default {
             y+=0.4
             con++
             doc.text(1, y+3, r.nrocomprobante)
-            doc.text(4, y+3, r.nrotramite)
+            doc.text(4, y+3, r.codcatastral==null?' ':r.codcatastral)
             doc.text(7, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
             doc.text(13.5, y+3, r.ci)
             doc.text(16, y+3, r.total)
@@ -624,31 +631,13 @@ export default {
       var x=1,y=-2;
       doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
       // console.log(dat.tipocatastro)
-      if (dat.tipocatastro!=null){
-        doc.text(x+16.5, y+6, dat.tipocatastro.toString());
-      }
-
+      doc.text(x+16.5, y+6, dat.tipocatastro==null?'':dat.tipocatastro);
+      doc.text(x+9.5, y+7.5, dat.paterno.toString()+' '+dat.materno.toString()+' '+dat.nombre.toString());
       doc.setFontSize(7);
       let cont=0
-      let fin=65
+      let fin=20
       let xx=x
       let yy=y
-      if(dat.paterno.toString().length<65)
-        doc.text(xx+9, yy+7, dat.paterno.toString());
-      else{
-        while (dat.paterno.toString().length>=cont){
-          // doc.text(xx+9, yy+8.5, dat.cliente.direccion.toString().substring(cont,fin));
-          doc.text(xx+9, yy+7, dat.paterno.toString().substring(cont,fin));
-          cont+=65;
-          fin+=65
-          yy+=0.2;
-        }
-      }
-      cont=0
-      fin=20
-      xx=x
-      yy=y
-
       if(dat.cliente.direccion.toString().length<20)
         doc.text(x+9.5, y+8.5, dat.cliente.direccion.toString());
       else{
@@ -667,8 +656,10 @@ export default {
       doc.text(x+18, y+8.7, dat.cliente.telefono.toString());
       doc.text(x+3, y+9.5, dat.varios.toString());
       doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
+      doc.text(x+14.5, y+10.5,  dat.codcatastral==null?'':dat.codcatastral);
       xx=x+1.2
       yy=y+11.7
+      let lin=yy
       cont=0
       fin=50
       doc.setFontSize(10);
@@ -686,8 +677,7 @@ export default {
             cont+=50;
             fin+=50
             yy+=0.3;
-          }
-        }
+          }}
         yy+=0.6
         // console.log(r)
       })
@@ -762,7 +752,7 @@ export default {
           numcasa: this.numcasa,
           data: this.detalles,
           tipocatastro: this.tipocatastro,
-          codcatastral: '',
+          codcatastral: this.codcatastral,
         }).then((res) => {
           // console.log(res.data)
           // return false
