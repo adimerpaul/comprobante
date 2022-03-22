@@ -146,17 +146,17 @@ export default {
     this.historial()
   },
   methods: {
-          generarsubitem(){
-        if(this.buscar.inicio<=this.buscar.fin){
-         this.$axios.post(process.env.URL+'/reportitem',this.buscar)
-         .then(res=>{
-           //console.log(res.data)
-           //return false
-           this.item=res.data;
-            // console.log(res.data);
-            this.imprimiritem();
-         })
-        }
+        generarsubitem(){
+      if(this.buscar.inicio<=this.buscar.fin){
+       this.$axios.post(process.env.URL+'/reportitem',this.buscar)
+       .then(res=>{
+         //console.log(res.data)
+         //return false
+         this.item=res.data;
+          // console.log(res.data);
+          this.imprimiritem();
+       })
+      }
       },
         imprimiritem(){
       function header(fecha1,fecha2,hoy){
