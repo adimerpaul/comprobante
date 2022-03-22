@@ -793,6 +793,7 @@ export default {
         // let xx=x
         // let yy=y
         let y=0
+        let total=0
         this.pagos2.forEach(r=>{
           // xx+=0.5
           console.log(r)
@@ -804,6 +805,7 @@ export default {
           doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre)
           doc.text(18, y+3, r.total==undefined?'':r.total)
           doc.text(19, y+3, r.cajero ==undefined?'':r.cajero )
+          total+=parseInt(r.total)
           if (y+3>25){
             doc.addPage();
             header(this.fecha)
@@ -811,7 +813,7 @@ export default {
           }
         })
         doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
-        doc.text(18, y+4, this.total+ ' Bs')
+        doc.text(18, y+4, total+ ' Bs')
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');
 
