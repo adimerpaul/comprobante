@@ -120,34 +120,34 @@ class MercadoController extends Controller
         $formatter = new NumeroALetras();
         $literal= $formatter->toWords($request->total);
 //        return $request->user()->unid_id;
-        Comprobante::where('nrotramite',$request->nrotramite)->update([
+        Comprobante::where('id',$request->comprobante_id)->update([
             'unid_id'=>$request->user()->unid_id,
 //            'nrotramite'=>$request->nrotramite,
 //            'nrocomprobante'=>'139044',
             'fecha'=>date('Y-m-d'),
             'fechalimite'=>date("Y-m-d",strtotime(now()."+ 21 days")),
-            'tipo'=>'VARIOS',
-            'codigo'=>'',
-            'valorcatastral'=>'',
-            'mtsfrte'=>'',
-            'placa'=>'',
-            'marca'=>'',
-            'modelo'=>'',
+//            'tipo'=>'VARIOS',
+//            'codigo'=>'',
+//            'valorcatastral'=>'',
+//            'mtsfrte'=>'',
+//            'placa'=>'',
+//            'marca'=>'',
+//            'modelo'=>'',
             'padron'=>$cliente->padron,
-            'capital'=>'',
-            'varios'=>"",
-            'tipopago'=>'EFECTIVO',
-            'banco'=>'',
-            'banconro'=>'',
-            'intere'=>'',
-            'multa'=>'',
-            'otros'=>'',
-            'formulario'=>'',
+//            'capital'=>'',
+//            'varios'=>"",
+//            'tipopago'=>'EFECTIVO',
+//            'banco'=>'',
+//            'banconro'=>'',
+//            'intere'=>'',
+//            'multa'=>'',
+//            'otros'=>'',
+//            'formulario'=>'',
             'total'=>$request->total,
             'literal'=>$literal,
-            'controlinterno'=>'',
+//            'controlinterno'=>'',
 //            'estado'=>'CREADO',
-            'cajero'=>'',
+//            'cajero'=>'',
             'user_id'=>$request->user()->id,
             'cliente_id'=>$cliente->id,
             'item'=>$item,
@@ -156,7 +156,7 @@ class MercadoController extends Controller
             'materno'=>$cliente->materno,
             'nombre'=>$cliente->nombre,
         ]);
-        $comprobante=Comprobante::where('nrotramite',$request->nrotramite)->firstOrFail();
+        $comprobante=Comprobante::where('id',$request->comprobante_id)->firstOrFail();
         DB::select("DELETE FROM detalles where comprobante_id='".$comprobante->id."'");
         foreach ($request->data as $row){
 //            echo $row['subtotal'].' -';

@@ -270,6 +270,7 @@ export default {
         })
         this.$axios.put(process.env.URL + '/mercado/1', {
           nrotramite: this.nrotramite,
+          comprobante_id:this.micomprobante.id,
           padron: this.padron,
           total: this.total,
           ci: this.ci,
