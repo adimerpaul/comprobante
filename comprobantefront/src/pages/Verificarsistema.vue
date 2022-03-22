@@ -150,7 +150,7 @@ export default {
       if(this.buscar.inicio<=this.buscar.fin){
        this.$axios.post(process.env.URL+'/reportitem',this.buscar)
        .then(res=>{
-         //console.log(res.data)
+         console.log(res.data)
          //return false
          this.item=res.data;
           // console.log(res.data);
@@ -173,11 +173,11 @@ export default {
         doc.setFontSize(9);
         doc.text(6, 2, 'RESUMEN DE INGRESOS POR COMPROBANTE DE CAJA')
         doc.text(6.5, 2.5, 'DEL: '+fecha1+' AL '+fecha2)
-
-        doc.text(0.5, 3.5, 'ITEM')
-        doc.text(3, 3.5, 'DESCRIPCION')
-        doc.text(15, 3.5, 'NRO TRAMITES')
-        doc.text(18, 3.5, 'MONTO BS')
+        doc.text(0.5, 3.2, 'ITEM')
+        doc.text(3, 3.2, 'DESCRIPCION')
+        doc.text(15, 3.2, 'NRO TRAMITES')
+        doc.text(18, 3.2, 'MONTO BS')
+        doc.text(0.5, 3.2, '_____________________________________________________________________________________________________')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -191,15 +191,15 @@ export default {
       let y=0
       let sum=0
       this.item.forEach(item=>{
-        doc.text(0.5, y+3.8, item.cod);
-        doc.text(3, y+3.8, item.nombre.substring(0,70));
-        doc.text(15, y+3.8, ''+item.cantidad);
-        doc.text(19, y+3.8, ''+item.monto,{align: 'right',});
-        y+=0.5
+        doc.text(0.5, y+3.6, item.cod);
+        doc.text(3, y+3.6, item.nombre.substring(0,70));
+        doc.text(15, y+3.6, ''+item.cantidad);
+        doc.text(19, y+3.6, ''+item.monto,{align: 'right',});
+        y+=0.3
         sum+=parseInt(item.monto)
         if (y+4>25){
           doc.addPage();
-           doc.setFont(undefined,'bold')
+           // doc.setFont(undefined,'bold')
           y=0;
         }});
       doc.setFont(undefined,'bold')

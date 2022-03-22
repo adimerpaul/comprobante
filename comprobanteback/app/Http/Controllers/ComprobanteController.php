@@ -518,7 +518,7 @@ class ComprobanteController extends Controller
 //        AND c.verificadosistema=1
 //        AND c.estado!="ANULADO"
 //        GROUP by c.fechasistema,d.codsubitem,d.nombresubitem, d.precio');
-        $datos=DB::SELECT( "SELECT date(c.fechapago) as fecha,
+        $datos=DB::SELECT( "SELECT date(c.fecha) as fecha,
 d.coditem as cod ,
 d.nombreitem as nombre,
 COUNT(d.coditem) as cantidad,
@@ -528,7 +528,7 @@ SUM(d.subtotal) as monto
         WHERE date(c.fecha)>= '$ini' and date(c.fecha) <= '$fin'
         AND c.verificadosistema=1
         AND d.subtotal!=0
-        GROUP by date(c.fechapago),d.coditem,d.nombreitem;");
+        GROUP by date(c.fecha),d.coditem,d.nombreitem;");
 
         return $datos;
     }
