@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Comprobante;
+use App\Models\Detalle;
 use Illuminate\Http\Request;
 
 class SistemaController extends Controller
@@ -94,5 +95,29 @@ class SistemaController extends Controller
     {
         $comprobante=Comprobante::find($id);
         $comprobante->delete();
+    }
+    public function modificarcomprobantesistemas(Request $request,$comprobante_id){
+        $comprobante=Comprobante::find($comprobante_id);
+        $comprobante->fecha=$request->fecha;
+        $comprobante->unid_id=$request->unid_id;
+        $comprobante->nrocomprobante=$request->nrocomprobante;
+        $comprobante->update();
+//        return $request->detalles;
+        Detalle::where('comprobante_id',$comprobante->id)->delete();
+        foreach ($request->detalles as $row){
+            if ($row['coditem']!=null ){
+                $detalle=new Detalle();
+                $detalle->coditem=$row['coditem'];
+                $detalle->nombreitem=$row['item'];
+                $detalle->codsubitem='';
+                $detalle->nombresubitem='';
+                $detalle->detalle='';
+                $detalle->precio=$row['monto'];
+                $detalle->cantidad=1;
+                $detalle->subtotal=$row['monto'];
+                $detalle->comprobante_id=$comprobante->id;
+                $detalle->save();
+            }
+        }
     }
 }

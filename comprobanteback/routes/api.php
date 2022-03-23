@@ -82,6 +82,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/mercado',\App\Http\Controllers\MercadoController::class);
     Route::resource('/catastro',\App\Http\Controllers\CatastroController::class);
     Route::resource('/sistema',\App\Http\Controllers\SistemaController::class);
+
+    Route::put('/modificarcomprobantesistemas/{id}',[\App\Http\Controllers\SistemaController::class,'modificarcomprobantesistemas']);
     Route::resource('/caja',\App\Http\Controllers\CajaController::class);
     Route::post('/insertarcorto',[\App\Http\Controllers\CajaController::class,'insertarcorto']);
     Route::post('/subir',[\App\Http\Controllers\ExportController::class,'subir']);

@@ -195,7 +195,7 @@
                   </template>
                   <template v-slot:body-cell-monto="props">
                     <q-td auto-width :rops="props" align="right">
-                      <q-input style="width: 5em" label="monto" dense outlined v-model="props.row.monto" @input="buscar(props.row,props.pageIndex)"  />
+                      <q-input style="width: 5em" label="monto" dense outlined v-model="props.row.monto"  />
                     </q-td>
                   </template>
                   <template v-slot:bottom >

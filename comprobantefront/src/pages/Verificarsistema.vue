@@ -40,7 +40,8 @@
             {{props.row.unid.codigo}} {{props.row.unid.nombre}}
           </q-td>
           <q-td key="total" :props="props">
-            {{props.row.total}} Bs
+            {{props.row.total}} - {{sumar(props.row.detalles)}} Bs
+            <q-badge v-if="props.row.total!=sumar(props.row.detalles)"  color="negative">N</q-badge>
           </q-td>
           <q-td key="estado" :props="props">
             <q-badge :color="props.row.estado=='ANULADO'?'teal':props.row.estado=='PAGADO'?'positive':'negative'" :label="props.row.estado"/>
@@ -51,7 +52,8 @@
           <q-td key="verificadosistema" :props="props" >
 <!--            <template v-if="!props.row.verificadosistema">-->
             <q-checkbox  @input="actualizar(props.row)" size="xs" v-model="props.row.verificadosistema" />
-            <q-btn flat size="xs" @click="borrarcomprobante(props.row)" color="negative" icon="delete"  />
+<!--            <q-btn flat size="xs" @click="borrarcomprobante(props.row)" color="negative" icon="delete"  />-->
+            <q-btn @click="frmmodificar(props.row)" color="warning" size="xs" label="modificar" icon="edit" />
 <!--            </template>-->
 <!--            <template v-else>-->
 <!--              <q-badge class="bg-green">verificado</q-badge>-->
@@ -92,6 +94,53 @@
         </q-form>
       </div>
     </div>
+    <q-dialog full-width v-model="modalcomprobante">
+      <q-card >
+        <q-card-section>
+          <div class="text-h6">Modificar comprobante</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-form>
+            <div class="row">
+              <div class="col-4"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
+              <div class="col-4"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
+              <div class="col-4"><q-input label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
+<!--              <div class="col-3"><q-input label="ci" @input="buscarcliente" outlined dense v-model="ci"/></div>-->
+<!--              <div class="col-3"><q-input label="paterno" outlined dense v-model="paterno"/></div>-->
+<!--              <div class="col-3"><q-input label="materno" outlined dense v-model="materno"/></div>-->
+<!--              <div class="col-3"><q-input label="nombre" outlined dense v-model="nombre"/></div>-->
+<!--              <div class="col-3"><q-input label="direccion" outlined dense v-model="direccion"/></div>-->
+            </div>
+          </q-form>
+          <q-table dense :columns="columnscomprobante" :rows-per-page-options="[12]" :data="detalle">
+            <template v-slot:body-cell-coditem="props">
+              <q-td auto-width :rops="props" >
+                <q-input style="width: 15em" label="coditem" dense outlined v-model="props.row.coditem" @input="buscarcomprobante(props.row,props.pageIndex)"  />
+              </q-td>
+            </template>
+            <template v-slot:body-cell-item="props">
+              <q-td auto-width :rops="props" >
+                {{props.row.item}}
+              </q-td>
+            </template>
+            <template v-slot:body-cell-monto="props">
+              <q-td auto-width :rops="props" align="right">
+                <q-input style="width: 5em" label="monto" dense outlined v-model="props.row.monto"   />
+              </q-td>
+            </template>
+            <template v-slot:bottom >
+              <div class="full-width" style="text-align: right">
+                <div class="text-h5">{{totalcomprobante}} Bs - {{totalcomprobantedetalle}} Bs</div>
+              </div>
+            </template>
+          </q-table>
+          <q-btn label="Modificar comprobante" @click="modificarcomprobante()"  icon="edit" color="positive" class="full-width" />
+        </q-card-section>
+        <q-card-actions align="right" >
+          <q-btn flat label="cerrar" color="negative" icon="delete" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </q-page>
 </template>
 <script>
@@ -102,9 +151,25 @@ const { addToDate } = date
 export default {
   data() {
     return {
+      modalcomprobante:false,
+      totalcomprobante:'',
+      items:[],
+      item:{},
+      columnscomprobante:[
+        {name:'coditem',field:'coditem',label:'coditem', align:'center'},
+        {name:'item',field:'item',label:'item', align:'center'},
+        {name:'monto',field:'monto',label:'monto', align:'right'},
+      ],
+      fechainsertar:'',
+      nrocomprobante:'',
       filter:'',
       model:'',
-      unidad:'',
+      ci:'',
+      paterno:'',
+      materno:'',
+      nombre:'',
+      direccion:'',
+      detalle:[],
       // fecha2:date.formatDate(Date.now(),'YYYY-MM-DD'),
       //
       // fecha:date.formatDate( addToDate(Date.now(),{days:-1}) ,'YYYY-MM-DD'),
@@ -114,7 +179,7 @@ export default {
       options: [
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
       ],
-      nrocomprobante:'',
+
       // columns:[
       //   {name:'codsubitem',label:'Codigo', align:'left',field:'codsubitem',sortable:true},
       //   {name:'referencia',label:'Referencia', align:'left',field:'detalle',sortable:true},
@@ -131,47 +196,146 @@ export default {
         {name:'verificadosistema',label:'Verificar', align:'left',field:'verificadosistema'},
       ],
       comprobantes:[],
+      comprobante:{},
       pagos:[],
       unidades:[],
+      unidad:{},
       selectodos:false,
-      item:[]
     };
   },
   created() {
+
     // this.miscomprobante()
     // this.mispagos()
     this.$axios.get(process.env.URL+'/unid').then(res=>{
-      this.unidades=res.data
+      this.unidades=[]
+      res.data.forEach(r=>{
+        let d=r
+        d.label=r.nombre
+        this.unidades.push(d)
+      })
+      this.unidad=this.unidades[0]
       // console.log(res.data)
     })
     this.historial()
+    this.$axios.get(process.env.URL+'/todoitems').then(res=>{
+      this.items=res.data
+      // console.log(this.unidades)
+    }).catch(err=>{
+      this.$q.notify({
+        message:err.response.data.message,
+        color:'red',
+        icon:'error'
+      })
+    })
   },
   methods: {
-        generarsubitem(){
+    sumar(d){
+      let s=0
+      d.forEach(r=>{
+        s+= parseInt(r.subtotal)
+      })
+      return s
+    },
+    modificarcomprobante(){
+      this.$q.loading.show()
+      this.$axios.put(process.env.URL + '/modificarcomprobantesistemas/'+this.comprobante.id, {
+        // total: this.totalcorto,
+        fecha: this.fechainsertar,
+        unid_id: this.unidad.id,
+        nrocomprobante:this.nrocomprobante,
+        detalles:this.detalle
+      }).then((res) => {
+        console.log(res.data)
+        this.totalcorto='',
+          this.$q.loading.hide()
+        // return false
+        this.historial()
+        // this.detalle=[
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        //   {coditem:'',item:'',monto:''},
+        // ]
+        this.ci = ''
+        this.paterno = ''
+        this.materno = ''
+        this.nombre = ''
+        this.padron = ''
+        this.expedido = ''
+        this.direccion = ''
+        this.numcasa = ''
+        this.nrocomprobante=''
+        this.modalcomprobante=false
+        this.$q.notify({
+          title: 'Modificado ',
+          message:'Modificado correctamente',
+          color: 'green',
+          icon: 'check'
+        })
+        this.modalcomprobantemodificar=false
+      }).catch(err => {
+        this.$q.loading.hide()
+        this.$q.notify({
+          title: 'Error ',
+          message: err.response.data.message,
+          color: 'red',
+          icon: 'error'
+        })
+      })
+    },
+    buscarcliente(){
+      this.paterno=''
+      this.materno=''
+      this.nombre=''
+      // this.padron=''
+      // this.expedido=''
+      this.direccion=''
+      // this.numcasa=''
+      if (this.ci!='')
+        this.$axios.get(process.env.URL+'/cliente/'+this.ci).then(res=>{
+          if (res.data.length>0){
+            this.paterno=res.data[0].paterno
+            this.materno=res.data[0].materno
+            this.nombre=res.data[0].nombre
+            // this.padron=res.data[0].padron
+            // this.expedido=res.data[0].expedido
+            this.direccion=res.data[0].direccion
+            // this.numcasa=res.data[0].numcasa
+          }
+        })
+    },
+    generarsubitem(){
       if(this.buscar.inicio<=this.buscar.fin){
-       this.$axios.post(process.env.URL+'/reportitem',this.buscar)
-       .then(res=>{
-         console.log(res.data)
+       this.$axios.post(process.env.URL+'/reportitem',this.buscar).then(res=>{
+         // console.log(res.data)
          //return false
          this.item=res.data;
           // console.log(res.data);
           this.imprimiritem();
        })
       }
-      },
-        imprimiritem(){
+    },
+    imprimiritem(){
       function header(fecha1,fecha2,hoy){
         var img = new Image()
         img.src = 'logo.jpg'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
-        doc.setFontSize(5);
-
+        doc.setFontSize(7);
         doc.text(2,1,'GOBIERNO AUTONOMO MUNICIPAL DE ORURO')
         doc.text(2.5,1.2,'DIRECCION DE INGRESOS')
-        doc.setFontSize(7);
-        doc.text(15,1,'Fecha de Consulta:'+hoy);
         doc.setFontSize(9);
+        doc.text(15,1,'Fecha de Consulta:'+hoy);
+        doc.setFontSize(11);
         doc.text(6, 2, 'RESUMEN DE INGRESOS POR COMPROBANTE DE CAJA')
         doc.text(6.5, 2.5, 'DEL: '+fecha1+' AL '+fecha2)
         doc.text(0.5, 3.2, 'ITEM')
@@ -184,13 +348,14 @@ export default {
       var doc = new jsPDF('p','cm','letter')
       // console.log(dat);
       doc.setFont("courier");
-      doc.setFontSize(9);
+
       // var x=0,y=
       header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'))
       // let xx=x
       // let yy=y
       let y=0
       let sum=0
+      doc.setFontSize(11);
       this.item.forEach(item=>{
         doc.text(0.5, y+3.6, item.cod);
         doc.text(3, y+3.6, item.nombre.substring(0,70));
@@ -219,6 +384,26 @@ export default {
         // console.log(res.data)
       })
     },
+    buscarcomprobante(i,index){
+      // console.log(this.items)
+      this.item=this.items.find(d=>d.codigo==i.coditem)
+      if (this.item!=undefined){
+        // console.log(this.item.nombre)
+        this.detalle[index].item=this.item.nombre
+      }
+      // console.log(this.item)
+      // this.$axios.post(process.env.URL+'/nombreitem',{coditem:i.coditem}).then(res=>{
+      //
+      //   if(res.data.length>0){
+      //     console.log(this.detalle[index])
+      //     this.detalle[index].item="asa"
+      //     // this.detalle[index]={coditem:res.data[0].coditem,item:res.data[0].nombre};
+      //   }
+      //   else{
+      //     this.detalle[index]={coditem:i.coditem,item:''};
+      //   }
+      // })
+    },
     borrarcomprobante(comprobante){
       // console.log(comprobante)
       if (confirm('Seguro de eliminar!!!!')){
@@ -228,6 +413,32 @@ export default {
           this.historial()
         })
       }
+    },
+    frmmodificar(comprobante){
+      this.comprobante=comprobante
+      console.log(this.comprobante)
+      this.unidad=this.comprobante.unid
+      this.unidad.label=this.comprobante.unid.nombre
+      this.fechainsertar=this.comprobante.fecha
+      this.nrocomprobante=this.comprobante.nrocomprobante
+      this.totalcomprobante=this.comprobante.total
+      // this.ci=this.comprobante.ci
+      // this.paterno=this.comprobante.paterno
+      // this.materno=this.comprobante.materno
+      // this.nombre=this.comprobante.nombre
+      // this.direccion=this.comprobante.direccion
+      this.detalle=[]
+      this.comprobante.detalles.forEach(r=>{
+        let d=r
+        d.item=r.nombreitem
+        d.coditem=r.coditem
+        d.monto=r.subtotal
+        this.detalle.push(d)
+      })
+      for (let i=0;i<=(12-this.detalle.length);i++){
+        this.detalle.push({coditem:'',item:'',monto:''})
+      }
+      this.modalcomprobante=true
     },
     reportecomp(){
       this.$q.loading.show()
@@ -583,6 +794,15 @@ export default {
 
       })
       return total;
+    },
+    totalcomprobantedetalle(){
+      let total=0
+      this.detalle.forEach(r=>{
+        if (r.monto!=''){
+          total+=parseFloat(r.monto)
+        }
+      })
+      return total.toFixed(2)
     },
     tramite() {
       let tramite=0
