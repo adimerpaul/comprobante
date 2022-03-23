@@ -293,6 +293,7 @@ export default {
   data(){
     return{
       fecha:date.formatDate(new  Date(),'YYYY-MM-DD'),
+      fechahoy:date.formatDate(new  Date(),'YYYY-MM-DD'),
       nrocomprobante:'',
       dialogimprimir:false,
       dialogcomprobante:false,
@@ -373,7 +374,7 @@ export default {
         var doc = new jsPDF('p','cm','letter')
         doc.setFont("courier");
         doc.setFontSize(9);
-        header(this.fecha)
+        header(this.fechahoy)
         let y=0
         let sumtotal=0
         let con=0
@@ -392,7 +393,7 @@ export default {
             if (con==55){
               con=0
               doc.addPage();
-              header(this.fecha)
+              header(this.fechahoy)
               y=0
             }
           }
