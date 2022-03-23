@@ -52,7 +52,7 @@
           <q-td key="verificadosistema" :props="props" >
 <!--            <template v-if="!props.row.verificadosistema">-->
             <q-checkbox  @input="actualizar(props.row)" size="xs" v-model="props.row.verificadosistema" />
-<!--            <q-btn flat size="xs" @click="borrarcomprobante(props.row)" color="negative" icon="delete"  />-->
+            <q-btn flat size="xs" @click="borrarcomprobante(props.row)" color="negative" icon="delete"  />
             <q-btn @click="frmmodificar(props.row)" color="warning" size="xs" label="modificar" icon="edit" />
 <!--            </template>-->
 <!--            <template v-else>-->
