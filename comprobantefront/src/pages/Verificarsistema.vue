@@ -485,11 +485,10 @@ export default {
           console.log(r)
           cont++
           a=0
-          if (f!=r.fechasistema){
-
+          if (f!=r.fecha){
             doc.setFont(undefined,'bold')
-            f=r.fechasistema
-            doc.text(x+1, y+3.5, r.fechasistema)
+            f=r.fecha
+            doc.text(x+1, y+3.5, r.fecha)
             doc.text(x+4.5, y+3.5, 'TALONARIO' )
             a=0.28
             doc.setFont(undefined,'normal')
