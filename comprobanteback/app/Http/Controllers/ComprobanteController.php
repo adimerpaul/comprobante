@@ -535,13 +535,13 @@ SUM(d.subtotal) as monto
 
     public function reportecomp(Request $request){
         return DB::select('
-    SELECT c.fecha ,u.nombre,
+    SELECT c.fechasistema ,u.nombre,
     MIN(c.nrocomprobante) as menor,
     MAX(c.nrocomprobante) as mayor
     FROM comprobantes c INNER JOIN unids u on c.unid_id=u.id
-    WHERE c.fecha >= "'.$request->inicio.'" and c.fecha<="'.$request->fin.'"
+    WHERE c.fechasistema >= "'.$request->inicio.'" and c.fechasistema<="'.$request->fin.'"
     AND c.verificadosistema =1
-    GROUP by c.fecha,u.nombre;
+    GROUP by c.fechasistema,u.nombre;
     ');
     }
     public function listramite(){
