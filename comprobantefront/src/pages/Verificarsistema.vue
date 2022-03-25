@@ -494,8 +494,8 @@ export default {
             doc.setFont(undefined,'normal')
             cont++
           }
-          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,5))
-          doc.text(x+5, y+a+3.5, r.menor)
+          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,25))
+          doc.text(x+4.8, y+a+3.5, r.menor)
           doc.text(x+6, y+a+3.5, r.mayor )
 
           if (cont==70){
@@ -518,9 +518,9 @@ export default {
           }
 
           if (a==0){
-            y+=0.30
+            y+=0.32
           }else{
-            y=y+0.30+a
+            y=y+0.32+a
           }
 
         })
