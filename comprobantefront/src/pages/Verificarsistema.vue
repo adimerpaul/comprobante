@@ -473,7 +473,7 @@ export default {
 
         // var x=0,y=
         header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
-        console.log(res.data)
+        // console.log(res.data)
         doc.setFontSize(6)
         let y=0
         let x=0
@@ -482,6 +482,7 @@ export default {
         let cont=0;
         res.data.forEach(r=>{
           // xx+=0.5
+          console.log(r)
           cont++
           a=0
           if (f!=r.fechasistema){
