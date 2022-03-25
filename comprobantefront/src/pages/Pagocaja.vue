@@ -174,7 +174,7 @@
                   <div class="row">
                     <div class="col-3"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
                     <div class="col-3"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
-                    <div class="col-3"><q-input label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
+                    <div class="col-3"><q-input @input="buscarcomprobante" label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
                     <div class="col-3"><q-input label="ci" @input="buscarcliente" outlined dense v-model="ci"/></div>
                     <div class="col-3"><q-input label="paterno" outlined dense v-model="paterno"/></div>
                     <div class="col-3"><q-input label="materno" outlined dense v-model="materno"/></div>
@@ -204,7 +204,9 @@
                     </div>
                   </template>
                 </q-table>
-                <q-btn  label="Crear comprobante" @click="insertcomprobante" icon="add_circle" color="positive" class="full-width" />
+                <q-btn :disable="boolcrearcomprobante"  label="Crear comprobante" @click="insertcomprobante" icon="add_circle" color="positive" class="full-width" />
+                <div style="width: 100%;" :class="boolcrearcomprobante?'bg-red':'bg-green'" class="text-white rounded-borders row flex-center "> {{boolcrearcomprobante?'COMPROBANTE YA INSERTADO':'COPROBANTE LIBRE'}}</div>
+
               </q-tab-panel>
               <q-tab-panel name="unidades">
                 <div class="text-h6">Alarms</div>
@@ -237,7 +239,7 @@
             </div>
           </q-form>
           <q-btn :disable="boolcrearcomprobante" label="Crear comprobante" @click="insertcomprobantecorto" icon="add_circle" color="positive" class="full-width" />
-          <q-badge class="full-width text-center">adimer</q-badge>
+          <div style="width: 100%;" :class="boolcrearcomprobante?'bg-red':'bg-green'" class="text-white rounded-borders row flex-center "> {{boolcrearcomprobante?'COMPROBANTE YA INSERTADO':'COPROBANTE LIBRE'}}</div>
         </q-card-section>
 
         <q-card-actions align="right" >
@@ -813,7 +815,7 @@ export default {
           y+=0.5
           doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante.substr(0,21))
           // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
-          doc.text(4, y+3, r.cliente==undefined?'':r.cliente.substr(0,25))
+          doc.text(4, y+3, r.cliente==undefined?'':r.cliente.substr(0,33))
           doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
           doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre.substr(0,21))
           doc.text(18, y+3, r.total==undefined?'':r.total)
@@ -871,7 +873,7 @@ export default {
         y+=0.5
         doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante)
         // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
-        doc.text(4, y+3, r.cliente==undefined?'':r.cliente.substr(0,25))
+        doc.text(4, y+3, r.cliente==undefined?'':r.cliente.substr(0,33))
         doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
         doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre.substr(0,21))
         doc.text(18, y+3, r.total==undefined?'':r.total)
