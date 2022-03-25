@@ -521,8 +521,6 @@ export default {
             header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
           }
 
-
-
         })
 
         window.open(doc.output('bloburl'), '_blank');
