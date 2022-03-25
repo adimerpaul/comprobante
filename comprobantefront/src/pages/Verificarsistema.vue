@@ -494,22 +494,22 @@ export default {
             doc.setFont(undefined,'normal')
             cont++
           }
-          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,30))
-          doc.text(x+4.5, y+a+3.5, r.menor)
-          doc.text(x+5.5, y+a+3.5, r.mayor )
+          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,5))
+          doc.text(x+5, y+a+3.5, r.menor)
+          doc.text(x+6, y+a+3.5, r.mayor )
 
-          if (cont==80){
+          if (cont==70){
             // doc.addPage();
             // cont=0
             // header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
             y=0
             x+=7
           }
-          if (cont==160){
+          if (cont==140){
             y=0
             x+=7
           }
-          if (cont==240){
+          if (cont==210){
             y=0
             x=0.5
             cont=0
@@ -518,9 +518,9 @@ export default {
           }
 
           if (a==0){
-            y+=0.28
+            y+=0.30
           }else{
-            y=y+0.28+a
+            y=y+0.30+a
           }
 
         })
