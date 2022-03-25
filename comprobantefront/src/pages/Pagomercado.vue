@@ -715,7 +715,7 @@ export default {
     },
     miscomprobantesmercados(){
       this.$q.loading.show()
-      this.$axios.get(process.env.URL + '/mercado').then(res=>{
+      this.$axios.get(process.env.URL + '/mercado/1/edit').then(res=>{
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r

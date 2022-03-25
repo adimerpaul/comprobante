@@ -168,11 +168,11 @@
               <div class="text-subtitle2">NRO COMPROBANTE</div>
             </div>
             <div class="col-12 col-sm-7 ">
-              <q-input @input="misrangos" square required dense ref="nrocomprobanteinput" outlined v-model="nrocomprobante" />
+              <q-input @input="mirango" square required dense ref="nrocomprobanteinput" outlined v-model="nrocomprobante" />
             </div>
             <div class="col-12 col-sm-2 ">
-              <q-badge :color="color" class="full-width full-height" text-color="white">
-                {{msg}} {{min}}-{{max}}
+              <q-badge :color="boolrango?'red':'green'" class="full-width full-height" text-color="white">
+                Disponibles {{unidad.inicio}}-{{unidad.fin}}
               </q-badge>
             </div>
             <div class="col-12 col-sm-3 bg-blue flex flex-center ">
@@ -277,7 +277,7 @@
               <q-btn type="button" @click="proforma" class="full-width" icon="warning" color="warning" :label="'Imprimir proforma'"/>
             </div>
             <div class="col-6">
-              <q-btn type="submit" class="full-width" icon="print" color="info" :label="'Imprimir comprobante '+ total +' Bs'"/>
+              <q-btn :disable="boolrango" type="submit" class="full-width" icon="print" color="info" :label="'Imprimir comprobante '+ total +' Bs'"/>
             </div>
           </div>
         </q-form>
@@ -351,14 +351,21 @@ export default {
       min:0,
       color:'',
       msg:'',
+      unidad:{},
     }
   },
   created() {
     this.numcomprobante()
     this.misitems()
     this.miscomprobantesmercados()
+    this.mirango()
   },
   methods:{
+    mirango(){
+      this.$axios.get(process.env.URL + '/mercado/create').then(res=>{
+        this.unidad=res.data
+      })
+    },
     reportecomprobantesusuario(){
       this.$q.loading.show()
       this.$axios.get(process.env.URL + '/comprobanteusuario/'+this.fecha).then(res=>{
@@ -686,7 +693,7 @@ export default {
     },
     miscomprobantesmercados(){
       this.$q.loading.show()
-      this.$axios.get(process.env.URL + '/mercado').then(res=>{
+      this.$axios.get(process.env.URL + '/mercado/1/edit').then(res=>{
         this.miscomprobantes=[]
         res.data.forEach(r=>{
           let d=r
@@ -1125,6 +1132,13 @@ export default {
     },
   },
   computed:{
+    boolrango(){
+      if (this.nrocomprobante>=this.unidad.inicio && this.nrocomprobante<=this.unidad.fin){
+        return false
+      }else{
+        return true
+      }
+    },
     subtotal(){
       return Math.round(this.subitem.monto*this.subitem.cantidad)
     },

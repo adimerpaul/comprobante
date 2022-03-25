@@ -86,9 +86,16 @@ class MercadoController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function edit($id)
+    public function edit($id,Request $request)
     {
-        //
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->with('user')
+            ->whereDate('fechalimite','>=',now())
+            ->where('user_id',$request->user()->id)
+            ->whereDate('fecha',now())
+            ->orderBy('id','desc')
+            ->get();
     }
 
     /**
