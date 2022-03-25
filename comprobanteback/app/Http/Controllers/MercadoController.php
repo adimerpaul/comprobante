@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\Comprobante;
 use App\Models\Detalle;
+use App\Models\Unid;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Luecano\NumeroALetras\NumeroALetras;
@@ -33,9 +34,9 @@ class MercadoController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function create()
+    public function create(Request $request)
     {
-        //
+        return Unid::find($request->user()->unid_id);
     }
 
     /**

@@ -207,7 +207,7 @@ export default {
       }).onOk(data=>{
         // console.log(data);
         this.$q.loading.show()
-        this.$axios.put(process.env.URL+'/unid/'+item.row.id,{inicio:data,fin: parseInt(data)+100}).then(res=>{
+        this.$axios.put(process.env.URL+'/unid/'+item.row.id,{inicio:data,fin: parseInt(data)+99}).then(res=>{
           this.$q.notify({
             message:'Modificado correctamente',
             icon:'cloud_done',
