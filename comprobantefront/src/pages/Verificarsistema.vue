@@ -494,13 +494,13 @@ export default {
             doc.setFont(undefined,'normal')
             cont++
           }
-          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,20))
+          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,21))
           doc.text(x+4.8, y+a+3.5, r.menor+'-'+r.mayor)
           // doc.text(x+6, y+a+3.5, r.mayor )
           if (a==0){
-            y+=0.37
+            y+=0.35
           }else{
-            y=y+0.37+a
+            y=y+0.35+a
           }
           if (cont==70){
             // doc.addPage();
