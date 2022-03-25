@@ -474,7 +474,7 @@ export default {
         // var x=0,y=
         header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
         // console.log(res.data)
-        doc.setFontSize(10)
+        doc.setFontSize(9)
         let y=0
         let x=0
         let f='*'
@@ -497,7 +497,11 @@ export default {
           doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,20))
           doc.text(x+4.8, y+a+3.5, r.menor+'-'+r.mayor)
           // doc.text(x+6, y+a+3.5, r.mayor )
-
+          if (a==0){
+            y+=0.37
+          }else{
+            y=y+0.37+a
+          }
           if (cont==70){
             // doc.addPage();
             // cont=0
@@ -517,11 +521,7 @@ export default {
             header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
           }
 
-          if (a==0){
-            y+=0.4
-          }else{
-            y=y+0.4+a
-          }
+
 
         })
 
