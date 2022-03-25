@@ -291,7 +291,7 @@ class CajaController extends Controller
      */
     public function edit($id)
     {
-        //
+        return Comprobante::where('nrocomprobante',$id)->get()->count();
     }
 
     /**

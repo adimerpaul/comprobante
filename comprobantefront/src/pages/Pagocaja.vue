@@ -204,7 +204,7 @@
                     </div>
                   </template>
                 </q-table>
-                <q-btn label="Crear comprobante" @click="insertcomprobante" icon="add_circle" color="positive" class="full-width" />
+                <q-btn  label="Crear comprobante" @click="insertcomprobante" icon="add_circle" color="positive" class="full-width" />
               </q-tab-panel>
               <q-tab-panel name="unidades">
                 <div class="text-h6">Alarms</div>
@@ -232,12 +232,12 @@
             <div class="row">
               <div class="col-3"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
               <div class="col-3"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
-              <div class="col-3"><q-input label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
+              <div class="col-3"><q-input @input="buscarcomprobante" label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
               <div class="col-3"><q-input label="Total" outlined dense v-model="totalcorto"/></div>
             </div>
           </q-form>
-          <q-btn label="Crear comprobante" @click="insertcomprobantecorto" icon="add_circle" color="positive" class="full-width" />
-
+          <q-btn :disable="boolcrearcomprobante" label="Crear comprobante" @click="insertcomprobantecorto" icon="add_circle" color="positive" class="full-width" />
+          <q-badge class="full-width text-center">adimer</q-badge>
         </q-card-section>
 
         <q-card-actions align="right" >
@@ -289,6 +289,7 @@ import {date} from 'quasar'
 export default {
   data() {
     return {
+      boolcrearcomprobante:true,
       modalcomprobantemodificar:false,
       totalcorto:'',
       items:[],
@@ -553,6 +554,18 @@ export default {
         })
       })
     },
+    buscarcomprobante(){
+      if (this.nrocomprobante!=''){
+        this.$axios.get(process.env.URL + '/caja/'+this.nrocomprobante+'/edit').then(res=>{
+          // console.log(res.data)
+          if (res.data==0){
+            this.boolcrearcomprobante=false
+          }else {
+            this.boolcrearcomprobante=true
+          }
+        })
+      }
+    },
     insertcomprobantecorto(){
       // this.detalle.forEach(r => {
       //   r.subtotal = r.precio * r.cantidad
@@ -800,9 +813,9 @@ export default {
           y+=0.5
           doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante.substr(0,21))
           // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
-          doc.text(4, y+3, r.cliente==undefined?'':r.cliente)
+          doc.text(4, y+3, r.cliente==undefined?'':r.cliente.substr(0,25))
           doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
-          doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre)
+          doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre.substr(0,21))
           doc.text(18, y+3, r.total==undefined?'':r.total)
           doc.text(19, y+3, r.cajero ==undefined?'':r.cajero )
           total+=parseInt(r.total)
@@ -858,7 +871,7 @@ export default {
         y+=0.5
         doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante)
         // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
-        doc.text(4, y+3, r.cliente==undefined?'':r.cliente)
+        doc.text(4, y+3, r.cliente==undefined?'':r.cliente.substr(0,25))
         doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
         doc.text(13.5, y+3, r.unid.nombre==undefined?'':r.unid.nombre.substr(0,21))
         doc.text(18, y+3, r.total==undefined?'':r.total)

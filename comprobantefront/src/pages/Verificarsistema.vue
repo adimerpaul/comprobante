@@ -71,7 +71,7 @@
         </q-table>
       </div>
       <div class="col-12 q-pt-md">
-        <q-btn color="info" :label="'Total '+ total +' BS Son ' +totalcomprobantes+' comprobantes verificados'" class="full-width  text-bold"/>
+        <q-btn color="info" :label="'Total '+ totalsinverificar+' - '+total +' BS Son ' +totalcomprobantes+' comprobantes verificados'" class="full-width  text-bold"/>
 <!--        <q-btn color="green" label="Registrar Verificados" icon="send" class="full-width text-white text-bold" @click="verificar"/>-->
 <!--        <q-btn class="full-width" @click="imprimir" color="secondary"  icon="print" label="Imprimir pagos"/>-->
       </div>
@@ -340,9 +340,9 @@ export default {
         doc.text(6.5, 2.5, 'DEL: '+fecha1+' AL '+fecha2)
         doc.text(0.5, 3.2, 'ITEM')
         doc.text(3, 3.2, 'DESCRIPCION')
-        doc.text(15, 3.2, 'NRO TRAMITES')
-        doc.text(18, 3.2, 'MONTO BS')
-        doc.text(0.5, 3.2, '_____________________________________________________________________________________________________')
+        doc.text(16, 3.2, 'NRO TRAMITES')
+        doc.text(19, 3.2, 'MONTO BS')
+        doc.text(0.5, 3.2, '_________________________________________________________________________________________')
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -359,9 +359,9 @@ export default {
       this.item.forEach(item=>{
         doc.text(0.5, y+3.6, item.cod);
         doc.text(3, y+3.6, item.nombre.substring(0,70));
-        doc.text(15, y+3.6, ''+item.cantidad);
-        doc.text(19, y+3.6, ''+item.monto,{align: 'right',});
-        y+=0.3
+        doc.text(16.5, y+3.6, ''+item.cantidad);
+        doc.text(19.5, y+3.6, ''+item.monto,{align: 'right',});
+        y+=0.5
         sum+=parseInt(item.monto)
         if (y+4>25){
           doc.addPage();
@@ -369,11 +369,11 @@ export default {
           y=0;
         }});
       doc.setFont(undefined,'bold')
-      doc.text(3, y+3.3, '____________________________________________________________________________________')
+      doc.text(3, y+3.3, '______________________________________________________________________________')
       doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
       doc.setFont(undefined,'normal')
-      doc.text(15, y+3.8, ''+this.tramite)
-      doc.text(19, y+3.8, ''+sum+' BS',{align: 'right',})
+      doc.text(16.5, y+3.8, ''+this.tramite)
+      doc.text(19.5, y+3.8, ''+sum+' BS',{align: 'right',})
 
 
       window.open(doc.output('bloburl'), '_blank');
@@ -778,11 +778,18 @@ export default {
       let total=0
       this.pagos.forEach(r=>{
         if (r.verificadosistema){
-          total+=parseFloat(r.total);
+          total+=parseFloat(r.total)
         }
-
       })
-      return total.toFixed(2);
+      return total
+    },
+    totalsinverificar() {
+      // console.log(this.pagos)
+      let total=0
+      this.pagos.forEach(r=>{
+          total+=parseFloat(r.total)
+      })
+      return total
     },
     totalcomprobantes() {
       // console.log(this.pagos)
@@ -795,6 +802,7 @@ export default {
       })
       return total;
     },
+
     totalcomprobantedetalle(){
       let total=0
       this.detalle.forEach(r=>{

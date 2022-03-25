@@ -80,6 +80,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/anulado',\App\Http\Controllers\AnuladoController::class);
     Route::resource('/exportar',\App\Http\Controllers\ExportController::class);
     Route::resource('/mercado',\App\Http\Controllers\MercadoController::class);
+    Route::get('/comprobanteusuario/{fecha}',[\App\Http\Controllers\MercadoController::class,'comprobanteusuario']);
     Route::resource('/catastro',\App\Http\Controllers\CatastroController::class);
     Route::resource('/sistema',\App\Http\Controllers\SistemaController::class);
 

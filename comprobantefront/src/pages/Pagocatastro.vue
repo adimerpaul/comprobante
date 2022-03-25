@@ -23,11 +23,14 @@
     <div class="col-12">
       <q-btn @click="reportecomprobantes" class="full-width" color="info" icon="print" label="Imprimir comprobantes usuario"/>
     </div>
-    <div class="col-6">
+    <div class="col-4">
       <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
     </div>
-    <div class="col-6">
-      <q-btn @click="reportecomprobantestotales" class="full-width" color="warning" icon="warning" label="Imprimir comprobantes totales"/>
+    <div class="col-4">
+      <q-btn @click="reportecomprobantestotales" class="full-width" color="warning" icon="warning" label="Imprimir compro totales"/>
+    </div>
+    <div class="col-4">
+      <q-btn @click="reportecomprobantesusuario" class="full-width" color="positive" icon="people" label="Imprimir compro usuario"/>
     </div>
   </div>
   <q-dialog v-model="dialogcomprobante" full-width>
@@ -356,6 +359,76 @@ export default {
     this.miscomprobantesmercados()
   },
   methods:{
+    reportecomprobantesusuario(){
+      this.$q.loading.show()
+      this.$axios.get(process.env.URL + '/comprobanteusuario/'+this.fecha).then(res=>{
+        this.miscomprobantestotales=res.data
+        let cm=this;
+        function header(fecha){
+          var img = new Image()
+          img.src = 'logo.jpg'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
+          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+'     USUARIO:'+cm.$store.state.user.name+'    FECHA:'+fecha)
+          doc.text(1, 3, 'Nº COMPROB')
+          doc.text(1, 3, '__________________________________________________________________________________________________')
+          doc.text(4, 3, 'COD_CATASTRO')
+          doc.text(7, 3, 'CONTRIBUYENTE')
+          doc.text(13.5, 3, 'CI/RUN/RUC')
+          doc.text(16, 3, 'MONTO BS.')
+          doc.text(18, 3, 'OPERADOR')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        header(this.fecha)
+        let y=0
+        let sumtotal=0
+        let con=0
+        this.miscomprobantestotales.forEach(r=>{
+          if (r.nrocomprobante!=''){
+            y+=0.4
+            con++
+            doc.text(1, y+3, r.nrocomprobante)
+            doc.text(4, y+3, r.codcatastral==null?' ':r.codcatastral)
+            doc.text(7, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
+            doc.text(13.5, y+3, r.ci)
+            doc.text(16, y+3, r.total)
+            sumtotal+=parseInt(r.total)
+            // console.log(r.total)
+            doc.text(18, y+3, r.user.codigo )
+            if (con==55){
+              con=0
+              doc.addPage();
+              header(this.fecha)
+              y=0
+            }
+          }
+        })
+        doc.setFont(undefined,'bold')
+        doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
+        doc.text(1.8, y+5, '_____________________          _____________________________       _________________________')
+        doc.text(2, y+5.3, 'FIRMA SELLO CAJERO')
+        doc.text(8, y+5.3, 'FIRMA SELLO CONTROL INTERNO')
+        doc.text(15, y+5.3, 'FIRMA SELLO LIQUIDADOR')
+        doc.setFont(undefined,'normal')
+        doc.text(18, y+3.5, sumtotal+ ' Bs')
+        // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+        window.open(doc.output('bloburl'), '_blank');
+        // console.log(res.data)
+        this.$q.loading.hide()
+      }).catch(err=>{
+        this.$q.loading.hide()
+        console.log(err.response)
+        this.$q.notify({
+          color:'red',
+          message:err.response.data.message,
+          icon:'error'
+        })
+      })
+    },
     reportecomprobantestotales(){
       this.$q.loading.show()
       this.$axios.get(process.env.URL + '/mercado/'+this.fecha).then(res=>{
