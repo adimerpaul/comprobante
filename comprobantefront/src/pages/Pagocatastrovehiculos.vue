@@ -303,9 +303,15 @@ export default {
     return{
       tiposcatastros:[
         {label:''},
-        {label:'CN O COD'},
-        {label:'INF. TEC'},
-        {label:'CERT. CRED. BNC.'},
+        {label:'CERT INF. TEC.'},
+        {label:'EMP. CN. O COD'},
+        {label:'TASAS POR SERV.'},
+        {label:'REG. IMP.'},
+        {label:'IMP.TRANSF'},
+        {label:'CERT. PRES. BNC.'},
+        {label:'APRO. PLAN.'},
+        {label:'EXEDENCIA'},
+        {label:'RECATAST.'},
       ],
       codcatastral:'',
       tipocatastro:{label:''},

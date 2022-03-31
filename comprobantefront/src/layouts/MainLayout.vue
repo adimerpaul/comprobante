@@ -135,25 +135,36 @@
             </q-item-label>
           </q-item-section>
         </q-item>
-        <q-item clickable to="/pagocatastro" exact v-if="$store.state.boolcomprobantecatastro">
+        <q-item clickable to="/pagocatastrovehiculos" exact v-if="$store.state.boolcomprobantecatastro">
           <q-item-section avatar>
-            <q-icon name="article" />
+            <q-icon name="drive_eta" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>01 Crear comprobantes</q-item-label>
+            <q-item-label>01 Compro Vehiculo</q-item-label>
             <q-item-label caption>
-              01 Pago catastro
+              01 Compro Vehiculo
+            </q-item-label>
+          </q-item-section>
+        </q-item>
+        <q-item clickable to="/pagocatastro" exact v-if="$store.state.boolcomprobantecatastro">
+          <q-item-section avatar>
+            <q-icon name="real_estate_agent" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>01 Compro Tributario</q-item-label>
+            <q-item-label caption>
+              01 Compro Tributario
             </q-item-label>
           </q-item-section>
         </q-item>
         <q-item clickable to="/pagocatastronombres" exact v-if="$store.state.boolcomprobantecatastro">
           <q-item-section avatar>
-            <q-icon name="article" />
+            <q-icon name="microwave" />
           </q-item-section>
           <q-item-section>
-            <q-item-label>01 Crear comprobantes </q-item-label>
+            <q-item-label>01 Compro Tributario Largo </q-item-label>
             <q-item-label caption>
-              01 Pago catastro nombre largo
+              01 Compro Tributario Largo
             </q-item-label>
           </q-item-section>
         </q-item>

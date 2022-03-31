@@ -25,6 +25,7 @@ import Modificarcomprobante from "pages/Modificarcomprobante";
 import Pagourbano from "pages/Pagourbano";
 import Pagocatastro from "pages/Pagocatastro";
 import Pagocatastronombres from "pages/Pagocatastronombres";
+import Pagocatastrovehiculos from "pages/Pagocatastrovehiculos";
 const routes = [
   {
     path: '/',
@@ -56,6 +57,7 @@ const routes = [
       { path: '/actualizarcomprobante', component: Actualizarcomprobante,meta: {requiresAuth: true} },
       { path: '/reimprimir', component: Reimprimir,meta: {requiresAuth: true} },
       { path: '/modificarcomprobante', component: Modificarcomprobante,meta: {requiresAuth: true} },
+      { path: '/pagocatastrovehiculos', component: Pagocatastrovehiculos,meta: {requiresAuth: true} },
     ]
   },
 

@@ -85,7 +85,8 @@
               <div class="text-subtitle2">TIPO</div>
             </div>
             <div class="col-12 col-sm-9">
-              <q-input   dense outlined v-model="tipocatastro" />
+<!--              <q-input   dense outlined v-model="tipocatastro" />-->
+              <q-select v-model="tipocatastro" :options="tiposcatastros" dense outlined />
             </div>
             <div class="col-12 col-sm-3 bg-red flex flex-center ">
               <div class="text-subtitle2">COD CATASTRAL</div>
@@ -297,6 +298,12 @@ import {date} from "quasar";
 export default {
   data(){
     return{
+      tiposcatastros:[
+        {label:''},
+        {label:'CN O COD'},
+        {label:'INF. TEC'},
+        {label:'CERT. CRED. BNC.'},
+      ],
       codcatastral:'',
       fecha:date.formatDate(new  Date(),'YYYY-MM-DD'),
       nrocomprobante:'',
@@ -758,7 +765,7 @@ export default {
           direccion: this.direccion,
           numcasa: this.numcasa,
           data: this.detalles,
-          tipocatastro: this.tipocatastro,
+          tipocatastro: this.tipocatastro.label,
           codcatastral: this.codcatastral,
         }).then((res) => {
           // console.log(res.data)
