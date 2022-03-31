@@ -303,11 +303,12 @@ export default {
     return{
       tiposcatastros:[
         {label:''},
-        {label:'CERT INF. TEC.'},
-        {label:'EMP. CN. O COD'},
+        {label:'INF. TEC.'},
+        {label:'CER. GENRAL.'},
+        {label:'EMP. CN. COD.'},
         {label:'TASAS POR SERV.'},
         {label:'REG. IMP.'},
-        {label:'IMP.TRANSF'},
+        {label:'IMP.TRANSF.'},
         {label:'CERT. PRES. BNC.'},
         {label:'APRO. PLAN.'},
         {label:'EXEDENCIA'},
@@ -544,8 +545,8 @@ export default {
         console.log(r)
         doc.text(1, y+3, r.nrocomprobante)
         doc.text(4, y+3, r.nrotramite)
-        doc.text(7, y+3, r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre)
-        doc.text(13.5, y+3, r.cliente.ci)
+        doc.text(7, y+3, r.paterno+' '+r.materno+' '+r.nombre)
+        doc.text(13.5, y+3, r.ci)
         doc.text(16, y+3, r.total)
         sumtotal+=parseInt(r.total)
         doc.text(18, y+3, r.user.codigo )

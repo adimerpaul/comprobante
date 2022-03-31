@@ -27,7 +27,7 @@
       <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
     </div>
     <div class="col-6">
-      <q-btn @click="reportecomprobantestotales" class="full-width" color="warning" icon="warning" label="Imprimir comprobantes totales"/>
+      <q-btn @click="reportecomprobantestotales" class="full-width" color="positive" icon="print" label="Imprimir comprobantes del dia"/>
     </div>
   </div>
   <q-dialog v-model="dialogcomprobante" full-width>
@@ -451,8 +451,8 @@ export default {
         console.log(r)
         doc.text(1, y+3, r.nrocomprobante)
         doc.text(4, y+3, r.nrotramite)
-        doc.text(7, y+3, r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre)
-        doc.text(13.5, y+3, r.cliente.ci)
+        doc.text(7, y+3, r.paterno+' '+r.materno+' '+r.nombre)
+        doc.text(13.5, y+3, r.ci)
         doc.text(16, y+3, r.total)
         sumtotal+=parseInt(r.total)
         doc.text(18, y+3, r.user.codigo )
