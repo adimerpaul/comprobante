@@ -372,6 +372,7 @@ export default {
     reportecomprobantesmes(){
       this.$q.loading.show()
       this.$axios.post(process.env.URL + '/mercado',{fecha1:this.fechames1,fecha2:this.fechames2}).then(res=>{
+        console.log(res.data)
         this.miscomprobantestotales=res.data
         // console.log(this.miscomprobantestotales)
         let cm=this;
