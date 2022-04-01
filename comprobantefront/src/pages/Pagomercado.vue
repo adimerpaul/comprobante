@@ -14,7 +14,7 @@
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <q-btn v-if="props.row.estado=='CREADO'" @click="frmimprimir(props.row)" label="imprimir" icon="print" color="info" size="xs"/>
-            <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimir(props.row)" label="reimprimir" icon="print" color="warning" size="xs"/>
+<!--            <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimir(props.row)" label="reimprimir" icon="print" color="warning" size="xs"/>-->
             <q-badge v-if="props.row.estado=='ANULADO'" color="negative" label="ANULADO"/>
           </q-td>
         </template>
@@ -28,6 +28,15 @@
     </div>
     <div class="col-6">
       <q-btn @click="reportecomprobantestotales" class="full-width" color="positive" icon="print" label="Imprimir comprobantes del dia"/>
+    </div>
+    <div class="col-4">
+      <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
+    </div>
+    <div class="col-4">
+      <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
+    </div>
+    <div class="col-4">
+      <q-btn @click="reportecomprobantesmes" class="full-width" color="secondary" icon="print" label="Imprimir comprobantes del mes"/>
     </div>
   </div>
   <q-dialog v-model="dialogcomprobante" full-width>
@@ -287,11 +296,14 @@
 import {jsPDF} from "jspdf";
 import $ from "jquery";
 import {date} from "quasar";
+const conversor = require('conversor-numero-a-letras-es-ar');
 
 export default {
   data(){
     return{
       fecha:date.formatDate(new  Date(),'YYYY-MM-DD'),
+      fechames1:date.formatDate(new  Date(),'YYYY-MM-DD'),
+      fechames2:date.formatDate(new  Date(),'YYYY-MM-DD'),
       fechahoy:date.formatDate(new  Date(),'YYYY-MM-DD'),
       nrocomprobante:'',
       dialogimprimir:false,
@@ -348,13 +360,101 @@ export default {
     this.numcomprobante()
     this.misitems()
     this.miscomprobantesmercados()
-    this.mirango();
+    this.mirango()
+
   },
   methods:{
     mirango(){
       this.$axios.get(process.env.URL + '/mercado/create').then(res=>{
         this.unidad=res.data
       })
+    },
+    reportecomprobantesmes(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.URL + '/mercado',{fecha1:this.fechames1,fecha2:this.fechames2}).then(res=>{
+        this.miscomprobantestotales=res.data
+        // console.log(this.miscomprobantestotales)
+        let cm=this;
+        function header(fecha){
+          var img = new Image()
+          img.src = 'logo.jpg'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.setFontSize(8);
+          doc.text(15, 0.5, 'fecha de proceso: '+cm.fechahoy)
+          doc.setFontSize(11);
+          doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS DE LA UNIDAD DE ')
+          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+cm.fechames1+' AL '+cm.fechames2)
+          doc.text(1, 3, '_____________________________________________________________________________________')
+          doc.text(2, 3, 'FECHA DE PAGO')
+          // doc.text(4, 3, 'Nº TRAMITE')
+          doc.text(8, 3, 'N TRAMITES')
+          // doc.text(13.5, 3, 'CI/RUN/RUC')
+          doc.text(15, 3, 'MONTO PAGADO BS.')
+          // doc.text(18, 3, 'OPERADOR')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        doc.setFont("courier");
+        doc.setFontSize(11);
+        header(this.fecha)
+        let y=0
+        let sumtotal=0
+        let sumcomp=0
+        let con=0
+        this.miscomprobantestotales.forEach(r=>{
+          // if (r.nrocomprobante!=''){
+          // console.log(r)
+            y+=0.5
+            con++
+            doc.text(2, y+3, r.fecha)
+            // doc.text(4, y+3, r.nrotramite)
+            doc.text(8, y+3, r.num.toString())
+            // // doc.text(13.5, y+3, r.ci)
+            doc.text(15, y+3, r.total.toString())
+            sumtotal+=parseInt(r.total)
+            sumcomp+=parseInt(r.num)
+            // // console.log(r.total)
+            // // doc.text(18, y+3, r.user.codigo )
+            if (con==55){
+              con=0
+              doc.addPage();
+              header(this.fecha)
+              y=0
+            }
+          // }
+        })
+        doc.setFont(undefined,'bold')
+        doc.text(2, y+3.5, 'TOTALES:                  '+sumcomp+' ')
+        doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
+        let ClaseConversor = conversor.conversorNumerosALetras;
+        let miConversor = new ClaseConversor();
+
+        let a = miConversor.convertToText(27);
+        doc.text(1.5, y+4.4, 'SON: ')
+        doc.setFont(undefined,'normal')
+        doc.text(2.5, y+4.4, a.toUpperCase())
+        doc.setFont(undefined,'bold')
+        // console.log(a)
+        doc.text(1.8, y+5.9, '___________________      __________________________        ____________________')
+        doc.text(2, y+6.3, 'FIRMA SELLO CAJERO')
+        doc.text(7.5, y+6.3, 'FIRMA SELLO CONTROL INTERNO')
+        doc.text(15.5, y+6.3, 'FIRMA SELLO LIQUIDADOR')
+        // doc.setFont(undefined,'normal')
+        doc.text(18, y+3.5, sumtotal+ ' Bs')
+        // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+        window.open(doc.output('bloburl'), '_blank');
+        // console.log(res.data)
+        this.$q.loading.hide()
+      })
+      // .catch(err=>{
+      //   this.$q.loading.hide()
+      //   // this.$q.notify({
+      //   //   message:err.response.data.res,
+      //   //   color:'red',
+      //   //   icon:'error'
+      //   // })
+      // })
     },
     reportecomprobantestotales(){
       this.$q.loading.show()
@@ -405,12 +505,13 @@ export default {
           }
         })
         doc.setFont(undefined,'bold')
+        doc.text(3, y+3.5, 'SON: '+this.miscomprobantestotales.length+' COMPROBANTES')
         doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
         doc.text(1.8, y+5, '_____________________          _____________________________       _________________________')
         doc.text(2, y+5.3, 'FIRMA SELLO CAJERO')
         doc.text(8, y+5.3, 'FIRMA SELLO CONTROL INTERNO')
         doc.text(15, y+5.3, 'FIRMA SELLO LIQUIDADOR')
-        doc.setFont(undefined,'normal')
+        // doc.setFont(undefined,'normal')
         doc.text(18, y+3.5, sumtotal+ ' Bs')
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');

@@ -14,8 +14,8 @@
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <q-btn v-if="props.row.estado=='CREADO'" @click="frmimprimir(props.row)" label="imprimir" icon="print" color="info" size="xs"/>
-            <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimir(props.row)" label="reimpr" icon="print" color="warning" size="xs"/>
-            <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimirsinitem(props.row)" label="Reimprisin" icon="print" color="info" size="xs"/>
+<!--            <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimir(props.row)" label="reimpr" icon="print" color="warning" size="xs"/>-->
+            <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimirsinitem(props.row)" label="REIMPRIMIR CORTO" icon="print" color="info" size="xs"/>
             <q-badge v-if="props.row.estado=='ANULADO'" color="negative" label="ANULADO"/>
           </q-td>
         </template>
@@ -28,7 +28,7 @@
       <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
     </div>
     <div class="col-6">
-      <q-btn @click="reportecomprobantestotales" class="full-width" color="warning" icon="warning" label="Imprimir comprobantes totales"/>
+      <q-btn @click="reportecomprobantestotales" class="full-width" color="accent" icon="print" label="Imprimir comprobantes totales"/>
     </div>
   </div>
   <q-dialog v-model="dialogcomprobante" full-width>
@@ -265,10 +265,10 @@
                 </template>
               </q-table>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <q-btn type="button" @click="proforma" class="full-width" icon="warning" color="warning" :label="'Imprimir proforma'"/>
             </div>
-            <div class="col-6">
+            <div class="col-4">
               <q-btn :disable="boolrango" type="submit" class="full-width" icon="print" color="info" :label="'Imprimir comprobante '+ total +' Bs'"/>
             </div>
           </div>
@@ -406,12 +406,13 @@ export default {
           }
         })
         doc.setFont(undefined,'bold')
+        doc.text(3, y+3.5, 'SON: '+this.miscomprobantestotales.length+' COMPROBANTES')
         doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
         doc.text(1.8, y+5, '_____________________          _____________________________       _________________________')
         doc.text(2, y+5.3, 'FIRMA SELLO CAJERO')
         doc.text(8, y+5.3, 'FIRMA SELLO CONTROL INTERNO')
         doc.text(15, y+5.3, 'FIRMA SELLO LIQUIDADOR')
-        doc.setFont(undefined,'normal')
+        // doc.setFont(undefined,'normal')
         doc.text(18, y+3.5, sumtotal+ ' Bs')
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');

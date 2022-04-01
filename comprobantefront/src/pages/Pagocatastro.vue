@@ -14,7 +14,7 @@
           <template v-slot:body-cell-opciones="props">
             <q-td :props="props">
               <q-btn v-if="props.row.estado=='CREADO'" @click="frmimprimir(props.row)" label="imprimir" icon="print" color="info" size="xs"/>
-              <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimir(props.row)" label="reimprimir" icon="print" color="warning" size="xs"/>
+<!--              <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimir(props.row)" label="reimprimir" icon="print" color="warning" size="xs"/>-->
               <q-badge v-if="props.row.estado=='ANULADO'" color="negative" label="ANULADO"/>
             </q-td>
           </template>
@@ -27,7 +27,7 @@
         <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
       </div>
       <div class="col-4">
-        <q-btn @click="reportecomprobantestotales" class="full-width" color="warning" icon="warning" label="Imprimir compro totales"/>
+        <q-btn @click="reportecomprobantestotales" class="full-width" color="accent" icon="print" label="Imprimir compro dia"/>
       </div>
       <div class="col-4">
         <q-btn @click="reportecomprobantesusuario" class="full-width" color="positive" icon="people" label="Imprimir compro usuario"/>
@@ -384,13 +384,14 @@ export default {
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+'     USUARIO:'+cm.$store.state.user.name+'    FECHA:'+fecha)
-          doc.text(1, 3, 'Nº COMPROB')
+          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+fecha)
           doc.text(1, 3, '__________________________________________________________________________________________________')
-          doc.text(4, 3, 'COD_CATASTRO')
-          doc.text(7, 3, 'CONTRIBUYENTE')
-          doc.text(13.5, 3, 'CI/RUN/RUC')
-          doc.text(16, 3, 'MONTO BS.')
+          doc.text(1, 3, 'Nº COM')
+          doc.text(2.5, 3, 'COD_CAT')
+          doc.text(4.5, 3, 'TIPO')
+          doc.text(8, 3, 'CONTRIBUYENTE')
+          doc.text(14.5, 3, 'CI/RUN/RUC')
+          doc.text(17, 3, 'BS.')
           doc.text(18, 3, 'OPERADOR')
           doc.setFont(undefined,'normal')
         }
@@ -406,10 +407,11 @@ export default {
             y+=0.4
             con++
             doc.text(1, y+3, r.nrocomprobante)
-            doc.text(4, y+3, r.codcatastral==null?' ':r.codcatastral)
-            doc.text(7, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
-            doc.text(13.5, y+3, r.ci)
-            doc.text(16, y+3, r.total)
+            doc.text(2.5, y+3, r.codcatastral==null?' ':r.codcatastral)
+            doc.text(4.5, y+3, r.tipocatastro==null?' ':r.tipocatastro)
+            doc.text(8, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
+            doc.text(14.5, y+3, r.ci)
+            doc.text(17, y+3, r.total)
             sumtotal+=parseInt(r.total)
             // console.log(r.total)
             doc.text(18, y+3, r.user.codigo )
@@ -433,14 +435,6 @@ export default {
         window.open(doc.output('bloburl'), '_blank');
         // console.log(res.data)
         this.$q.loading.hide()
-      }).catch(err=>{
-        this.$q.loading.hide()
-        console.log(err.response)
-        this.$q.notify({
-          color:'red',
-          message:err.response.data.message,
-          icon:'error'
-        })
       })
     },
     reportecomprobantestotales(){
@@ -455,12 +449,13 @@ export default {
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
           doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+fecha)
-          doc.text(1, 3, 'Nº COMPROB')
           doc.text(1, 3, '__________________________________________________________________________________________________')
-          doc.text(4, 3, 'COD_CATASTRO')
-          doc.text(7, 3, 'CONTRIBUYENTE')
-          doc.text(13.5, 3, 'CI/RUN/RUC')
-          doc.text(16, 3, 'MONTO BS.')
+          doc.text(1, 3, 'Nº COM')
+          doc.text(2.5, 3, 'COD_CAT')
+          doc.text(4.5, 3, 'TIPO')
+          doc.text(8, 3, 'CONTRIBUYENTE')
+          doc.text(14.5, 3, 'CI/RUN/RUC')
+          doc.text(17, 3, 'BS.')
           doc.text(18, 3, 'OPERADOR')
           doc.setFont(undefined,'normal')
         }
@@ -476,10 +471,11 @@ export default {
             y+=0.4
             con++
             doc.text(1, y+3, r.nrocomprobante)
-            doc.text(4, y+3, r.codcatastral==null?' ':r.codcatastral)
-            doc.text(7, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
-            doc.text(13.5, y+3, r.ci)
-            doc.text(16, y+3, r.total)
+            doc.text(2.5, y+3, r.codcatastral==null?' ':r.codcatastral)
+            doc.text(4.5, y+3, r.tipocatastro==null?' ':r.tipocatastro)
+            doc.text(8, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
+            doc.text(14.5, y+3, r.ci)
+            doc.text(17, y+3, r.total)
             sumtotal+=parseInt(r.total)
             // console.log(r.total)
             doc.text(18, y+3, r.user.codigo )
@@ -492,12 +488,13 @@ export default {
           }
         })
         doc.setFont(undefined,'bold')
+        doc.text(3, y+3.5, 'SON: '+this.miscomprobantestotales.length+' COMPROBANTES')
         doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
         doc.text(1.8, y+5, '_____________________          _____________________________       _________________________')
         doc.text(2, y+5.3, 'FIRMA SELLO CAJERO')
         doc.text(8, y+5.3, 'FIRMA SELLO CONTROL INTERNO')
         doc.text(15, y+5.3, 'FIRMA SELLO LIQUIDADOR')
-        doc.setFont(undefined,'normal')
+        // doc.setFont(undefined,'normal')
         doc.text(18, y+3.5, sumtotal+ ' Bs')
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');

@@ -13,6 +13,7 @@
     "@quasar/cli": "^1.2.1",
     "@quasar/extras": "^1.0.0",
     "axios": "^0.21.1",
+    "conversor-numero-a-letras-es-ar": "^1.0.3",
     "core-js": "^3.6.5",
     "jquery": "^3.6.0",
     "jspdf": "^2.3.1",
