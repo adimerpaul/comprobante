@@ -431,7 +431,7 @@ export default {
         let ClaseConversor = conversor.conversorNumerosALetras;
         let miConversor = new ClaseConversor();
 
-        let a = miConversor.convertToText(27);
+        let a = miConversor.convertToText(sumtotal);
         doc.text(1.5, y+4.4, 'SON: ')
         doc.setFont(undefined,'normal')
         doc.text(2.5, y+4.4, a.toUpperCase())
