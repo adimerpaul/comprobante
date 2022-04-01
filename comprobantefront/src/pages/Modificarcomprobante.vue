@@ -2,20 +2,20 @@
 <q-page class="q-pa-xs">
   <div class="row">
     <div class="col-12">
-<!--      <q-table dense :rows-per-page-options="[20,100,200,0]" title="Modificar Comprobantes" :data="miscomprobantes" :columns="columnscomprobantes" row-key="name" :filter="filter">-->
-<!--        <template v-slot:top-right>-->
-<!--          <q-input outlined dense  v-model="filter" placeholder="Buscar">-->
-<!--            <template v-slot:append>-->
-<!--              <q-icon name="search" />-->
-<!--            </template>-->
-<!--          </q-input>-->
-<!--        </template>-->
-<!--        <template v-slot:body-cell-opciones="props">-->
-<!--          <q-td :props="props">-->
-<!--            <q-btn  @click="modificar(props.row)" label="modificar" icon="edit" color="warning" size="xs"/>-->
-<!--          </q-td>-->
-<!--        </template>-->
-<!--      </q-table>-->
+      <q-table dense :rows-per-page-options="[20,100,200,0]" title="Modificar Comprobantes" :data="miscomprobantes" :columns="columnscomprobantes" row-key="name" :filter="filter">
+        <template v-slot:top-right>
+          <q-input outlined dense  v-model="filter" placeholder="Buscar">
+            <template v-slot:append>
+              <q-icon name="search" />
+            </template>
+          </q-input>
+        </template>
+        <template v-slot:body-cell-opciones="props">
+          <q-td :props="props">
+            <q-btn  @click="modificar(props.row)" label="modificar" icon="edit" color="warning" size="xs"/>
+          </q-td>
+        </template>
+      </q-table>
     </div>
   </div>
   <q-dialog v-model="dialogcomprobante" full-width>
