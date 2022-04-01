@@ -30,10 +30,10 @@
       <q-btn @click="reportecomprobantestotales" class="full-width" color="positive" icon="print" label="Imprimir comprobantes del dia"/>
     </div>
     <div class="col-4">
-      <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
+      <q-input label="fecha" type="date" dense outlined v-model="fechames1"/>
     </div>
     <div class="col-4">
-      <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
+      <q-input label="fecha" type="date" dense outlined v-model="fechames2"/>
     </div>
     <div class="col-4">
       <q-btn @click="reportecomprobantesmes" class="full-width" color="secondary" icon="print" label="Imprimir comprobantes del mes"/>
