@@ -47,7 +47,7 @@ class MercadoController extends Controller
      */
     public function store(Request $request)
     {
-        return DB::select("SELECT fecha,COUNT(*) as num,SUM(total) as total FROM comprobantes WHERE fecha >= '".$request->fecha1."' AND fecha <= '".$request->fecha2."' GROUP BY fecha");
+        return DB::select("SELECT fecha,COUNT(*) as num,SUM(total) as total FROM comprobantes WHERE nrocomrporbante!='' AND  unid_id='".$request->user()->unid_id."' fecha >= '".$request->fecha1."' AND fecha <= '".$request->fecha2."' GROUP BY fecha");
     }
 
     /**
