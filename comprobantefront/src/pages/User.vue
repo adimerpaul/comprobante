@@ -331,9 +331,7 @@ export default {
         {name: "codigo", align: "left", label: "Codigo", field: "codigo", sortable: true,},
         {name: "email", align: "left", label: "Email", field: "email", sortable: true,},
         {name: "permisos", align: "left", label: "Permisos", field: "permisos", sortable: true,},
-        {name: "fechalimite", align: "left", label: "Fecha limite", field: "fechalimite", sortable: true,
-        },
-
+        {name: "fechalimite", align: "left", label: "Fecha limite", field: "fechalimite", sortable: true,},
         { name: "opcion", label: "Opcion", field: "action", sortable: false },
       ],
       data: [],

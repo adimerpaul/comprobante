@@ -87,9 +87,10 @@
       <div class="col-12">
         <q-form @submit.prevent="generarsubitem">
           <div class="row">
-            <div class="col-4 q-pa-md"><q-input dense label="Fecha Inicio" type="date" outlined v-model="buscar.inicio" /></div>
-            <div class="col-4 q-pa-md"><q-input dense label="Fecha Fin" type="date" outlined v-model="buscar.fin" /></div>
-            <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="Resumen dia" color="warning" icon="search"/></div>
+            <div class="col-3"><q-input dense label="Fecha Inicio" type="date" outlined v-model="buscar.inicio" /></div>
+            <div class="col-3"><q-input dense label="Fecha Fin" type="date" outlined v-model="buscar.fin" /></div>
+            <div class="col-3"><q-select dense label="Unidad"  outlined :options="unidades"  v-model="unidad" /></div>
+            <div class="col-3 flex flex-center"><q-btn type="submit" label="Resumen dia" color="warning" icon="search"/></div>
           </div>
         </q-form>
       </div>
@@ -208,7 +209,7 @@ export default {
     // this.miscomprobante()
     // this.mispagos()
     this.$axios.get(process.env.URL+'/unid').then(res=>{
-      this.unidades=[]
+      this.unidades=[{label:"todos",unid_id:0}]
       res.data.forEach(r=>{
         let d=r
         d.label=r.nombre
@@ -315,7 +316,11 @@ export default {
     },
     generarsubitem(){
       if(this.buscar.inicio<=this.buscar.fin){
-       this.$axios.post(process.env.URL+'/reportitem',this.buscar).then(res=>{
+       this.$axios.post(process.env.URL+'/reportitem',{
+         inicio:this.buscar.inicio,
+         fin:this.buscar.fin,
+         unid_id:this.unidad.id,
+       }).then(res=>{
          // console.log(res.data)
          //return false
          this.item=res.data;
@@ -325,6 +330,7 @@ export default {
       }
     },
     imprimiritem(){
+      let mc=this
       function header(fecha1,fecha2,hoy){
         var img = new Image()
         img.src = 'logo.jpg'
@@ -337,7 +343,11 @@ export default {
         doc.text(15,1,'Fecha de Consulta:'+hoy);
         doc.setFontSize(11);
         doc.text(6, 2, 'RESUMEN DE INGRESOS POR COMPROBANTE DE CAJA')
-        doc.text(6.5, 2.5, 'DEL: '+fecha1+' AL '+fecha2)
+        if (mc.unidad.unid_id==0){
+          doc.text(6.5, 2.5, 'DEL: '+fecha1+' AL '+fecha2)
+        }else{
+          doc.text(3.5, 2.5, 'UNIDAD: '+mc.unidad.label+' DEL: '+fecha1+' AL '+fecha2)
+        }
         doc.text(0.5, 3.2, 'ITEM')
         doc.text(3, 3.2, 'DESCRIPCION')
         doc.text(16, 3.2, 'NRO TRAMITES')
