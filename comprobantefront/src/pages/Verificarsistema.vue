@@ -350,7 +350,7 @@ export default {
         }
         doc.text(0.5, 3.2, 'ITEM')
         doc.text(3, 3.2, 'DESCRIPCION')
-        doc.text(16, 3.2, 'NRO TRAMITES')
+        doc.text(15, 3.2, 'NRO TRAM')
         doc.text(19, 3.2, 'MONTO BS')
         doc.text(0.5, 3.2, '_________________________________________________________________________________________')
         doc.setFont(undefined,'normal')
@@ -369,7 +369,7 @@ export default {
       this.item.forEach(item=>{
         doc.text(0.5, y+3.6, item.cod);
         doc.text(3, y+3.6, item.nombre.substring(0,70));
-        doc.text(16.5, y+3.6, ''+item.cantidad);
+        doc.text(15, y+3.6, ''+item.cantidad);
         doc.text(19.5, y+3.6, ''+item.monto,{align: 'right',});
         y+=0.5
         sum+=parseInt(item.monto)
@@ -381,9 +381,10 @@ export default {
       doc.setFont(undefined,'bold')
       doc.text(3, y+3.3, '______________________________________________________________________________')
       doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
+      doc.text(20.5, y+3.8, ''+sum+' BS',{align: 'right',})
       doc.setFont(undefined,'normal')
       doc.text(16.5, y+3.8, ''+this.tramite)
-      doc.text(19.5, y+3.8, ''+sum+' BS',{align: 'right',})
+
 
 
       window.open(doc.output('bloburl'), '_blank');
