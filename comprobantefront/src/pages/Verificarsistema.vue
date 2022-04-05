@@ -350,7 +350,7 @@ export default {
         }
         doc.text(0.5, 3.2, 'ITEM')
         doc.text(3, 3.2, 'DESCRIPCION')
-        doc.text(15, 3.2, 'NRO TRAM')
+        doc.text(16, 3.2, 'NRO TRAM')
         doc.text(19, 3.2, 'MONTO BS')
         doc.text(0.5, 3.2, '_________________________________________________________________________________________')
         doc.setFont(undefined,'normal')
@@ -368,25 +368,23 @@ export default {
       doc.setFontSize(11);
       this.item.forEach(item=>{
         doc.text(0.5, y+3.6, item.cod);
-        doc.text(3, y+3.6, item.nombre.substring(0,70));
-        doc.text(15, y+3.6, ''+item.cantidad);
-        doc.text(19.5, y+3.6, ''+item.monto,{align: 'right',});
-        y+=0.5
+        doc.text(3, y+3.6, item.nombre.substring(0,50));
+        doc.text(16.5, y+3.6, ''+item.cantidad);
+        doc.text(20, y+3.6, ''+item.monto,{align: 'right',});
+        y+=0.4
         sum+=parseInt(item.monto)
         if (y+4>25){
           doc.addPage();
+          header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'))
            // doc.setFont(undefined,'bold')
           y=0;
         }});
       doc.setFont(undefined,'bold')
       doc.text(3, y+3.3, '______________________________________________________________________________')
       doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
-      doc.text(20.5, y+3.8, ''+sum+' BS',{align: 'right',})
+      doc.text(20.5, y+3.8, ''+new Intl.NumberFormat('es-MX').format(sum)+' BS',{align: 'right',})
       doc.setFont(undefined,'normal')
       doc.text(16.5, y+3.8, ''+this.tramite)
-
-
-
       window.open(doc.output('bloburl'), '_blank');
     },
     actualizar(comprobante){
