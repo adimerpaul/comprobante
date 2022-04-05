@@ -472,10 +472,11 @@ export default {
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+fecha)
-          doc.text(1, 3, 'Nº COMPROBANTE')
+          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' DEL '+fecha+' AL '+ cm.fecha2)
           doc.text(1, 3, '__________________________________________________________________________________________________')
-          doc.text(4, 3, 'Nº TRAMITE')
+          doc.text(1, 3, 'FECHA')
+          doc.text(3, 3, 'Nº COM')
+          doc.text(5, 3, 'Nº TRA')
           doc.text(7, 3, 'CONTRIBUYENTE')
           doc.text(13.5, 3, 'CI/RUN/RUC')
           doc.text(16, 3, 'MONTO BS.')
@@ -493,9 +494,10 @@ export default {
           if (r.nrocomprobante!=''){
             y+=0.4
             con++
-            doc.text(1, y+3, r.nrocomprobante)
-            doc.text(4, y+3, r.nrotramite)
-            doc.text(7, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
+            doc.text(1, y+3, r.fecha)
+            doc.text(3, y+3, r.nrocomprobante)
+            doc.text(5, y+3, r.nrotramite)
+            doc.text(7.5, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
             doc.text(13.5, y+3, r.ci)
             doc.text(16, y+3, r.total)
             sumtotal+=parseInt(r.total)
