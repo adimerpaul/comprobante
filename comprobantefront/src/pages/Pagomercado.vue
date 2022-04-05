@@ -23,10 +23,13 @@
     <div class="col-12">
       <q-btn @click="reportecomprobantes" class="full-width" color="info" icon="print" label="Imprimir comprobantes usuario"/>
     </div>
-    <div class="col-6">
+    <div class="col-4">
       <q-input label="fecha" type="date" dense outlined v-model="fecha"/>
     </div>
-    <div class="col-6">
+    <div class="col-4">
+      <q-input label="fecha" type="date" dense outlined v-model="fecha2"/>
+    </div>
+    <div class="col-4">
       <q-btn @click="reportecomprobantestotales" class="full-width" color="positive" icon="print" label="Imprimir comprobantes del dia"/>
     </div>
     <div class="col-4">
@@ -302,6 +305,7 @@ export default {
   data(){
     return{
       fecha:date.formatDate(new  Date(),'YYYY-MM-DD'),
+      fecha2:date.formatDate(new  Date(),'YYYY-MM-DD'),
       fechames1:date.formatDate(new  Date(),'YYYY-MM-DD'),
       fechames2:date.formatDate(new  Date(),'YYYY-MM-DD'),
       fechahoy:date.formatDate(new  Date(),'YYYY-MM-DD'),
@@ -459,7 +463,7 @@ export default {
     },
     reportecomprobantestotales(){
       this.$q.loading.show()
-      this.$axios.get(process.env.URL + '/mercado/'+this.fecha).then(res=>{
+      this.$axios.post(process.env.URL + '/reportemes',{inicio:this.fecha,fin:this.fecha2}).then(res=>{
         this.miscomprobantestotales=res.data
         let cm=this;
         function header(fecha){
