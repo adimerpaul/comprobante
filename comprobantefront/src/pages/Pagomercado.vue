@@ -475,9 +475,9 @@ export default {
           doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' DEL '+fecha+' AL '+ cm.fecha2)
           doc.text(1, 3, '__________________________________________________________________________________________________')
           doc.text(1, 3, 'FECHA')
-          doc.text(3, 3, 'Nº COM')
-          doc.text(5, 3, 'Nº TRA')
-          doc.text(7, 3, 'CONTRIBUYENTE')
+          doc.text(3.5, 3, 'Nº COM')
+          doc.text(5.5, 3, 'Nº TRA')
+          doc.text(7.5, 3, 'CONTRIBUYENTE')
           doc.text(13.5, 3, 'CI/RUN/RUC')
           doc.text(16, 3, 'MONTO BS.')
           doc.text(18, 3, 'OPERADOR')
@@ -495,8 +495,8 @@ export default {
             y+=0.4
             con++
             doc.text(1, y+3, r.fecha)
-            doc.text(3, y+3, r.nrocomprobante)
-            doc.text(5, y+3, r.nrotramite)
+            doc.text(3.5, y+3, r.nrocomprobante)
+            doc.text(5.5, y+3, r.nrotramite)
             doc.text(7.5, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
             doc.text(13.5, y+3, r.ci)
             doc.text(16, y+3, r.total)
