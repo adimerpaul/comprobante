@@ -381,14 +381,15 @@ export default {
         //   header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'))
         //    // doc.setFont(undefined,'bold')
         //   y=0;
-        // }});
-        doc.setFont(undefined,'bold')
-        doc.text(3, y+3.3, '______________________________________________________________________________')
-        doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
-        doc.text(20.5, y+3.8, ''+new Intl.NumberFormat('es-MX').format(sum)+' BS',{align: 'right',})
-        doc.setFont(undefined,'normal')
-        doc.text(16.5, y+3.8, ''+this.tramite)
-        window.open(doc.output('bloburl'), '_blank');
+        // }
+      });
+      doc.setFont(undefined,'bold')
+      doc.text(3, y+3.3, '______________________________________________________________________________')
+      doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
+      doc.text(20.5, y+3.8, ''+new Intl.NumberFormat('es-MX').format(sum)+' BS',{align: 'right',})
+      doc.setFont(undefined,'normal')
+      doc.text(16.5, y+3.8, ''+this.tramite)
+      window.open(doc.output('bloburl'), '_blank');
     },
     actualizar(comprobante){
       // console.log(comprobante)
