@@ -364,28 +364,31 @@ export default {
       // let xx=x
       // let yy=y
       let y=0
+      let cont=0
       let sum=0
-      doc.setFontSize(11);
+      doc.setFontSize(10);
       this.item.forEach(item=>{
+        cont++
         doc.text(0.5, y+3.6, item.cod);
-        doc.text(3, y+3.6, item.nombre.substring(0,50));
+        doc.text(3, y+3.6, item.nombre.substring(0,60));
         doc.text(16.5, y+3.6, ''+item.cantidad);
         doc.text(20, y+3.6, ''+item.monto,{align: 'right',});
         y+=0.4
         sum+=parseInt(item.monto)
-        if (y+4>25){
-          doc.addPage();
-          header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'))
-           // doc.setFont(undefined,'bold')
-          y=0;
-        }});
-      doc.setFont(undefined,'bold')
-      doc.text(3, y+3.3, '______________________________________________________________________________')
-      doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
-      doc.text(20.5, y+3.8, ''+new Intl.NumberFormat('es-MX').format(sum)+' BS',{align: 'right',})
-      doc.setFont(undefined,'normal')
-      doc.text(16.5, y+3.8, ''+this.tramite)
-      window.open(doc.output('bloburl'), '_blank');
+        // if (cont==60){
+        //   cont=0
+        //   doc.addPage();
+        //   header(this.buscar.inicio,this.buscar.fin,date.formatDate(Date.now(),'YYYY-MM-DD'))
+        //    // doc.setFont(undefined,'bold')
+        //   y=0;
+        // }});
+        doc.setFont(undefined,'bold')
+        doc.text(3, y+3.3, '______________________________________________________________________________')
+        doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
+        doc.text(20.5, y+3.8, ''+new Intl.NumberFormat('es-MX').format(sum)+' BS',{align: 'right',})
+        doc.setFont(undefined,'normal')
+        doc.text(16.5, y+3.8, ''+this.tramite)
+        window.open(doc.output('bloburl'), '_blank');
     },
     actualizar(comprobante){
       // console.log(comprobante)
