@@ -285,7 +285,7 @@ export default {
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-          doc.text(5, 1.5, unidad +' DE '+cm.fechacaja1+' AL '+cm.fechacaja2 )
+          doc.text(5, 1.5,  'CAJAS  DE '+cm.fechacaja1+' AL '+cm.fechacaja2 )
           doc.text(1, 3, 'Nº COMPROBANTE')
           // doc.text(4, 3, 'Nº TRAMITE')
           doc.text(4, 3, 'CONTRIBUYENTE')
