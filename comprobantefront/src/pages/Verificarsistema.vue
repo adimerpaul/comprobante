@@ -94,6 +94,25 @@
           </div>
         </q-form>
       </div>
+      <div class="col-12 q-pa-xs">
+        <q-form @submit.prevent="reportecaja">
+          <div class="row">
+            <div class="col-12 ">
+              <div class="text-center bg-green text-white">REPORTE CAJEROS</div>
+            </div>
+            <div class="col-4">
+              <q-input dense label="fecha de cobro" outlined type="date" v-model="fechacaja1"/>
+            </div>
+            <div class="col-4">
+              <q-input dense label="fecha de cobro" outlined type="date" v-model="fechacaja2"/>
+            </div>
+            <div class="col-4 flex flex-center">
+              <q-btn type="submit" color="info" icon="print" label="reporte caja" class="" />
+            </div>
+          </div>
+        </q-form>
+
+      </div>
     </div>
     <q-dialog full-width v-model="modalcomprobante">
       <q-card >
@@ -174,6 +193,8 @@ export default {
       // fecha2:date.formatDate(Date.now(),'YYYY-MM-DD'),
       //
       // fecha:date.formatDate( addToDate(Date.now(),{days:-1}) ,'YYYY-MM-DD'),
+      fechacaja1:date.formatDate(Date.now(),'YYYY-MM-DD'),
+      fechacaja2:date.formatDate(Date.now(),'YYYY-MM-DD'),
       fecha2:date.formatDate(Date.now(),'YYYY-MM-DD'),
       fecha:date.formatDate(Date.now(),'YYYY-MM-DD'),
       buscar:{inicio:date.formatDate(Date.now(),'YYYY-MM-DD'),fin:date.formatDate(Date.now(),'YYYY-MM-DD')},
@@ -202,6 +223,7 @@ export default {
       unidades:[],
       unidad:{},
       selectodos:false,
+      pagos2:[],
     };
   },
   created() {
@@ -231,6 +253,83 @@ export default {
     })
   },
   methods: {
+    reportecaja(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.URL + '/reportecaja', {fechainicio:this.fechacaja1,fechafin:this.fechacaja2}).then(res=>{
+        this.$q.loading.hide()
+        // console.log(res.data)
+        // console.log(res.data)
+        this.pagos2=[]
+        res.data.forEach(r=>{
+          let d=r
+          d.cliente=r.paterno+' '+r.materno+' '+r.nombre
+          this.pagos2.push(d)
+          // this.pagos.push({
+          //   nrotramite:r.nrotramite,
+          //   unidad:r.unid.nombre,
+          //   nrocomprobante:r.nrocomprobante,
+          //   cliente:r.paterno+' '+r.materno+' '+r.nombre,
+          //   cajero:r.cajero,
+          //   estado:r.estado,
+          //   ci:r.cliente.ci,
+          //   id:r.id,
+          //   total:r.total,
+          //   cajero_id:r.cajero_id,
+          // })
+        })
+        this.$q.loading.hide()
+        let cm=this
+        function header(unidad,fecha){
+          var img = new Image()
+          img.src = 'logo.jpg'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
+          doc.text(5, 1.5, unidad +' DE '+cm.fechacaja1+' AL '+cm.fechacaja2 )
+          doc.text(1, 3, 'Nº COMPROBANTE')
+          // doc.text(4, 3, 'Nº TRAMITE')
+          doc.text(4, 3, 'CONTRIBUYENTE')
+          doc.text(11.5, 3, 'CI/RUN')
+          doc.text(13.5, 3, 'UNIDAD')
+          doc.text(17, 3, 'MONTO BS.')
+          doc.text(20, 3, 'CAJERO')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        // console.log(dat);
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        // var x=0,y=
+        header(this.$store.state.user.unid.nombre.toString(),this.fecha)
+        // let xx=x
+        // let yy=y
+        let y=0
+        let total=0
+        this.pagos2.forEach(r=>{
+          // xx+=0.5
+          console.log(r)
+          y+=0.5
+          doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante.substr(0,21))
+          // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
+          doc.text(4, y+3, r.cliente==undefined?'':r.cliente.substr(0,33))
+          doc.text(11.5, y+3, r.ci==undefined?'':r.ci)
+          doc.text(13.5, y+3, r.unid==null?'':r.unid.nombre==undefined?'':r.unid.nombre.substr(0,21))
+          doc.text(19, y+3, r.total==undefined?'':r.total,'right')
+          doc.text(20, y+3, r.cajero ==undefined?'':r.cajero )
+          total+=parseInt(r.total)
+          if (y+3>25){
+            doc.addPage();
+            header(this.fecha)
+            y=0
+          }
+        })
+        doc.text(12, y+4, 'TOTAL RECAUDADCION: ')
+        doc.text(18, y+4, total+ ' Bs')
+        // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+        window.open(doc.output('bloburl'), '_blank');
+
+      })
+    },
     sumar(d){
       let s=0
       d.forEach(r=>{

@@ -20,6 +20,18 @@ class CajaController extends Controller
     {
         return User::where('unid_id',17)->get();
     }
+    public function reportecaja(Request $request){
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->with('unid')
+            ->whereDate('fecha','>=',$request->fechainicio)
+            ->whereDate('fecha','<=',$request->fechafin)
+//            ->where('cajero_id',$request->user()->id)
+//            ->where('porcaja',true)
+            ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO")')
+            ->orderBy('nrocomprobante')
+            ->get();
+    }
 
     /**
      * Show the form for creating a new resource.
