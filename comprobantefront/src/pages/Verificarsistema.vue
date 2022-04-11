@@ -557,7 +557,7 @@ export default {
       this.$axios.post(process.env.URL+'/reportecomp',{inicio:this.fecha,fin:this.fecha2,}).then(res=>{
         function header(un,fec1,fec2,fec3){
           doc.setFont("courier");
-          doc.setFontSize(9);
+          doc.setFontSize(10);
 
           var img = new Image()
           img.src = 'logo.jpg'
@@ -568,7 +568,7 @@ export default {
           doc.text(15, 1.5, 'Fecha de Proceso '+fec1)
           doc.text(8, 2.5, 'REGISTRO DE COMPROBANTES DE CAJA ')
           doc.text(5, 3, 'RESUMEN MENSUAL DE COMPROBANTES DEL ' + fec2 +' AL '+ fec3)
-          // doc.setFontSize(6);
+          // doc.setFontSize(10);
           // doc.text(.5, 4, 'FECHA DE PAGO')
           // doc.text(3, 4, 'Nº COMPROBANTE')
           // doc.text(5, 4, 'Nº TRAMITE')
@@ -578,7 +578,7 @@ export default {
           // doc.text(19, 4, 'USUARIO')
           // doc.text(20, 4, 'ESTADO')
           doc.setFont(undefined,'normal')
-          doc.setFontSize(6);
+          // doc.setFontSize(10);
         }
         var doc = new jsPDF('p','cm','letter')
         // console.log(dat);
@@ -586,7 +586,7 @@ export default {
         // var x=0,y=
         header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
         // console.log(res.data)
-        doc.setFontSize(9)
+        doc.setFontSize(10)
         let y=0
         let x=0
         let f='*'
@@ -594,7 +594,7 @@ export default {
         let cont=0;
         res.data.forEach(r=>{
           // xx+=0.5
-          console.log(r)
+          // console.log(r)
           cont++
           a=0
           if (f!=r.fecha){
@@ -602,30 +602,32 @@ export default {
             f=r.fecha
             doc.text(x+1, y+3.5, r.fecha)
             doc.text(x+4.5, y+3.5, 'TALONARIOS' )
-            a=0.28
+            a=0.30
             doc.setFont(undefined,'normal')
             cont++
           }
-          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,21))
+          doc.text(x+0.5, y+a+3.5, r.nombre.substring(0,20))
+          doc.setFontSize(9)
           doc.text(x+4.8, y+a+3.5, r.menor+'-'+r.mayor)
+          doc.setFontSize(10)
           // doc.text(x+6, y+a+3.5, r.mayor )
           if (a==0){
             y+=0.35
           }else{
             y=y+0.35+a
           }
-          if (cont==70){
+          if (cont==65){
             // doc.addPage();
             // cont=0
             // header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
             y=0
             x+=7
           }
-          if (cont==140){
+          if (cont==130){
             y=0
             x+=7
           }
-          if (cont==210){
+          if (cont==195){
             y=0
             x=0.5
             cont=0
