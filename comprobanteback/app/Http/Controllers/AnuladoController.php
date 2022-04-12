@@ -22,7 +22,7 @@ class AnuladoController extends Controller
             ->with('comprobante')
             ->where('user_id',$request->user()->id)
 //            ->where('user_id',$request->user()->id)
-//            ->whereDate('fecha',$request->fecha)
+            ->whereDate('fecha',$request->fecha)
             ->get();
 //        return Anulado::all();
     }
