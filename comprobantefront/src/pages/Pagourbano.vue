@@ -346,6 +346,8 @@ export default {
     }
   },
   created() {
+
+
     this.numcomprobante()
     this.misitems()
     this.miscomprobantesmercados()
@@ -414,6 +416,16 @@ export default {
         doc.text(15, y+5.3, 'FIRMA SELLO LIQUIDADOR')
         // doc.setFont(undefined,'normal')
         doc.text(18, y+3.5, sumtotal+ ' Bs')
+        const conversor = require('conversor-numero-a-letras-es-ar');
+
+        let ClaseConversor = conversor.conversorNumerosALetras;
+        let miConversor = new ClaseConversor();
+
+        var a = miConversor.convertToText(sumtotal);
+        doc.text(1, y+4, 'SON: '+ a.toUpperCase())
+
+        // console.log(a); // imprime "veintisiete"
+
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');
         // console.log(res.data)
