@@ -616,18 +616,18 @@ export default {
           }else{
             y=y+0.35+a
           }
-          if (cont==65){
+          if (cont==66){
             // doc.addPage();
             // cont=0
             // header(this.$store.state.user.unid.nombre,this.ahora,this.fecha.inicio,this.fecha.fin)
             y=0
             x+=7
           }
-          if (cont==130){
+          if (cont==(66*2)){
             y=0
             x+=7
           }
-          if (cont==195){
+          if (cont==(66*3)){
             y=0
             x=0.5
             cont=0
