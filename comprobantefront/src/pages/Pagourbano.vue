@@ -422,7 +422,7 @@ export default {
         let miConversor = new ClaseConversor();
 
         var a = miConversor.convertToText(sumtotal);
-        doc.text(1, y+4, 'SON: '+ a.toUpperCase())
+        doc.text(1, y+4, 'SON: '+ a.toUpperCase()+' BS')
 
         // console.log(a); // imprime "veintisiete"
 

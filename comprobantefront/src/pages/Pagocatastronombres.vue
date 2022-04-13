@@ -436,7 +436,7 @@ export default {
         let miConversor = new ClaseConversor();
 
         var a = miConversor.convertToText(sumtotal);
-        doc.text(1, y+4, 'SON: '+ a.toUpperCase())
+        doc.text(1, y+4, 'SON: '+ a.toUpperCase()+' BS')
         // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
         window.open(doc.output('bloburl'), '_blank');
         // console.log(res.data)
