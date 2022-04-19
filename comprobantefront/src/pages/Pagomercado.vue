@@ -14,7 +14,7 @@
         <template v-slot:body-cell-opciones="props">
           <q-td :props="props">
             <q-btn v-if="props.row.estado=='CREADO'" @click="frmimprimir(props.row)" label="imprimir" icon="print" color="info" size="xs"/>
-<!--            <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimir(props.row)" label="reimprimir" icon="print" color="warning" size="xs"/>-->
+            <q-btn v-if="props.row.estado=='IMPRESO'" @click="reimprimir(props.row)" label="reimprimir" icon="print" color="warning" size="xs"/>
             <q-badge v-if="props.row.estado=='ANULADO'" color="negative" label="ANULADO"/>
           </q-td>
         </template>
