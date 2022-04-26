@@ -47,6 +47,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/historial',[\App\Http\Controllers\ComprobanteController::class,'historial']);
     Route::post('/historial2',[\App\Http\Controllers\ComprobanteController::class,'historial2']);
     Route::post('/historial3',[\App\Http\Controllers\ComprobanteController::class,'historial3']);
+    Route::post('/resumenporunidad',[\App\Http\Controllers\ComprobanteController::class,'resumenporunidad']);
     Route::put('/pago/{comprobante}',[\App\Http\Controllers\ComprobanteController::class,'pago']);
     Route::post('/proforma/{id}',[\App\Http\Controllers\ComprobanteController::class,'proforma']);
     Route::post('/loscomprobantes',[\App\Http\Controllers\ComprobanteController::class,'loscomprobantes']);

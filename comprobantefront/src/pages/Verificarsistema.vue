@@ -29,12 +29,12 @@
         :columns="pcolumns"
         :data="pagos"
           :filter="filter"
-          :rows-per-page-options="[15,50,100,0]"
+          :rows-per-page-options="[10,50,100,0]"
         >
         <template v-slot:body="props">
         <q-tr :props="props">
-            <q-td key="nrocomprobante" :props="props">
-            {{props.row.nrocomprobante}}
+          <q-td key="nrocomprobante" :props="props">
+            {{props.row.nrocomprobante}} <q-badge v-if="props.row.salto!=''" :label="props.row.salto" color="negative" />
           </q-td>
           <q-td key="unidad" :props="props">
             {{props.row.unid.codigo}} {{props.row.unid.nombre}}
@@ -111,7 +111,11 @@
             </div>
           </div>
         </q-form>
+      </div>
+      <div class="col-12">
+        <q-table :data="resumenunidad" dense title="Resumen por unidad">
 
+        </q-table>
       </div>
     </div>
     <q-dialog full-width v-model="modalcomprobante">
@@ -171,6 +175,7 @@ const { addToDate } = date
 export default {
   data() {
     return {
+      resumenunidad:[],
       modalcomprobante:false,
       totalcomprobante:'',
       items:[],
@@ -692,8 +697,18 @@ export default {
         // console.log(res.data)
         this.$q.loading.hide()
         this.pagos=[];
+        let salto=0
         res.data.forEach(r => {
           // console.log(r)
+          salto++
+          // r.salto=salto+' '+parseInt(r.nrocomprobante)
+          if (salto!=parseInt(r.nrocomprobante)){
+            salto=parseInt(r.nrocomprobante)
+            r.salto='S'
+          }else{
+            r.salto=''
+          }
+
           if(r.verificadosistema==1){
             r.verificadocaja=true;
             r.verificadosistema=true;
@@ -703,6 +718,20 @@ export default {
           this.pagos.push(r);
         });
         this.pagos=res.data;
+      }).catch(err=>{
+        this.$q.loading.hide()
+        this.$q.notify({
+          message:err.response.data.message,
+          color:'red',
+          icon:'error'
+        })
+      })
+
+      this.$axios.post(process.env.URL+'/resumenporunidad',{fecha:this.fecha}).then(res=>{
+        // console.log(res.data)
+        this.resumenunidad=res.data
+        this.$q.loading.hide()
+
       }).catch(err=>{
         this.$q.loading.hide()
         this.$q.notify({

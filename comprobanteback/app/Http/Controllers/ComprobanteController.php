@@ -226,21 +226,27 @@ class ComprobanteController extends Controller
                     ->whereNull('fechacaja')
                     ->get();
             }
-            public function historial3(Request $request){
-                //        return $request;
-                        return Comprobante::with('cliente')
-                            ->with('detalles')
-                            ->with('unid')
-                            ->whereDate('fecha',$request->fecha)
-                //            ->where('cajero',$request->user()->name)
-                            //->where('unid_id',$request->unid_id)
-        //                    ->where('estado','PAGADO')
-                            ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO" OR estado = "IMPRESO")')
+    public function historial3(Request $request){
+        //        return $request;
+                return Comprobante::with('cliente')
+                    ->with('detalles')
+                    ->with('unid')
+                    ->whereDate('fecha',$request->fecha)
+        //            ->where('cajero',$request->user()->name)
+                    //->where('unid_id',$request->unid_id)
+//                    ->where('estado','PAGADO')
+                    ->whereRaw('(estado = "PAGADO" OR estado = "ANULADO" OR estado = "IMPRESO")')
 //                            ->whereNull('fechasistema')
-                            ->orderBy('unid_id','ASC')
-                            ->orderBy('nrocomprobante','ASC')
-                            ->get();
-                    }
+                    ->orderBy('unid_id','ASC')
+                    ->orderBy('nrocomprobante','ASC')
+                    ->get();
+    }
+    public function resumenporunidad(Request $request){
+        return DB::select("SELECT u.codigo,u.nombre,SUM(c.total) as total
+        FROM comprobantes c INNER JOIN unids u ON c.unid_id=u.id
+        WHERE date(fecha)='".$request->fecha."'
+        GROUP BY u.codigo,u.nombre");
+    }
 
     /**
      * Store a newly created resource in storage.
