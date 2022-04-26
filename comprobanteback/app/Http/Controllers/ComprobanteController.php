@@ -245,6 +245,7 @@ class ComprobanteController extends Controller
         return DB::select("SELECT u.codigo,u.nombre,SUM(c.total) as total
         FROM comprobantes c INNER JOIN unids u ON c.unid_id=u.id
         WHERE date(fecha)='".$request->fecha."'
+        AND nrocomprobante!=''
         GROUP BY u.codigo,u.nombre");
     }
 
