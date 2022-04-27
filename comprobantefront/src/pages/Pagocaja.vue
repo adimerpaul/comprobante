@@ -496,9 +496,9 @@ export default {
         if (r.id==9||r.id==10||r.id==7){
           this.unidades.push(r)
         }
-        if (r.id==1||r.id==2||r.id==3||r.id==4||r.id==5||r.id==6||r.id==7){
+        // if (r.id==1||r.id==2||r.id==3||r.id==4||r.id==5||r.id==6||r.id==7){
           this.unidadesdirectos.push(r)
-        }
+        // }
       })
       this.unidad=this.unidades[0]
       this.unidaddirecto=this.unidadesdirectos[0]
