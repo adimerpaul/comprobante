@@ -88,6 +88,8 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
 
     Route::put('/modificarcomprobantesistemas/{id}',[\App\Http\Controllers\SistemaController::class,'modificarcomprobantesistemas']);
     Route::resource('/caja',\App\Http\Controllers\CajaController::class);
+    Route::post('/buscarcomprobantesdirecto',[\App\Http\Controllers\CajaController::class,'buscarcomprobantesdirecto']);
+    Route::post('/cobrarcomprobantedirecto',[\App\Http\Controllers\CajaController::class,'cobrarcomprobantedirecto']);
 
     Route::post('/reportecaja',[\App\Http\Controllers\CajaController::class,'reportecaja']);
     Route::post('/insertarcorto',[\App\Http\Controllers\CajaController::class,'insertarcorto']);

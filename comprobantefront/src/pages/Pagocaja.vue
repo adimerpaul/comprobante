@@ -108,7 +108,8 @@
         >
           <template v-slot:top-right>
             <q-btn size="xs" label="Agregar corto" @click="crearcomprobantecorto" icon="warning" color="warning"/>
-            <q-btn size="xs" label="Agregar largo" @click="crearcomprobante" icon="add_circle" color="positive"/>
+<!--            <q-btn size="xs" label="Agregar largo" @click="crearcomprobante" icon="add_circle" color="positive"/>-->
+            <q-btn size="xs" label="Agregar de unidad" @click="crearcomprobanteunidad" icon="add_circle" color="positive"/>
             <q-input outlined dense v-model="filter" placeholder="Buscar">
               <template v-slot:append>
                 <q-icon name="search" />
@@ -122,8 +123,8 @@
           </template>
           <template v-slot:body-cell-opciones="props">
             <q-td :props="props">
-              <q-btn @click="modificar(props.row)"  size="xs" color="warning" label="modificar" icon="edit"></q-btn>
-              <q-btn @click="anular(props)" v-if="props.row.estado!='ANULADO'" size="xs" color="negative" label="Anular" icon="warning"></q-btn>
+              <q-btn v-if="esfechaigual(props.row.fecha,hoy) && props.row.cliente_id==2" @click="modificar(props.row)"  size="xs" color="warning" label="modificar" icon="edit"></q-btn>
+              <q-btn v-if="esfechaigual(props.row.fecha,hoy) && props.row.cliente_id==2 && props.row.estado!='ANULADO'" @click="anular(props)"  size="xs" color="negative" label="Anular" icon="warning"></q-btn>
             </q-td>
           </template>
         </q-table>
@@ -147,7 +148,7 @@
     <q-dialog full-width v-model="modalcomprobante">
       <q-card >
         <q-card-section>
-          <div class="text-h6">Medium</div>
+          <div class="text-h6">Insertar comprobante detallado</div>
         </q-card-section>
 
         <q-card-section class="q-pt-none">
@@ -223,23 +224,33 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
-    <q-dialog full-width v-model="modalcomprobantecorto">
+    <q-dialog full-width full-height v-model="modalcomprobantecorto">
       <q-card >
         <q-card-section>
-          <div class="text-h6">corto</div>
+          <div class="text-h6">Agregar comprobantes</div>
         </q-card-section>
-
         <q-card-section class="q-pt-none">
-          <q-form>
+          <q-form @submit="insertcomprobantecorto">
             <div class="row">
-              <div class="col-3"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
-              <div class="col-3"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
-              <div class="col-3"><q-input @input="buscarcomprobante" label="nrocomprobante" outlined dense v-model="nrocomprobante"/></div>
-              <div class="col-3"><q-input label="Total" outlined dense v-model="totalcorto"/></div>
+              <div class="col-6"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
+              <div class="col-6"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
+              <template v-for="(c,i) in comprobantecorto" >
+                <div :key="i" class="col-1 flex flex-center"><div class="text-h6">{{i+1}}</div></div>
+                <div :key="i+1000" class="col-4"><q-input type="number" required @input="buscarcomprobante" label="nrocomprobante" outlined dense v-model="c.nrocomprobante"/></div>
+                <div :key="i+2000" class="col-3"><q-input type="number" required label="Total" outlined dense v-model="c.total"/></div>
+                <div :key="i+3000" class="col-2 flex flex-center"> <q-checkbox size="xs" keep-color color="red" label="Anulado?" v-model="c.anulado"/> </div>
+                <div :key="i+4000" class="col-1 flex flex-center"><q-btn @click="agregarcomprobante" v-if="i==0" icon="add_circle" color="positive"/></div>
+                <div :key="i+5000" class="col-1 flex flex-center"><q-btn @click="quitarcomprobante(i)" v-if="i!=0" icon="remove_circle" color="negative"/></div>
+              </template>
+              <div class="col-12">
+                <div class="text-h4 q-pr-lg text-right">{{totalcomprobantecorto}} Bs</div>
+              </div>
+              <div class="col-12">
+                <q-btn  type="submit" label="Registrar comprobantes"  icon="add_circle" color="positive" class="full-width" />
+<!--                <div style="width: 100%;" :class="boolcrearcomprobante?'bg-red':'bg-green'" class="text-white rounded-borders row flex-center "> {{boolcrearcomprobante?'COMPROBANTE YA INSERTADO':'COPROBANTE LIBRE'}}</div>-->
+              </div>
             </div>
           </q-form>
-          <q-btn :disable="boolcrearcomprobante" label="Crear comprobante" @click="insertcomprobantecorto" icon="add_circle" color="positive" class="full-width" />
-          <div style="width: 100%;" :class="boolcrearcomprobante?'bg-red':'bg-green'" class="text-white rounded-borders row flex-center "> {{boolcrearcomprobante?'COMPROBANTE YA INSERTADO':'COPROBANTE LIBRE'}}</div>
         </q-card-section>
 
         <q-card-actions align="right" >
@@ -271,6 +282,99 @@
         </q-card-actions>
       </q-card>
     </q-dialog>
+
+    <q-dialog full-width full-height v-model="modalcomprobantecorto">
+      <q-card >
+        <q-card-section>
+          <div class="text-h6">Agregar comprobantes</div>
+        </q-card-section>
+        <q-card-section class="q-pt-none">
+          <q-form @submit="insertcomprobantecorto">
+            <div class="row">
+              <div class="col-6"><q-input type="date" label="Fecha" outlined dense v-model="fechainsertar"/></div>
+              <div class="col-6"><q-select dense outlined label="Unidad" :options="unidades" v-model="unidad" /></div>
+              <template v-for="(c,i) in comprobantecorto" >
+                <div :key="i" class="col-1 flex flex-center"><div class="text-h6">{{i+1}}</div></div>
+                <div :key="i+1000" class="col-4"><q-input type="number" required @input="buscarcomprobante" label="nrocomprobante" outlined dense v-model="c.nrocomprobante"/></div>
+                <div :key="i+2000" class="col-3"><q-input type="number" required label="Total" outlined dense v-model="c.total"/></div>
+                <div :key="i+3000" class="col-2 flex flex-center"> <q-checkbox size="xs" keep-color color="red" label="Anulado?" v-model="c.anulado"/> </div>
+                <div :key="i+4000" class="col-1 flex flex-center"><q-btn @click="agregarcomprobante" v-if="i==0" icon="add_circle" color="positive"/></div>
+                <div :key="i+5000" class="col-1 flex flex-center"><q-btn @click="quitarcomprobante(i)" v-if="i!=0" icon="remove_circle" color="negative"/></div>
+              </template>
+              <div class="col-12">
+                <div class="text-h4 q-pr-lg text-right">{{totalcomprobantecorto}} Bs</div>
+              </div>
+              <div class="col-12">
+                <q-btn  type="submit" label="Registrar comprobantes"  icon="add_circle" color="positive" class="full-width" />
+                <!--                <div style="width: 100%;" :class="boolcrearcomprobante?'bg-red':'bg-green'" class="text-white rounded-borders row flex-center "> {{boolcrearcomprobante?'COMPROBANTE YA INSERTADO':'COPROBANTE LIBRE'}}</div>-->
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+
+        <q-card-actions align="right" >
+          <q-btn flat label="cerrar" color="negative" icon="delete" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
+    <q-dialog full-width full-height v-model="modalcomprobanteunidad">
+      <q-card >
+        <q-card-section>
+          <div class="text-h6">Insertar comprobante por unidad</div>
+        </q-card-section>
+
+        <q-card-section class="q-pt-none">
+          <q-form>
+            <div class="row">
+              <div class="col-12">
+                <q-form @submit.prevent="buscarcomprobantesdirecto">
+                  <div class="row">
+                    <div class="col-4"><q-input type="date" label="Fecha" outlined dense v-model="fechacomprobanteunidad"/></div>
+                    <div class="col-4"><q-select dense outlined label="Unidad" :options="unidadesdirectos" v-model="unidaddirecto" /></div>
+                    <div class="col-4"><q-btn type="submit" class="full-height full-width" color="info" icon="search" label="consultar" /></div>
+                  </div>
+                </q-form>
+              </div>
+              <div class="col-12">
+                <q-table dense :columns="columnscomprobanteunidades" :data="comprobantesunidades" :filter="filtercomprobanteunidades">
+                  <template v-slot:top-right>
+                    <q-checkbox v-model="cobrartodo" @input="cambiocobrar"  color="red" label="Marcar todo" class="qq-pr-md"/>
+                    <q-input outlined dense v-model="filtercomprobanteunidades" placeholder="Buscar comprobante">
+                      <template v-slot:append>
+                        <q-icon name="search" />
+                      </template>
+                    </q-input>
+                  </template>
+                  <template v-slot:body-cell-num="props">
+                    <q-td :props="props">
+                      <div class="text-subtitle2">{{props.pageIndex+1}}</div>
+                    </q-td>
+                  </template>
+                  <template v-slot:body-cell-estado="props">
+                    <q-td :props="props">
+                      <q-badge v-if="props.row.estado=='ANULADO'" color="red" label="ANULADO"/>
+                    </q-td>
+                  </template>
+                  <template v-slot:body-cell-cobrar="props">
+                    <q-td :props="props">
+                      <q-checkbox v-model="props.row.cobrar"  color="red" label="Cobrar"/>
+                    </q-td>
+                  </template>
+                </q-table>
+              </div>
+              <div class="col-12 text-right text-h5">
+                Total: {{totalcomprobantesunidades}} Bs - {{totalcomprobantesunidadesmarcado}} Bs
+              </div>
+            </div>
+          </q-form>
+          <q-btn @click="cobrarcomprobantedirecto" label="Cobrar comprobantes"  icon="add_circle" color="positive" class="full-width" />
+        </q-card-section>
+
+        <q-card-actions align="right" >
+          <q-btn flat label="cerrar" color="negative" icon="delete" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
 <!--    <div class="col-12 col-sm-3 q-pa-xs flex flex-center">-->
 <!--      <q-btn icon="add_circle" label="Actualizar" color="positive" />-->
 <!--    </div>-->
@@ -286,11 +390,17 @@
 //]
 
 
-import { jsPDF } from "jspdf";
+import { jsPDF } from "jspdf"
 import {date} from 'quasar'
+import unid from "pages/Unid";
+
 export default {
   data() {
     return {
+      cobrartodo:false,
+      filtercomprobanteunidades:'',
+      modalcomprobanteunidad:false,
+      fechacomprobanteunidad:date.formatDate(Date.now(),'YYYY-MM-DD'),
       boolcrearcomprobante:true,
       modalcomprobantemodificar:false,
       totalcorto:'',
@@ -298,6 +408,13 @@ export default {
       item:{},
       cajeros:[],
       cajero:{},
+      comprobantecorto:[
+        {nrocomprobante:'',anulado:false,total:0},
+        {nrocomprobante:'',anulado:false,total:0},
+        {nrocomprobante:'',anulado:false,total:0},
+        {nrocomprobante:'',anulado:false,total:0},
+        {nrocomprobante:'',anulado:false,total:0},
+      ],
       detalle:[
         {coditem:'',item:'',monto:''},
         {coditem:'',item:'',monto:''},
@@ -317,7 +434,15 @@ export default {
         {name:'item',field:'item',label:'item', align:'center'},
         {name:'monto',field:'monto',label:'monto', align:'right'},
       ],
+      columnscomprobanteunidades:[
+        {name:'num',field:'num',label:'num', align:'center'},
+        {name:'nrocomprobante',field:'nrocomprobante',label:'nrocomprobante', align:'left'},
+        {name:'estado',field:'estado',label:'estado', align:'left'},
+        {name:'total',field:'total',label:'total', align:'right'},
+        {name:'cobrar',field:'cobrar',label:'cobrar', align:'left'},
+      ],
       tab:'simple',
+      comprobantesunidades:[],
       ci:'',
       paterno:'',
       materno:'',
@@ -328,6 +453,7 @@ export default {
       modalcomprobante:false,
       modalcomprobantecorto:false,
       fecha:date.formatDate(Date.now(),'YYYY-MM-DD'),
+      hoy:date.formatDate(Date.now(),'YYYY-MM-DD'),
       fechainsertar:date.formatDate(Date.now(),'YYYY-MM-DD'),
       options: [
         // 'Google', 'Facebook', 'Twitter', 'Apple', 'Oracle'
@@ -356,18 +482,26 @@ export default {
       pagos2:[],
       unidades:[],
       unidad:'',
+      unidadesdirectos:[],
+      unidaddirecto:'',
       comprobante:''
     };
   },
   created() {
     this.$axios.get(process.env.URL+'/unid').then(res=>{
-      this.unidades=[]
+      this.unidades=[{label:''}]
+      // this.unidadesdirectos=[{label:''}]
       res.data.forEach(r=>{
-        let d=r
-        d.label=r.nombre
-        this.unidades.push(d)
-        this.unidad=this.unidades[0]
+        r.label=r.nombre
+        if (r.id==9||r.id==10||r.id==7){
+          this.unidades.push(r)
+        }
+        if (r.id==1||r.id==2||r.id==3||r.id==4||r.id==5||r.id==6||r.id==7){
+          this.unidadesdirectos.push(r)
+        }
       })
+      this.unidad=this.unidades[0]
+      this.unidaddirecto=this.unidadesdirectos[0]
       // this.unidades=res.data
       // console.log(this.unidades)
     }).catch(err=>{
@@ -413,6 +547,45 @@ export default {
     this.loscomprobantes();
   },
   methods: {
+    cobrarcomprobantedirecto(){
+      if (confirm("seguro de cobrar?")){
+        this.$q.loading.show()
+        this.$axios.post(process.env.URL+'/cobrarcomprobantedirecto',{datos:this.comprobantesunidades}).then(res=>{
+          this.$q.loading.hide()
+          this.mispagos()
+          this.comprobantesunidades=[]
+          this.modalcomprobanteunidad=false
+          // console.log(res.data)
+          // this.comprobantesunidades=[]
+          // res.data.forEach(r=>{
+          //   r.cobrar=false
+          //   this.comprobantesunidades.push(r)
+          // })
+          // this.mispagos()
+          // this.misanulados()
+        })
+      }
+    },
+    cambiocobrar(){
+      // console.log(this.cobrartodo)
+      this.comprobantesunidades.forEach(r=>{
+        r.cobrar=this.cobrartodo
+      })
+    },
+    buscarcomprobantesdirecto(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.URL+'/buscarcomprobantesdirecto',{unid_id:this.unidaddirecto.id,fecha:this.fechacomprobanteunidad}).then(res=>{
+        this.$q.loading.hide()
+        console.log(res.data)
+        this.comprobantesunidades=[]
+        res.data.forEach(r=>{
+          r.cobrar=false
+          this.comprobantesunidades.push(r)
+        })
+        // this.mispagos()
+        // this.misanulados()
+      })
+    },
     modificar(i){
       this.comprobante=i
       this.modalcomprobantemodificar=true
@@ -568,24 +741,53 @@ export default {
         })
       }
     },
+    boolagregar(num1,num2){
+      // console.log(num1+'   '+num2)
+      if (parseInt(num1)==parseInt(num2)){
+        return true
+      }else{
+        return  false
+      }
+    },
+    agregarcomprobante(){
+      this.comprobantecorto.push({nrocomprobante:'',anulado:false,total:0},)
+    },
+    quitarcomprobante(i){
+      this.comprobantecorto.splice(i, 1)
+    },
     insertcomprobantecorto(){
       // this.detalle.forEach(r => {
       //   r.subtotal = r.precio * r.cantidad
       // })
+      if (!confirm("seguro de insertar?")){
+        return false
+      }
+      if (this.unidad.id==undefined){
+        this.$q.notify({
+          title: 'Error',
+          message: 'Debes selecionar la unidad',
+          color: 'red',
+          icon: 'error'
+        })
+        return false
+      }
       this.$q.loading.show()
       this.$axios.post(process.env.URL + '/insertarcorto', {
         total: this.totalcorto,
-        // ci: this.ci,
         fecha: this.fechainsertar,
-        // paterno: this.paterno,
-        // materno: this.materno,
-        // nombre: this.nombre,
-        // direccion: this.direccion,
-        // data: this.detalle,
+        datos:this.comprobantecorto,
         unid_id: this.unidad.id,
-        nrocomprobante:this.nrocomprobante,
+        // nrocomprobante:this.nrocomprobante,
       }).then((res) => {
-        console.log(res.data)
+        // console.log(res.data)
+        this.unidad={label:''}
+        this.comprobantecorto=[
+          {nrocomprobante:'',anulado:false,total:0},
+          {nrocomprobante:'',anulado:false,total:0},
+          {nrocomprobante:'',anulado:false,total:0},
+          {nrocomprobante:'',anulado:false,total:0},
+          {nrocomprobante:'',anulado:false,total:0},
+        ]
         this.totalcorto='',
         this.$q.loading.hide()
         // return false
@@ -614,8 +816,8 @@ export default {
         this.numcasa = ''
         this.nrocomprobante=''
         this.$q.notify({
-          title: 'Creado ',
-          message:'Creado correctamente',
+          title: 'Insertado ',
+          message:'Insertado correctamente!',
           color: 'green',
           icon: 'check'
         })
@@ -671,6 +873,13 @@ export default {
           }
         })
     },
+    esfechaigual(f1,f2){
+      if (f1==f2){
+        return true
+      }else{
+        return false
+      }
+    },
     crearcomprobante(){
       this.modalcomprobante=true
       // this.fechainsertar=date.formatDate(Date.now(),'YYYY-MM-DD')
@@ -682,6 +891,9 @@ export default {
       // this.fechainsertar=date.formatDate(Date.now(),'YYYY-MM-DD')
       this.nrocomprobante=''
       this.totalcorto=''
+    },
+    crearcomprobanteunidad(){
+      this.modalcomprobanteunidad=true
     },
     loscomprobantes(){
       this.model=''
@@ -1046,7 +1258,34 @@ export default {
         }
       })
       return total.toFixed(2)
-    }
+    },
+    totalcomprobantecorto(){
+      let total=0
+      this.comprobantecorto.forEach(r=>{
+        if (r.total!=''){
+          total+=parseFloat(r.total)
+        }
+      })
+      return total.toFixed(2)
+    },
+    totalcomprobantesunidades(){
+      let total=0
+      this.comprobantesunidades.forEach(r=>{
+        if (r.total!=''){
+          total+=parseFloat(r.total)
+        }
+      })
+      return total.toFixed(2)
+    },
+    totalcomprobantesunidadesmarcado(){
+      let total=0
+      this.comprobantesunidades.forEach(r=>{
+        if (r.total!=''&& r.cobrar){
+          total+=parseFloat(r.total)
+        }
+      })
+      return total.toFixed(2)
+    },
   }
 };
 </script>
