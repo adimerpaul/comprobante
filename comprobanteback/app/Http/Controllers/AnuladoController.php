@@ -61,8 +61,8 @@ class AnuladoController extends Controller
         $comprobante->nombre='ANULADO';
         $comprobante->estado='ANULADO';
         $comprobante->cliente_id=1;
-        $comprobante->cajero=$request->user()->codigo;
-        $comprobante->cajero_id=$request->user()->id;
+//        $comprobante->cajero=$request->user()->codigo;
+//        $comprobante->cajero_id=$request->user()->id;
         $comprobante->total=0;
         $comprobante->save();
         $detalles=Detalle::where('comprobante_id',$request->comprobante_id)->get();
