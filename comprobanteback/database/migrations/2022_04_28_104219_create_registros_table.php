@@ -18,7 +18,9 @@ class CreateRegistrosTable extends Migration
             $table->string("temporada");
             $table->string("ubicacion");
             $table->string("coditem");
+            $table->string("nombreitem");
             $table->string("coditemsubitem");
+            $table->string("nombresubitem");
             $table->string("detalle");
             $table->string("largo");
             $table->string("ancho");

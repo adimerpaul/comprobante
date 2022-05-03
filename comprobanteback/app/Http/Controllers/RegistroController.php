@@ -14,7 +14,7 @@ class RegistroController extends Controller
      */
     public function index()
     {
-        //
+
     }
 
     /**
@@ -35,7 +35,8 @@ class RegistroController extends Controller
      */
     public function store(Request $request)
     {
-        //
+//        return $request;
+        return Registro::create($request->all());
     }
 
     /**
@@ -44,9 +45,12 @@ class RegistroController extends Controller
      * @param  \App\Models\Registro  $registro
      * @return \Illuminate\Http\Response
      */
-    public function show(Registro $registro)
+    public function show($temporada)
     {
-        //
+        return Registro::with('cliente')
+            ->with('rubro')
+            ->where("temporada",$temporada)
+            ->get();
     }
 
     /**

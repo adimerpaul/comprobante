@@ -44,9 +44,9 @@ class RubroController extends Controller
      * @param  \App\Models\Rubro  $rubro
      * @return \Illuminate\Http\Response
      */
-    public function show(Rubro $rubro)
+    public function show($temporada)
     {
-        //
+        return Rubro::where('temporada',$temporada)->get();
     }
 
     /**

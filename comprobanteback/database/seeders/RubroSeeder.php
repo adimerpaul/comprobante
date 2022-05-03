@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use Illuminate\Database\Seeder;
+use Illuminate\Support\Facades\DB;
 
 class RubroSeeder extends Seeder
 {
@@ -13,6 +14,13 @@ class RubroSeeder extends Seeder
      */
     public function run()
     {
-        //
+        DB::table('rubros')->insert([
+           [
+               "nombre"=>"",
+               "monto"=>"28",
+               "temporada"=>"FERIA NORTE",
+               "categoria"=>"AUTORIZACIÓN Y DERECHO DE SITIAJE POR PUESTO",
+           ]
+        ]);
     }
 }

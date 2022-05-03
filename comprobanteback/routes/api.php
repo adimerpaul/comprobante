@@ -79,12 +79,15 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::get('/todoitems',[\App\Http\Controllers\ItemController::class,'todoitems']);
 
     Route::resource('/anulado',\App\Http\Controllers\AnuladoController::class);
+    Route::resource('/temporada',\App\Http\Controllers\TemporadaController::class);
     Route::resource('/exportar',\App\Http\Controllers\ExportController::class);
     Route::resource('/mercado',\App\Http\Controllers\MercadoController::class);
     Route::get('/comprobanteusuario/{fecha}',[\App\Http\Controllers\MercadoController::class,'comprobanteusuario']);
     Route::post('/reportemes',[\App\Http\Controllers\MercadoController::class,'reportemes']);
     Route::resource('/catastro',\App\Http\Controllers\CatastroController::class);
     Route::resource('/sistema',\App\Http\Controllers\SistemaController::class);
+    Route::resource('/registro',\App\Http\Controllers\RegistroController::class);
+    Route::resource('/rubro',\App\Http\Controllers\RubroController::class);
 
     Route::put('/modificarcomprobantesistemas/{id}',[\App\Http\Controllers\SistemaController::class,'modificarcomprobantesistemas']);
     Route::resource('/caja',\App\Http\Controllers\CajaController::class);

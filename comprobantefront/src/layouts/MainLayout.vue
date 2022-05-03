@@ -179,6 +179,17 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/temporada" exact v-if="$store.state.booltemporada">
+          <q-item-section avatar>
+            <q-icon name="sensor_window" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Pago temporada</q-item-label>
+            <q-item-label caption>
+              Pago temporada
+            </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable to="/modificarcomprobante" exact v-if="$store.state.boolmodificarcomprobante">
           <q-item-section avatar>
             <q-icon name="edit" />
