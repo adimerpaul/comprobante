@@ -41,7 +41,17 @@
           <q-input dense outlined label="categoria" v-model="rubrocobro.categoria"  />
         </div>
         <div class="col-6">
-          <q-input dense outlined label="nombre" v-model="rubrocobro.nombre"  />
+<!--          <q-input dense outlined label="nombre" v-model="rubrocobro.nombre"  />-->
+          <q-select dense outlined :options="rubros" v-model="rubrocobro" @filter="filterFn2" use-input >
+            <template v-slot:no-option>
+              <q-item>
+                <q-item-section class="text-grey">
+                  No results
+                </q-item-section>
+              </q-item>
+            </template>
+          </q-select>
+<!--          <pre>{{rubrocobro}}</pre>-->
         </div>
         <div class="col-4">
           <q-input dense outlined label="temporada" v-model="rubrocobro.temporada"  />
@@ -119,24 +129,24 @@
       </q-form>
     </q-card>
   </q-dialog>
-  <q-dialog full-width full-height v-model="dialogcomprobante">
-    <q-card >
-      <q-card-section class="text-center text-bold">Ingresar numero de comprobante</q-card-section>
-      <q-separator/>
-      <q-card-section>
-        <q-form>
-        <div class="row">
-          <div class="col-12">
-            <q-input dense outlined label="nro comprobante" />
-          </div>
-          <div class="col-12">
-            <q-btn type="submit" class="full-width" color="positive" icon="add_circle" :label="'liquidar comprobante '+temporada.nombre" />
-          </div>
-        </div>
-        </q-form>
-      </q-card-section>
-    </q-card>
-  </q-dialog>
+<!--  <q-dialog full-width full-height v-model="dialogcomprobante">-->
+<!--    <q-card >-->
+<!--      <q-card-section class="text-center text-bold">Ingresar numero de comprobante</q-card-section>-->
+<!--      <q-separator/>-->
+<!--      <q-card-section>-->
+<!--        <q-form>-->
+<!--        <div class="row">-->
+<!--          <div class="col-12">-->
+<!--            <q-input dense outlined label="nro comprobante" />-->
+<!--          </div>-->
+<!--          <div class="col-12">-->
+<!--            <q-btn type="submit" class="full-width" color="positive" icon="add_circle" :label="'liquidar comprobante '+temporada.nombre" />-->
+<!--          </div>-->
+<!--        </div>-->
+<!--        </q-form>-->
+<!--      </q-card-section>-->
+<!--    </q-card>-->
+<!--  </q-dialog>-->
   <div id="qr_code">
   </div>
 </q-page>
@@ -226,6 +236,10 @@ export default {
           paterno: this.clientecobro.paterno,
           materno: this.clientecobro.materno,
           nombre: this.clientecobro.nombre,
+          largo: this.registrocobro.largo,
+          ancho: this.registrocobro.ancho,
+          registro_id:this.registrocobro.id,
+          rubro_id:this.rubrocobro.id,
           data:detalles,
           nrocomprobante:this.nrocomprobante,
         }).then((res) => {
@@ -276,6 +290,7 @@ export default {
       this.clientecobro=registro.cliente
       this.registrocobro=registro
       this.rubrocobro=registro.rubro
+      this.rubrocobro.label=registro.rubro.nombre
       // console.log(this.registro)
     },
     reporte(dat){

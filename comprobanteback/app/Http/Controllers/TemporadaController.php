@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Cliente;
 use App\Models\Comprobante;
 use App\Models\Detalle;
+use App\Models\Registro;
 use Illuminate\Http\Request;
 use Luecano\NumeroALetras\NumeroALetras;
 
@@ -38,6 +39,11 @@ class TemporadaController extends Controller
      */
     public function store(Request $request)
     {
+        $registro=Registro::find($request->registro_id);
+        $registro->largo=$request->largo;
+        $registro->ancho=$request->ancho;
+        $registro->rubro_id=$request->rubro_id;
+        $registro->save();
 //        return $request;
         if (count($request->data)==1){
             $item=$request->data[0]['coditem'];
