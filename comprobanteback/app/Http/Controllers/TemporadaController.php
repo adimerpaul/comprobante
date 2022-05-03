@@ -40,8 +40,8 @@ class TemporadaController extends Controller
     public function store(Request $request)
     {
         $registro=Registro::find($request->registro_id);
-        $registro->largo=$request->largo;
-        $registro->ancho=$request->ancho;
+        $registro->largo=$request->largo==null?'':$request->largo;
+        $registro->ancho=$request->ancho==null?'':$request->ancho;
         $registro->rubro_id=$request->rubro_id;
         $registro->save();
 //        return $request;
