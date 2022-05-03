@@ -46,10 +46,16 @@
         <div class="col-4">
           <q-input dense outlined label="temporada" v-model="rubrocobro.temporada"  />
         </div>
-        <div class="col-4">
+        <div class="col-2">
+          <q-input dense outlined label="largo" v-model="registrocobro.largo"  />
+        </div>
+        <div class="col-2">
+          <q-input dense outlined label="ancho" v-model="registrocobro.ancho"  />
+        </div>
+        <div class="col-2">
           <q-input dense outlined label="monto" v-model="rubrocobro.monto"  />
         </div>
-        <div class="col-4">
+        <div class="col-2">
           <q-input dense outlined label="monto + formualrio " :value="rubrocobro.monto+2"  />
         </div>
         <div class="col-12">
