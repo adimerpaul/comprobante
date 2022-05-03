@@ -508,7 +508,7 @@ export default {
       doc.text('Segun Memorandum Nº 303/2022 de  22/04/2022',x+2.5, y+14.8);
       doc.setFontSize(12);
       doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
-      doc.text(x+16.5, y+19, dat.total.toString()+' Bs');
+      doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
       doc.text(x+2, y+17.5, dat.literal.toString()+' 00/100Bs');
 
       // doc.text(x+8.7, y+20.5, dat.controlinterno.toString());
