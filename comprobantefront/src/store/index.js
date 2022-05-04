@@ -43,6 +43,7 @@ export default new Vuex.Store({
     boolcomprobanteurbano:false,
     boolcomprobantecatastro:false,
     booltemporada:false,
+    boolverificarconsulta:false,
   },
   mutations: {
     auth_request(state){
@@ -89,6 +90,7 @@ export default new Vuex.Store({
         state.boolcomprobanteurbano=data.user.permisos.find(permiso=>permiso.id===21)!=undefined
       state.boolcomprobantecatastro=data.user.permisos.find(permiso=>permiso.id===22)!=undefined
       state.booltemporada=data.user.permisos.find(permiso=>permiso.id===23)!=undefined
+      state.boolverificarconsulta=data.user.permisos.find(permiso=>permiso.id===24)!=undefined
     },
     auth_error(state){
       state.status = 'error'
@@ -120,6 +122,7 @@ export default new Vuex.Store({
       state.boolcomprobanteurbano=false
       state.boolcomprobantecatastro=false
       state.booltemporada=false
+      state.boolverificarconsulta=false
     },
   },
   actions: {

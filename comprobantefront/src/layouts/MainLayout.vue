@@ -353,6 +353,17 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/verificarconsulta" exact v-if="$store.state.boolverificarconsulta">
+          <q-item-section avatar>
+            <q-icon name="manage_search" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Verificar consulta</q-item-label>
+            <q-item-label caption>
+              Historial de pagos
+            </q-item-label>
+          </q-item-section>
+        </q-item>
         <q-item clickable to="/misitems" exact v-if="$store.state.boolmisitems">
           <q-item-section avatar>
             <q-icon name="code" />
