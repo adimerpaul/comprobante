@@ -223,15 +223,15 @@ export default {
           'codsubitem':'153401101',
           'nombresubitem':'Patentes por Temporadas',
           'detalle':'Suma que ingresa por licencia y derecho de puesto eventual para funcionamiento de: ' + this.rubrocobro.nombre+' '+this.registrocobro.largo+'X'+ this.registrocobro.ancho+', '+this.registrocobro.ubicacion ,
-          'precio':this.rubrocobro.monto,
+          'precio':parseInt( this.rubrocobro.monto),
           'cantidad':1,
-          'monto':this.rubrocobro.monto,
+          'monto':parseInt( this.rubrocobro.monto),
           }
         ]
         this.$axios.post(process.env.URL + '/temporada', {
           nrotramite: this.nrotramite,
           // padron: this.padron,
-          total: this.rubrocobro.monto+2,
+          total: parseInt(this.rubrocobro.monto)+2,
           ci: this.clientecobro.ci,
           paterno: this.clientecobro.paterno,
           materno: this.clientecobro.materno,
