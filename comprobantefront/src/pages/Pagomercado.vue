@@ -491,7 +491,7 @@ export default {
         let sumtotal=0
         let con=0
         this.miscomprobantestotales.forEach(r=>{
-          if (r.nrocomprobante!=''){
+          if (r.nrocomprobante!='' && r.nrocomprobante!=null){
             y+=0.4
             con++
             doc.text(1, y+3, r.fecha)
