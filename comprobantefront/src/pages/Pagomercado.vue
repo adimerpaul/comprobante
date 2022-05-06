@@ -1215,7 +1215,7 @@ export default {
         doc.setFontSize(11);
         var x=0,y=-2;
         doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
-        doc.text(x+9.5, y+7.5, dat.cliente.paterno.toString()+' '+dat.cliente.materno.toString()+' '+dat.cliente.nombre.toString());
+        doc.text(x+9.5, y+7.5, dat.paterno.toString()+' '+dat.materno.toString()+' '+dat.nombre.toString());
         doc.setFontSize(7);
         let cont=0
         let fin=20

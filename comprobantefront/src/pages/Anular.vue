@@ -175,16 +175,16 @@ export default {
         this.comprobantes=[]
         res.data.forEach(r=>{
           this.comprobantes.push({
-            label:r.padron+' '+r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            label:r.padron+' '+r.paterno+' '+r.materno+' '+r.nombre,
             id:r.id,
             fecha:r.fecha,
             unidad:r.unid.nombre,
             nrocomprobante:r.nrocomprobante,
             nrotramite:r.nrotramite,
             detalles:r.detalles,
-            nombrecompleto:r.cliente.paterno+' '+r.cliente.materno+' '+r.cliente.nombre,
+            nombrecompleto:r.paterno+' '+r.materno+' '+r.nombre,
             padron:r.padron,
-            ci:r.cliente.ci,
+            ci:r.ci,
             total:r.total,
           })
         })
