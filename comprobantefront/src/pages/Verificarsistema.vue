@@ -29,7 +29,7 @@
         :columns="pcolumns"
         :data="pagos"
           :filter="filter"
-          :rows-per-page-options="[10,50,100,0]"
+          :rows-per-page-options="[0]"
         >
         <template v-slot:body="props">
         <q-tr :props="props">
@@ -52,7 +52,7 @@
           <q-td key="verificadosistema" :props="props" >
 <!--            <template v-if="!props.row.verificadosistema">-->
             <q-checkbox  @input="actualizar(props.row)" size="xs" v-model="props.row.verificadosistema" />
-            <q-btn flat size="xs" @click="borrarcomprobante(props.row)" color="negative" icon="delete"  />
+<!--            <q-btn flat size="xs" @click="borrarcomprobante(props.row)" color="negative" icon="delete"  />-->
             <q-btn @click="frmmodificar(props.row)" color="warning" size="xs" label="modificar" icon="edit" />
 <!--            </template>-->
 <!--            <template v-else>-->
@@ -113,9 +113,7 @@
         </q-form>
       </div>
       <div class="col-12">
-        <q-table :data="resumenunidad" dense title="Resumen por unidad">
-
-        </q-table>
+        <q-table :data="resumenunidad" dense title="Resumen por unidad" :rows-per-page-options="[0]"/>
       </div>
     </div>
     <q-dialog full-width v-model="modalcomprobante">
@@ -158,7 +156,14 @@
               </div>
             </template>
           </q-table>
-          <q-btn label="Modificar comprobante" @click="modificarcomprobante()"  icon="edit" color="positive" class="full-width" />
+          <div class="row">
+            <div class="col-6">
+              <q-btn label="Modificar comprobante" @click="modificarcomprobante()"  icon="edit" color="positive" class="full-width" />
+            </div>
+            <div class="col-6">
+              <q-btn label="Anular comprobante" @click="anularcomprobante" icon="warning" color="negative" class="full-width" />
+            </div>
+          </div>
         </q-card-section>
         <q-card-actions align="right" >
           <q-btn flat label="cerrar" color="negative" icon="delete" v-close-popup />
@@ -342,58 +347,128 @@ export default {
       })
       return s
     },
-    modificarcomprobante(){
-      this.$q.loading.show()
-      this.$axios.put(process.env.URL + '/modificarcomprobantesistemas/'+this.comprobante.id, {
-        // total: this.totalcorto,
-        fecha: this.fechainsertar,
-        unid_id: this.unidad.id,
-        nrocomprobante:this.nrocomprobante,
-        detalles:this.detalle
-      }).then((res) => {
-        console.log(res.data)
-        this.totalcorto='',
+    anularcomprobante(){
+      this.$q.dialog({
+        title:'Anular?',
+        message:'Seguro de anular comprobante?',
+        cancel:true,
+      }).onOk(()=>{
+        this.$q.loading.show()
+        this.$axios.post(process.env.URL + '/anulado',{
+          comprobante_id:this.comprobante.id
+        }, {
+          // total: this.totalcorto,
+          fecha: this.fechainsertar,
+          unid_id: this.unidad.id,
+          nrocomprobante:this.nrocomprobante,
+          detalles:this.detalle
+        }).then((res) => {
+          // console.log(res.data)
+          this.totalcorto='',
+            this.modalcomprobantemodificar=false
+            this.$q.loading.hide()
+          // return false
+          this.historial()
+          // this.detalle=[
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          // ]
+          this.ci = ''
+          this.paterno = ''
+          this.materno = ''
+          this.nombre = ''
+          this.padron = ''
+          this.expedido = ''
+          this.direccion = ''
+          this.numcasa = ''
+          this.nrocomprobante=''
+          this.modalcomprobante=false
+          this.$q.notify({
+            title: 'Anulado ',
+            message:'Anulado correctamente',
+            color: 'green',
+            icon: 'check'
+          })
+          this.modalcomprobantemodificar=false
+        }).catch(err => {
           this.$q.loading.hide()
-        // return false
-        this.historial()
-        // this.detalle=[
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        //   {coditem:'',item:'',monto:''},
-        // ]
-        this.ci = ''
-        this.paterno = ''
-        this.materno = ''
-        this.nombre = ''
-        this.padron = ''
-        this.expedido = ''
-        this.direccion = ''
-        this.numcasa = ''
-        this.nrocomprobante=''
-        this.modalcomprobante=false
-        this.$q.notify({
-          title: 'Modificado ',
-          message:'Modificado correctamente',
-          color: 'green',
-          icon: 'check'
+          this.$q.notify({
+            title: 'Error ',
+            message: err.response.data.message,
+            color: 'red',
+            icon: 'error'
+          })
         })
-        this.modalcomprobantemodificar=false
-      }).catch(err => {
-        this.$q.loading.hide()
-        this.$q.notify({
-          title: 'Error ',
-          message: err.response.data.message,
-          color: 'red',
-          icon: 'error'
+      })
+    },
+    modificarcomprobante(){
+      this.$q.dialog({
+        title:'Modificar?',
+        message:'Seguro de modificar comprobante?',
+        cancel:true,
+      }).onOk(()=>{
+        this.$q.loading.show()
+        this.$axios.put(process.env.URL + '/modificarcomprobantesistemas/'+this.comprobante.id, {
+          // total: this.totalcorto,
+          fecha: this.fechainsertar,
+          unid_id: this.unidad.id,
+          nrocomprobante:this.nrocomprobante,
+          detalles:this.detalle
+        }).then((res) => {
+          console.log(res.data)
+          this.totalcorto='',
+            this.$q.loading.hide()
+          // return false
+          this.historial()
+          // this.detalle=[
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          //   {coditem:'',item:'',monto:''},
+          // ]
+          this.ci = ''
+          this.paterno = ''
+          this.materno = ''
+          this.nombre = ''
+          this.padron = ''
+          this.expedido = ''
+          this.direccion = ''
+          this.numcasa = ''
+          this.nrocomprobante=''
+          this.modalcomprobante=false
+          this.$q.notify({
+            title: 'Modificado ',
+            message:'Modificado correctamente',
+            color: 'green',
+            icon: 'check'
+          })
+          this.modalcomprobantemodificar=false
+        }).catch(err => {
+          this.$q.loading.hide()
+          this.$q.notify({
+            title: 'Error ',
+            message: err.response.data.message,
+            color: 'red',
+            icon: 'error'
+          })
         })
       })
     },
