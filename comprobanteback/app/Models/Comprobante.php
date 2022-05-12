@@ -58,6 +58,7 @@ class Comprobante extends Model
         'nombre',
         'tipocatastro',
         'codcatastral',
+        'temporada',
     ];
     public function cliente(){
         return $this->belongsTo(Cliente::class);

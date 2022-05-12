@@ -44,7 +44,7 @@ class TemporadaController extends Controller
         $registro->ancho=$request->ancho==null?'':$request->ancho;
         $registro->rubro_id=$request->rubro_id;
         $registro->save();
-//        return $request;
+
         if (count($request->data)==1){
             $item=$request->data[0]['coditem'];
         }else{
@@ -59,6 +59,7 @@ class TemporadaController extends Controller
         $comprobante=Comprobante::create([
             'unid_id'=>$request->user()->unid_id,
             'nrotramite'=>$request->nrotramite,
+            'temporada'=>$registro->temporada,
 //            'nrocomprobante'=>'139044',
             'fecha'=>date('Y-m-d'),
             'fechalimite'=>date("Y-m-d",strtotime(now()."+ 21 days")),
@@ -92,7 +93,7 @@ class TemporadaController extends Controller
             'materno'=>$cliente->materno,
             'nombre'=>$cliente->nombre,
         ]);
-
+//        return $comprobante;
         foreach ($request->data as $row){
 //            echo $row['subtotal'].' -';
             Detalle::create([
