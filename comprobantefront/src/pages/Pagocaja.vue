@@ -995,13 +995,17 @@ export default {
           // })
         })
         this.$q.loading.hide()
-        function header(unidad,fecha){
+        let cm=this
+        function header(unidad,fecha,contador){
           var img = new Image()
           img.src = 'logo.jpg'
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-          doc.text(5, 1.5, unidad +' DE '+fecha)
+          doc.text(5, 1.5, unidad +' DE '+fecha +' USUARIO: '+cm.$store.state.user.name)
+          doc.setFontSize(8);
+          doc.text(15,1,'Fecha de Consulta:'+cm.hoy);
+          doc.setFontSize(9);
           doc.text(1, 3, 'Nº COMPROBANTE')
           // doc.text(4, 3, 'Nº TRAMITE')
           doc.text(4, 3, 'CONTRIBUYENTE')
@@ -1009,6 +1013,7 @@ export default {
           doc.text(13.5, 3, 'UNIDAD')
           doc.text(17, 3, 'MONTO BS.')
           doc.text(19, 3, 'CAJERO')
+          doc.text('----- Pag ' +contador+' -----',10,26,'center');
           doc.setFont(undefined,'normal')
         }
         var doc = new jsPDF('p','cm','letter')
@@ -1016,14 +1021,16 @@ export default {
         doc.setFont("courier");
         doc.setFontSize(9);
         // var x=0,y=
-        header(this.$store.state.user.unid.nombre.toString(),this.fecha)
+        let contador=1
+        header(this.$store.state.user.unid.nombre.toString(),this.fecha,contador)
         // let xx=x
         // let yy=y
         let y=0
         let total=0
         this.pagos2.forEach(r=>{
           // xx+=0.5
-          console.log(r)
+
+          // console.log(r)
           y+=0.5
           doc.text(1, y+3, r.nrocomprobante==undefined?'':r.nrocomprobante.substr(0,21))
           // doc.text(4, y+3, r.nrotramite==undefined?'):r.nrotramite
@@ -1035,7 +1042,8 @@ export default {
           total+=parseInt(r.total)
           if (y+3>25){
             doc.addPage();
-            header(this.fecha)
+            contador++
+            header(this.$store.state.user.unid.nombre.toString(),this.fecha,contador)
             y=0
           }
         })
@@ -1054,13 +1062,17 @@ export default {
       })
     },
     imprimir(){
-      function header(unidad,fecha){
+      let cm=this
+      function header(unidad,fecha,contador){
         var img = new Image()
         img.src = 'logo.jpg'
         doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
         doc.setFont(undefined,'bold')
         doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-        doc.text(5, 1.5, unidad +' DE '+fecha)
+        doc.text(5, 1.5, unidad +' DE '+fecha +' USUARIO: '+cm.$store.state.user.name)
+        doc.setFontSize(8);
+        doc.text(15,1,'Fecha de Consulta:'+cm.hoy);
+        doc.setFontSize(9);
         doc.text(1, 3, 'Nº COMPROBANTE')
         // doc.text(4, 3, 'Nº TRAMITE')
         doc.text(4, 3, 'CONTRIBUYENTE')
@@ -1068,6 +1080,7 @@ export default {
         doc.text(13.5, 3, 'UNIDAD')
         doc.text(17, 3, 'MONTO BS.')
         doc.text(19, 3, 'CAJERO')
+        doc.text('----- Pag ' +contador+' -----',10,26,'center');
         doc.setFont(undefined,'normal')
       }
       var doc = new jsPDF('p','cm','letter')
@@ -1075,7 +1088,8 @@ export default {
       doc.setFont("courier");
       doc.setFontSize(9);
       // var x=0,y=
-      header(this.$store.state.user.unid.nombre.toString(),this.fecha)
+      let contador=1
+      header(this.$store.state.user.unid.nombre.toString(),this.fecha,contador)
       // let xx=x
       // let yy=y
       let y=0
@@ -1092,7 +1106,8 @@ export default {
         doc.text(19, y+3, r.cajero ==undefined?'':r.cajero )
         if (y+3>25){
           doc.addPage();
-          header(this.fecha)
+          contador++
+          header(this.$store.state.user.unid.nombre.toString(),this.fecha,contador)
           y=0
         }
       })
