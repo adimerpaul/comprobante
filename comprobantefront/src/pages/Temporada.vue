@@ -79,6 +79,26 @@
     </q-form>
   </div>
 </div>
+  <div class="row">
+    <div class="col-12">
+      <q-card>
+        <q-card-section class="text-center text-bold q-pa-xs q-ma-xs bg-green">Reporte por tempotadas</q-card-section>
+        <q-separator/>
+        <q-card-section>
+          <q-form @submit.prevent="reportecomprobantestotales">
+            <div class="row">
+              <div class="col-6">
+                <q-select :options="temporadas"  dense outlined label="Temporada" v-model="reportetemporada"/>
+              </div>
+              <div class="col-6 flex flex-center">
+                <q-btn class="full-width" label="reporte" icon="print" color="positive" type="submit" />
+              </div>
+            </div>
+          </q-form>
+        </q-card-section>
+      </q-card>
+    </div>
+  </div>
   <q-dialog full-width full-height v-model="dialogcrearregistro">
     <q-card>
       <q-form @submit="createRegistro">
@@ -156,6 +176,7 @@
 import {jsPDF} from "jspdf";
 import $ from "jquery";
 import {date} from "quasar";
+import conversor from "conversor-numero-a-letras-es-ar";
 
 export default {
   name: `Temporada`,
@@ -174,6 +195,7 @@ export default {
         {label:"FERIA SUD",nombre:"FERIA SUD",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
         {label:"FERIA VINTO",nombre:"FERIA VINTO",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
       ],
+      reportetemporada:{label:"FERIA NORTE",nombre:"FERIA NORTE",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
       temporada:{},
       registros:[],
       registros2:[],
@@ -193,6 +215,79 @@ export default {
     this.misregistros(this.temporada)
   },
   methods:{
+    reportecomprobantestotales(){
+      this.$q.loading.show()
+      this.$axios.post(process.env.URL + '/reportemes',{inicio:'2022-03-31',fin:'2022-06-31'}).then(res=>{
+        this.miscomprobantestotales=res.data
+        let cm=this;
+        function header(fecha){
+          var img = new Image()
+          img.src = 'logo.jpg'
+          doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
+          doc.setFont(undefined,'bold')
+          doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
+          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+cm.reportetemporada.label)
+          doc.text(1, 3, '__________________________________________________________________________________________________')
+          doc.text(1, 3, 'FECHA')
+          doc.text(3.5, 3, 'Nº COM')
+          doc.text(5.5, 3, 'Nº TRA')
+          doc.text(7.5, 3, 'CONTRIBUYENTE')
+          doc.text(13.5, 3, 'CI/RUN/RUC')
+          doc.text(16, 3, 'MONTO BS.')
+          doc.text(18, 3, 'OPERADOR')
+          doc.setFont(undefined,'normal')
+        }
+        var doc = new jsPDF('p','cm','letter')
+        doc.setFont("courier");
+        doc.setFontSize(9);
+        header(this.fecha)
+        let y=0
+        let sumtotal=0
+        let con=0
+        this.miscomprobantestotales.forEach(r=>{
+          // console.log(this.reportetemporada.label+' '+r.nrocomprobante.temporada)
+          if (r.nrocomprobante!='' && r.nrocomprobante!=null && r.temporada==this.reportetemporada.label){
+            y+=0.4
+            con++
+            doc.text(1, y+3, r.fecha)
+            doc.text(3.5, y+3, r.nrocomprobante)
+            doc.text(5.5, y+3, r.nrotramite)
+            doc.text(7.5, y+3, (r.paterno).substring(0,15)+' '+(r.materno).substring(0,15)+' '+(r.nombre).substring(0,15))
+            doc.text(13.5, y+3, r.ci)
+            doc.text(16, y+3, r.total)
+            sumtotal+=parseInt(r.total)
+            // console.log(r.total)
+            doc.text(18, y+3, r.user.codigo )
+            if (con==55){
+              con=0
+              doc.addPage();
+              header(this.fecha)
+              y=0
+            }
+          }
+        })
+        doc.setFont(undefined,'bold')
+        doc.text(3, y+3.5, 'SON: '+con+' COMPROBANTES')
+        doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
+        doc.text(1.8, y+5, '_____________________          _____________________________       _________________________')
+        doc.text(2, y+5.3, 'FIRMA SELLO CAJERO')
+        doc.text(8, y+5.3, 'FIRMA SELLO CONTROL INTERNO')
+        doc.text(15, y+5.3, 'FIRMA SELLO LIQUIDADOR')
+        // doc.setFont(undefined,'normal')
+        doc.text(18, y+3.5, sumtotal+ ' Bs')
+        const conversor = require('conversor-numero-a-letras-es-ar');
+
+        let ClaseConversor = conversor.conversorNumerosALetras;
+        let miConversor = new ClaseConversor();
+
+        var a = miConversor.convertToText(sumtotal);
+        doc.text(1, y+4, 'SON: '+ a.toUpperCase()+' BS')
+        // doc.save("Pago"+date.formatDate(Date.now(),'DD-MM-YYYY')+".pdf");
+        window.open(doc.output('bloburl'), '_blank');
+        // console.log(res.data)
+        this.$q.loading.hide()
+      })
+    },
     liquidarcomprobante(){
 
     },
