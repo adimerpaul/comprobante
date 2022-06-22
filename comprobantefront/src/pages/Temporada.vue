@@ -191,11 +191,17 @@ export default {
       cliente:{expedido:''},
       dialogcrearregistro:false,
       temporadas:[
-        {label:"FERIA NORTE",nombre:"FERIA NORTE",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
-        {label:"FERIA SUD",nombre:"FERIA SUD",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
-        {label:"FERIA VINTO",nombre:"FERIA VINTO",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+        //{label:"FERIA NORTE",nombre:"FERIA NORTE",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+       // {label:"FERIA SUD",nombre:"FERIA SUD",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+      //  {label:"FERIA VINTO",nombre:"FERIA VINTO",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+        {label:"SAN JUAN",nombre:"SAN JUAN",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
       ],
-      reportetemporada:{label:"FERIA NORTE",nombre:"FERIA NORTE",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+
+      /*
+      CAMBIO DE TEMPORADA
+      
+      */
+      reportetemporada:{label:"SAN JUAN",nombre:"SAN JUAN",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
       temporada:{},
       registros:[],
       registros2:[],
@@ -600,7 +606,7 @@ export default {
       })
       doc.setFontSize(10);
       doc.text('Segun Resolucion Administrativa Nº 10/2022 de 18/04/2022',x+2.5, y+14.5);
-      doc.text('Segun Memorandum Nº 303/2022 de  22/04/2022',x+2.5, y+14.8);
+      doc.text('Segun Memorandum Nº 435/2022 de  14/06/2022',x+2.5, y+14.8);
       doc.setFontSize(12);
       doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
       doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
