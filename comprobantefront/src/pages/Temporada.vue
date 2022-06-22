@@ -783,8 +783,10 @@ export default {
       this.$axios.get(process.env.URL+'/registro/'+temporada.nombre).then(res=>{
         this.registros=[]
         res.data.forEach(r=>{
-          r.label=r.cliente.ci+' '+r.cliente.nombre+' '+r.cliente.paterno+' '+r.cliente.materno
-          this.registros.push(r)
+          if(r.cliente!=null){
+              r.label=r.cliente.ci+' '+r.cliente.nombre+' '+r.cliente.paterno+' '+r.cliente.materno
+              this.registros.push(r)
+          }
         })
         this.registro=this.registros[0]
         this.registros2=this.registros
