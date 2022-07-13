@@ -388,6 +388,17 @@
             </q-item-label>
           </q-item-section>
         </q-item>
+        <q-item clickable to="/buscarcomprobante" exact v-if="$store.state.boolbuscarcomprobante">
+          <q-item-section avatar>
+            <q-icon name="search" />
+          </q-item-section>
+          <q-item-section>
+            <q-item-label>Buscar comprobante</q-item-label>
+            <q-item-label caption>
+              Buscar Comprobante
+            </q-item-label>
+          </q-item-section>
+        </q-item>
 
 
         <q-item

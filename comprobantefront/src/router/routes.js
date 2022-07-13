@@ -28,6 +28,7 @@ import Pagocatastronombres from "pages/Pagocatastronombres";
 import Pagocatastrovehiculos from "pages/Pagocatastrovehiculos";
 import Temporada from "pages/Temporada";
 import Verificarconsulta from "pages/Verificarconsulta";
+import Buscarcomprobante from "pages/Buscarcomprobante";
 const routes = [
   {
     path: '/',
@@ -62,6 +63,7 @@ const routes = [
       { path: '/pagocatastrovehiculos', component: Pagocatastrovehiculos,meta: {requiresAuth: true} },
       { path: '/temporada', component: Temporada,meta: {requiresAuth: true} },
       { path: '/verificarconsulta', component: Verificarconsulta,meta: {requiresAuth: true} },
+      { path: '/buscarcomprobante', component: Buscarcomprobante,meta: {requiresAuth: true} },
     ]
   },
 

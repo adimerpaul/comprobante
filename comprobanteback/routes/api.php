@@ -101,4 +101,9 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::post('/reportitem',[\App\Http\Controllers\ComprobanteController::class,'reportitem']);
     Route::post('/reimprimir',[\App\Http\Controllers\ComprobanteController::class,'reimprimir']);
     Route::post('/imprimir',[\App\Http\Controllers\ComprobanteController::class,'imprimir']);
+
+
+    Route::post('/buscarcomprobante',[\App\Http\Controllers\ComprobanteController::class,'buscarcomprobante']);
+
+
 });
