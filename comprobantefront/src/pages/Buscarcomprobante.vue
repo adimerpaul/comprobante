@@ -7,10 +7,34 @@
       class="q-gutter-md"
     >
  <div class="row">
-  <div class="col-2"><q-input outlined v-model="dato.ci" label="CI" /></div>
-  <div class="col-2"><q-input outlined v-model="dato.paterno" label="APELLIDO PATERNO" /></div>
-  <div class="col-2"><q-input outlined v-model="dato.materno" label="APELLIDO MATERNO" /></div>
-  <div class="col-2"><q-input outlined v-model="dato.nombre" label="NOMBRE" /></div>
+  <div class="col-2">
+    <q-input outlined v-model="dato.ci" label="Carnet ID" counter >
+        <template v-slot:append>
+          <q-icon v-if="dato.ci !== ''" name="close" @click="dato.ci = ''" class="cursor-pointer" />
+        </template>
+      </q-input>
+  </div>
+  <div class="col-2">
+    <q-input outlined v-model="dato.paterno" label="APELLIDO PATERNO" counter >
+        <template v-slot:append>
+          <q-icon v-if="dato.paterno !== ''" name="close" @click="dato.paterno = ''" class="cursor-pointer" />
+        </template>
+      </q-input>
+  </div>
+  <div class="col-2">
+    <q-input outlined v-model="dato.materno" label="APELLIDO MATERNO" counter hide-hint>
+        <template v-slot:append>
+          <q-icon v-if="dato.materno !== ''" name="close" @click="dato.materno = ''" class="cursor-pointer" />
+        </template>
+      </q-input>
+  </div>
+  <div class="col-2">
+    <q-input outlined v-model="dato.nombre" label="NOMBRE" counter >
+        <template v-slot:append>
+          <q-icon v-if="dato.nombre !== ''" name="close" @click="dato.nombre = ''" class="cursor-pointer" />
+        </template>
+      </q-input>
+  </div>
   <div class="col-4"><q-btn type="submit" color="primary" size="lg" label="BUSCAR COMPROBANTE" /></div>
   </div>
   </q-form>
