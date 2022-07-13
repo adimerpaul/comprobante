@@ -189,22 +189,42 @@ export default {
       doc.setFontSize(11);
       doc.text(x+1, y+0.5, 'TRAMITE N '+dat.nrotramite.toString());
       // console.log(dat.tipocatastro)
-      doc.text(x+1, y+1,dat.tipocatastro==null?'':'TIPO: '+dat.tipocatastro);
-      doc.text(x+1, y+1.5,'Contribuyente: '+ dat.paterno.toString()+' '+dat.materno.toString()+' '+dat.nombre.toString());
+      doc.text(x+1, y+1,dat.tipocatastro==null?'':'TIPO: '+dat.tipocatastro.toString());
+      //doc.text(x+1, y+1.5,'Contribuyente: '+ dat.paterno.toString()+' '+dat.materno.toString()+' '+dat.nombre.toString());
+      let contnom=0
+      let finnom=60
+      let xxnom=x
+      let yynom=y
+      if(dat.paterno.toString().length<60)
+      {
+        doc.setFontSize(11);
+        doc.text(x+1, y+1.5, dat.paterno.toString()+' '+dat.materno.toString()+' '+dat.nombre.toString());
+      }
+      else
+      {
+        doc.setFontSize(11)
+        while(dat.paterno.toString().length>=contnom){
+          doc.text(xxnom+1, yynom+1.5, dat.paterno.toString().substring(contnom,finnom));
+          contnom+=60;
+          finnom+=60
+          yynom+=0.3;
+        }
+      }
+
       doc.setFontSize(11);
       let cont=0
-      let fin=20
+      let fin=40
       let xx=x
       let yy=y
       if(dat.cliente.direccion.toString().length<40)
-        doc.text(x+1, y+2,'Direccion: '+ dat.cliente.direccion.toString()+' '+dat.cliente.numcasa.toString());
+        doc.text(x+1, y+2.5,'Direccion: '+ dat.cliente.direccion.toString()+' '+dat.cliente.numcasa.toString());
       else{
-        doc.text(xx+1, yy+2,'Direccion: ')
+        doc.text(xx+1, yy+2.5,'Direccion: ')
         while (dat.cliente.direccion.toString().length>=cont){
           // doc.text(xx+2.5, yy+0.3, r.detalle.substring(cont,fin));
-          doc.text(xx+4, yy+2,dat.cliente.direccion.toString().substring(cont,fin)+' '+dat.cliente.numcasa.toString());
-          cont+=20;
-          fin+=20
+          doc.text(xx+4, yy+2.5,dat.cliente.direccion.toString().substring(cont,fin)+' '+dat.cliente.numcasa.toString());
+          cont+=40;
+          fin+=40
           yy+=0.5;
         }
       }
@@ -213,8 +233,8 @@ export default {
       doc.text(x+1, y+3.5, 'Telefono: '+dat.cliente.telefono.toString());
       doc.text(x+1, y+4, 'Varios: '+dat.varios.toString());
       doc.text(x+1, y+4.5, 'Fecha: OR '+ dat.fecha.toString());
-      doc.text(x+1, y+5,  dat.codcatastral==null?'':'Codigo Catastral: '+dat.codcatastral);
-      doc.setFontSize(13);
+      doc.text(x+1, y+5,  dat.codcatastral==null?'':'Codigo Catastral: '+dat.codcatastral.toString());
+      doc.setFontSize(11);
       doc.text(x+1, y+5.5, 'TOTAL:'+dat.total.toString()+' Bs');
       doc.text(x+1, y+6, 'DETALLE');
       xx=x+1.2
