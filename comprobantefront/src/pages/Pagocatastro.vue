@@ -57,8 +57,21 @@
                 <q-select :options="['CH','LP','CB','OR','PT','TJ','SC','BE','PD','OTROS']" outlined dense square label="Expedido" v-model="expedido"
                 />
               </div>
-              <div class="col-12 col-sm-3 bg-red flex flex-center ">
-                <div class="text-subtitle2">PATERNO</div>
+              <div class="col-12 col-sm-3 bg-red flex justify-end ">
+                <div class="text-subtitle2">
+                  PATERNO
+                  <q-badge color="yellow-6" text-color="black">
+                      Para ingresar varias Personas
+                      <q-icon
+                        name="warning"
+                        size="14px"
+                        class="q-ml-xs"
+                      />
+                      <q-tooltip anchor="center right" self="center left" :offset="[10, 10]">
+                          <strong>Ingrese aqui nombres y apellidos de varias personas ==></strong>
+                      </q-tooltip>
+                  </q-badge>
+                </div>
               </div>
               <div class="col-12 col-sm-9">
                 <q-input   dense outlined v-model="paterno" />
@@ -931,7 +944,33 @@ export default {
       doc.text(x+14.5, y+5.1, 'TRAMITE N '+dat.nrotramite.toString());
       // console.log(dat.tipocatastro)
       doc.text(x+16.5, y+6, dat.tipocatastro==null?'':dat.tipocatastro);
-      doc.text(x+9.5, y+7.5, dat.paterno.toString()+' '+dat.materno.toString()+' '+dat.nombre.toString());
+     // doc.text(x+9.5, y+7.5, dat.paterno.toString()+' '+dat.materno.toString()+' '+dat.nombre.toString());
+      /* ////////////////VARIOS NOMBRE CATASTRO////////////////////// */
+      let contnom=0
+      let finnom=55
+      let xxnom=x
+      let yynom=y
+      if(dat.paterno.toString().length<35)
+      {
+        doc.setFontSize(11);
+        doc.text(x+8.5, y+7, dat.paterno.toString()+' '+dat.materno.toString()+' '+dat.nombre.toString());
+      }
+      else if(dat.paterno.toString().length>35 && dat.paterno.toString().length<55)
+      {
+        doc.setFontSize(9);
+        doc.text(x+8.5, y+7, dat.paterno.toString());
+      }
+      else
+      {
+        doc.setFontSize(8)
+        while(dat.paterno.toString().length>=contnom){
+          doc.text(xxnom+8.5, yynom+7, dat.paterno.toString().substring(contnom,finnom));
+          contnom+=55;
+          finnom+=55
+          yynom+=0.2;
+        }
+      }
+      /* /////////////////////////////////////////////////////// */
       doc.setFontSize(7);
       let cont=0
       let fin=20
