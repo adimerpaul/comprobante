@@ -326,7 +326,7 @@ export default {
           doc.text(13.5, y+3, r.unid==null?'':r.unid.nombre==undefined?'':r.unid.nombre.substr(0,21))
           doc.text(19, y+3, r.total==undefined?'':r.total,'right')
           doc.text(20, y+3, r.cajero ==undefined?'':r.cajero )
-          total+=parseInt(r.total)
+          total+=parseFloat(r.total)
           if (y+3>25){
             doc.addPage();
             header(this.fecha)
@@ -343,7 +343,7 @@ export default {
     sumar(d){
       let s=0
       d.forEach(r=>{
-        s+= parseInt(r.subtotal)
+        s+= r.subtotal
       })
       return s
     },
@@ -553,7 +553,7 @@ export default {
         doc.text(16.5, y+3.6, ''+item.cantidad);
         doc.text(20, y+3.6, ''+item.monto,{align: 'right',});
         y+=0.4
-        sum+=parseInt(item.monto)
+        sum+=item.monto
         // if (cont==60){
         //   cont=0
         //   doc.addPage();
@@ -565,9 +565,9 @@ export default {
       doc.setFont(undefined,'bold')
       doc.text(3, y+3.3, '______________________________________________________________________________')
       doc.text(4, y+3.8, 'TOTAL RECAUDACION: ')
-      doc.text(20.5, y+3.8, ''+new Intl.NumberFormat('es-MX').format(sum)+' BS',{align: 'right',})
+      doc.text(21, y+3.8, ''+new Intl.NumberFormat('es-MX').format(sum)+' Bs.',{align: 'right',})
       doc.setFont(undefined,'normal')
-      doc.text(16.5, y+3.8, ''+this.tramite)
+      doc.text(16, y+3.8, ''+this.tramite)
       window.open(doc.output('bloburl'), '_blank');
     },
     actualizar(comprobante){
