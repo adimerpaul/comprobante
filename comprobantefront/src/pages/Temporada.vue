@@ -608,7 +608,7 @@ export default {
       doc.setFontSize(10);
      // doc.text('Segun Resolucion Administrativa Nº 10/2022 de 18/04/2022',x+2.5, y+14.5);
       //doc.text('Segun Memorandum Nº 435/2022 de  14/06/2022',x+2.5, y+14.8);
-      doc.text('Segun Resolucion Tecnica Administrativa del 21/10/2022',x+2.5, y+14.5);
+      doc.text('Segun Resolucion Tecnica Administrativa N° 142/2022 del 21/10/2022',x+2.5, y+14.5);
       doc.setFontSize(12);
       doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
       doc.text(x+16.5, y+20, dat.total.toString()+' Bs');
