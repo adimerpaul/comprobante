@@ -79,7 +79,7 @@
         <q-form @submit.prevent="reportecomp">
           <div class="row">
             <div class="col-4 q-pa-md"><q-input dense label="Fecha 1" type="date" outlined v-model="fecha" /></div>
-            <div class="col-4 q-pa-md"><q-input dense label="Fecha 1" type="date" outlined v-model="fecha2" /></div>
+            <div class="col-4 q-pa-md"><q-input dense label="Fecha 2" type="date" outlined v-model="fecha2" /></div>
             <div class="col-4 q-pa-md flex flex-center"><q-btn type="submit" label="Resumen mes" color="accent" icon="search"/></div>
           </div>
         </q-form>
@@ -643,7 +643,7 @@ export default {
           img.src = 'logo.jpg'
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
-          doc.text(3, 1, 'H. GOBIERNO MUNICIPAL DE ORURO')
+          doc.text(3, 1, 'GOBIERNO AUTONOMO MUNICIPAL DE ORURO')
           // doc.text(3, 1.5, '  JEFATURA DE RECAUDACIONES')
           doc.text(15, 1.5, 'Fecha de Proceso '+fec1)
           doc.text(8, 2.5, 'REGISTRO DE COMPROBANTES DE CAJA ')
@@ -664,7 +664,7 @@ export default {
         // console.log(dat);
 
         // var x=0,y=
-        header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
+        header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha2)
         // console.log(res.data)
         doc.setFontSize(10)
         let y=0
@@ -707,12 +707,12 @@ export default {
             y=0
             x+=7
           }
-          if (cont==(66*3)){
+          if (cont==(67*3)){
             y=0
             x=0.5
             cont=0
             doc.addPage();
-            header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha)
+            header(this.$store.state.user.unid.nombre,date.formatDate(Date.now(),'YYYY-MM-DD'),this.fecha,this.fecha2)
           }
 
         })

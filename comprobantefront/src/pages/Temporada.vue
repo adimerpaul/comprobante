@@ -88,7 +88,7 @@
           <q-form @submit.prevent="reportecomprobantestotales">
             <div class="row">
               <div class="col-6">
-                <q-select :options="temporadas"  dense outlined label="Temporada" v-model="reportetemporada"/>
+                <q-select :options="reportetemporada"  dense outlined label="Temporada" v-model="repotemporada"/>
               </div>
               <div class="col-6 flex flex-center">
                 <q-btn class="full-width" label="reporte" icon="print" color="positive" type="submit" />
@@ -195,15 +195,19 @@ export default {
        // {label:"FERIA SUD",nombre:"FERIA SUD",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
       //  {label:"FERIA VINTO",nombre:"FERIA VINTO",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
        //{label:"SAN JUAN",nombre:"SAN JUAN",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
-        {label:"TODOS SANTOS",nombre:"TODOS SANTOS",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+        // {label:"TODOS SANTOS",nombre:"TODOS SANTOS",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+        {label:"CALVARIO 2022-2023",nombre:"CALVARIO 2022-2023",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
       ],
 
       /*
       CAMBIO DE TEMPORADA
 
       */
-      reportetemporada:{label:"TODOS SANTOS",nombre:"TODOS SANTOS",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+      reportetemporada:[{label:"CALVARIO 2022-2023",nombre:"CALVARIO 2022-2023",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"},
+      {label:"TODOS SANTOS",nombre:"TODOS SANTOS",coditem:"1534011",nombreitem:"Patentes por Temporadas (mercados)",codsubitem:"153401101",nombresubitem:"Patentes por Temporadas",detalle:"Patentes por Temporadas (mercados)"}],
+
       temporada:{},
+      repotemporada:{},
       registros:[],
       registros2:[],
       registro:{},
@@ -219,12 +223,19 @@ export default {
   created() {
     this.numcomprobante()
     this.temporada=this.temporadas[0]
+    this.repotemporada = this.reportetemporada[0]
     this.misregistros(this.temporada)
   },
   methods:{
     reportecomprobantestotales(){
       this.$q.loading.show()
-      this.$axios.post(process.env.URL + '/reportemes',{inicio:'2022-10-24',fin:'2022-11-15'}).then(res=>{
+      let fechainifin=""
+      if(this.repotemporada==="TODOS SANTOS"){
+        fechainifin={inicio:'2022-10-24',fin:'2022-11-08'}
+      }else{
+        fechainifin={inicio:'2022-11-09',fin:'2022-12-10'}
+      }
+      this.$axios.post(process.env.URL + '/reportemes',fechainifin).then(res=>{
         this.miscomprobantestotales=res.data
         let cm=this;
         function header(fecha){
@@ -233,7 +244,7 @@ export default {
           doc.addImage(img, 'jpg', 0.5, 0.5, 2, 2)
           doc.setFont(undefined,'bold')
           doc.text(5, 1, 'RESUMEN DIARIO DE INGRESOS')
-          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+cm.reportetemporada.label)
+          doc.text(5, 1.5, cm.$store.state.user.unid.nombre+' '+cm.repotemporada.label)
           doc.text(1, 3, '__________________________________________________________________________________________________')
           doc.text(1, 3, 'FECHA')
           doc.text(3.5, 3, 'Nº COM')
@@ -253,7 +264,7 @@ export default {
         let con=0
         this.miscomprobantestotales.forEach(r=>{
           // console.log(this.reportetemporada.label+' '+r.nrocomprobante.temporada)
-          if (r.nrocomprobante!='' && r.nrocomprobante!=null && r.temporada==this.reportetemporada.label){
+          if (r.nrocomprobante!='' && r.nrocomprobante!=null && r.temporada==this.repotemporada.label){
             y+=0.4
             con++
             doc.text(1, y+3, r.fecha)
@@ -608,7 +619,7 @@ export default {
       doc.setFontSize(10);
      // doc.text('Segun Resolucion Administrativa Nº 10/2022 de 18/04/2022',x+2.5, y+14.5);
       //doc.text('Segun Memorandum Nº 435/2022 de  14/06/2022',x+2.5, y+14.8);
-      doc.text('Segun Resolucion Tecnica Administrativa N° 142/2022 del 21/10/2022',x+2.5, y+14.5);
+      doc.text('Segun Resolución Tecnica Administrativa N° 159/2022 del 03/11/2022',x+2.5, y+14.5);
       doc.setFontSize(12);
       doc.text(x+16.5, y+15.5, dat.total.toString()+' Bs');
       doc.text(x+16.5, y+20, dat.total.toString()+' Bs');

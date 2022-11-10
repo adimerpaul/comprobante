@@ -513,7 +513,7 @@ export default {
         })
         doc.setFont(undefined,'bold')
         doc.text(3, y+3.5, 'SON: '+con+' COMPROBANTES')
-        doc.text(12, y+3.5, 'TOTAL RECAUDADCION: ')
+        doc.text(12, y+3.5, 'TOTAL RECAUDACION: ')
         doc.text(1.8, y+5, '_____________________          _____________________________       _________________________')
         doc.text(2, y+5.3, 'FIRMA SELLO CAJERO')
         doc.text(8, y+5.3, 'FIRMA SELLO CONTROL INTERNO')

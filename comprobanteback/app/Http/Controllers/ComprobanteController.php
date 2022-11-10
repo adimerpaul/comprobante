@@ -649,6 +649,6 @@ SUM(d.subtotal) as monto
          $comprobante->where('materno','LIKE','%'.$request->materno.'%');
         if(!is_null($request->nombre) || $request->nombre!="")
          $comprobante->where('nombre','LIKE','%'.$request->nombre.'%');
-        return $comprobante->get();
+        return $comprobante->orderBy('fecha', 'desc')->get();
     }
 }
