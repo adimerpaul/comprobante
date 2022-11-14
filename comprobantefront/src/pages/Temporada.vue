@@ -229,13 +229,13 @@ export default {
   methods:{
     reportecomprobantestotales(){
       this.$q.loading.show()
-      let fechainifin=""
-      if(this.repotemporada==="TODOS SANTOS"){
-        fechainifin={inicio:'2022-10-24',fin:'2022-11-08'}
-      }else{
-        fechainifin={inicio:'2022-11-09',fin:'2022-12-10'}
-      }
-      this.$axios.post(process.env.URL + '/reportemes',fechainifin).then(res=>{
+      // let fechainifin=""
+      // if(this.repotemporada==="TODOS SANTOS"){
+      //   fechainifin={inicio:'2022-10-24',fin:'2022-11-08'}
+      // }else{
+      //   fechainifin={inicio:'2022-11-09',fin:'2022-12-10'}
+      // }
+      this.$axios.post(process.env.URL + '/reportemes',{inicio:'2022-10-24',fin:'2022-11-31'}).then(res=>{
         this.miscomprobantestotales=res.data
         let cm=this;
         function header(fecha){
