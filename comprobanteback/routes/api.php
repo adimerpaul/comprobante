@@ -84,6 +84,7 @@ Route::group(['middleware'=>'auth:sanctum'],function (){
     Route::resource('/mercado',\App\Http\Controllers\MercadoController::class);
     Route::get('/comprobanteusuario/{fecha}',[\App\Http\Controllers\MercadoController::class,'comprobanteusuario']);
     Route::post('/reportemes',[\App\Http\Controllers\MercadoController::class,'reportemes']);
+    Route::post('/reportemestemporada',[\App\Http\Controllers\MercadoController::class,'reportemestemporada']);
     Route::resource('/catastro',\App\Http\Controllers\CatastroController::class);
     Route::resource('/sistema',\App\Http\Controllers\SistemaController::class);
     Route::resource('/registro',\App\Http\Controllers\RegistroController::class);

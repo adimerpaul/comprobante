@@ -79,6 +79,18 @@ class MercadoController extends Controller
             ->orderBy('nrocomprobante')
             ->get();
     }
+    public function reportemestemporada(Request $request){
+        return Comprobante::with('cliente')
+            ->with('detalles')
+            ->with('user')
+//            ->whereDate('fechalimite','>=',now())
+            ->where('unid_id',$request->user()->unid_id)
+            ->where('temporada',$request->temporada['nombre'])
+            ->whereDate('fecha','>=',$request->inicio)
+            ->whereDate('fecha','<=',$request->fin)
+            ->orderBy('nrocomprobante')
+            ->get();
+    }
     public function comprobanteusuario($fecha,Request $request)
     {
         return Comprobante::with('cliente')

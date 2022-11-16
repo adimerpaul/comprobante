@@ -235,7 +235,7 @@ export default {
       // }else{
       //   fechainifin={inicio:'2022-11-09',fin:'2022-12-10'}
       // }
-      this.$axios.post(process.env.URL + '/reportemes',{inicio:'2022-10-24',fin:'2022-11-31'}).then(res=>{
+      this.$axios.post(process.env.URL + '/reportemestemporada',{inicio:'2022-10-24',fin:'2022-11-31',temporada: this.repotemporada}).then(res=>{
         this.miscomprobantestotales=res.data
         let cm=this;
         function header(fecha){
