@@ -435,7 +435,8 @@ export default {
       // console.log(dat.cliente)
       doc.text(x+15.6, y+8.5, dat.cliente.ci.toString()+dat.cliente.expedido.toString()+'  ');
       doc.text(x+18, y+8.5, dat.cliente.telefono.toString());
-      doc.text(x+3, y+10.5, this.temporada.nombre +' ' + date.formatDate(new Date(),'YYYY'));
+      doc.text(x+3, y+10.5, this.temporada.nombre);
+      // doc.text(x+3, y+10.5, this.temporada.nombre +' ' + date.formatDate(new Date(),'YYYY'));
       doc.text(x+9.5, y+10.5, 'OR '+ dat.fecha.toString());
       xx=x+0.7
       yy=y+11.7
