@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Cliente;
 use App\Models\Registro;
 use Illuminate\Http\Request;
 
@@ -47,6 +48,7 @@ class RegistroController extends Controller
      */
     public function show($temporada)
     {
+
         return Registro::with('cliente')
             ->with('rubro')
             ->where("temporada",$temporada)
@@ -85,5 +87,24 @@ class RegistroController extends Controller
     public function destroy(Registro $registro)
     {
         //
+    }
+
+    public function registro(Request $request)
+    {
+        // return $request;
+        // $idsCliente =
+        return Cliente::where('ci','like','%'.$request->val.'%')
+                ->orWhere("paterno",'like','%'.$request->val.'%')
+                ->orWhere("materno",'like','%'.$request->val.'%')
+                ->orWhere("nombre",'like','%'.$request->val.'%')
+                ->skip(0)->take(20)->get();
+
+
+        // return Registro::
+        //     where("temporada",$request->temporada)
+        //     ->whereIn("cliente_id",$idsCliente)
+        //     ->with('cliente')
+        //     ->with('rubro')
+        //     ->skip(0)->take(20)->get();
     }
 }
